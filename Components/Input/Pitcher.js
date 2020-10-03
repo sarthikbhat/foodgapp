@@ -1,13 +1,9 @@
 import React from 'react';
 import {
-    StyleSheet,
-    Text,
-    View,
-    TouchableOpacity,
-    TouchableWithoutFeedback,
-    Dimensions, Modal, ToastAndroid
+    StyleSheet, Text, View, TouchableOpacity, TouchableWithoutFeedback, Image, Dimensions, Modal, ToastAndroid, StatusBar
 } from 'react-native';
 // eslint-disable-next-line import/no-unresolved
+import ModalButtons from './ModalButtons'
 import { RNCamera } from 'react-native-camera';
 import Tflite from 'tflite-react-native';
 
@@ -83,42 +79,40 @@ export default class CameraScreen extends React.Component {
                 } else
                     ToastAndroid.show("Model loaded successfully", ToastAndroid.SHORT);
             });
-        this.timerHandle = setInterval(async () => {    // ***
-            console.log('iiii')
-            if (this.camera) {
-                const data = await this.camera.takePictureAsync();
-                console.log('takePicture ', data);
-                try {
-                    tflite.detectObjectOnImage({
-                        path: data.uri,
-                        model: 'SSDMobileNet',
-                        // imageMean: 127.5,
-                        // imageStd: 127.5,
-                        threshold: 0.3,       // defaults to 0.1
-                        numResultsPerClass: 2,// defaults to 5
-                    },
-                        (err, res) => {
-                            if (err)
-                                console.log(err);
-                            else {
-                                console.log(res);
-                                this.setState({
-                                    pictureData: data,
-                                    values: res
-                                })
-                            }
-                        });
-                } catch (e) {
-                    console.warn(e)
-                }
-            }                  // ***
-        }, 2000);                                // ***
+        // this.timerHandle = setInterval(async () => {    // ***
+        //     console.log('iiii')
+        //     if (this.camera) {
+        //         const data = await this.camera.takePictureAsync();
+        //         console.log('takePicture ', data);
+        //         try {
+        //             tflite.detectObjectOnImage({
+        //                 path: data.uri,
+        //                 model: 'SSDMobileNet',
+        //                 // imageMean: 127.5,
+        //                 // imageStd: 127.5,
+        //                 threshold: 0.3,       // defaults to 0.1
+        //                 numResultsPerClass: 2,// defaults to 5
+        //             },
+        //                 (err, res) => {
+        //                     if (err)
+        //                         console.log(err);
+        //                     else {
+        //                         console.log(res);
+        //                         this.setState({
+        //                             pictureData: data,
+        //                             values: res
+        //                         })
+        //                     }
+        //                 });
+        //         } catch (e) {
+        //             console.warn(e)
+        //         }
+        //     }                  // ***
+        // }, 2000);                                // ***
     };                                         // ***
-    // ***
+
     componentWillUnmount = () => {             // ***
-        // Is our timer running?                 // ***
         if (this.timerHandle) {                  // ***
-            // Yes, clear it                     // ***
             clearTimeout(this.timerHandle);      // ***
             this.timerHandle = 0;                // ***
         }
@@ -404,7 +398,9 @@ export default class CameraScreen extends React.Component {
             <Modal visible={this.props.pitcherVisible}
                 onRequestClose={() => { this.props.togglePitcher(false) }}
                 animationType="slide" transparent={false} >
+                    <StatusBar translucent />
                 <RNCamera
+                    useNativeZoom={true}
                     ref={ref => {
                         this.camera = ref;
                     }}
@@ -463,44 +459,36 @@ export default class CameraScreen extends React.Component {
                                 justifyContent: 'space-around',
                             }}
                         >
-                            <TouchableOpacity style={styles.flipButton} onPress={this.toggleFacing.bind(this)}>
-                                <Text style={styles.flipText}> FLIP </Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity style={styles.flipButton} onPress={this.toggleFlash.bind(this)}>
-                                <Text style={styles.flipText}> FLASH: {this.state.flash} </Text>
-                            </TouchableOpacity>
+
                         </View>
                     </View>
+                    <ModalButtons visible={true}/>
                     <View style={{ bottom: 0 }}>
-                        {this.state.zoom !== 0 && (
-                            <Text style={[styles.flipText, styles.zoomText]}>Zoom: {this.state.zoom}</Text>
-                        )}
+
                         <View
                             style={{
-                                height: 56,
                                 backgroundColor: 'transparent',
                                 flexDirection: 'row',
-                                alignSelf: 'flex-end',
+                                alignSelf: 'center',
+                                alignItems:"center",
+                                marginBottom: 5
                             }}
                         >
-                            <TouchableOpacity
-                                style={[styles.flipButton, { flex: 0.1, alignSelf: 'flex-end' }]}
-                                onPress={this.zoomIn.bind(this)}
-                            >
-                                <Text style={styles.flipText}> + </Text>
+                            <View style={{ flex: 1 }} />
+                            <TouchableOpacity style={{marginTop:3}} onPress={this.toggleFacing.bind(this)}>
+                                <Image source={require('../../assets/Icons/flip.png')} style={{ width: 35, height: 30, resizeMode: "contain" }} />
                             </TouchableOpacity>
+                            <View style={{ flex: 1 }} />
                             <TouchableOpacity
-                                style={[styles.flipButton, { flex: 0.1, alignSelf: 'flex-end' }]}
-                                onPress={this.zoomOut.bind(this)}
-                            >
-                                <Text style={styles.flipText}> - </Text>
-                            </TouchableOpacity>
-                            <TouchableOpacity
-                                style={[styles.flipButton, styles.picButton, { flex: 0.3, alignSelf: 'flex-end' }]}
+                                style={{ width: 100, height: 100, borderRadius: 50, borderWidth: 5, borderColor: "white" }}
                                 onPress={this.takePicture.bind(this)}
                             >
-                                <Text style={styles.flipText}> SNAP </Text>
                             </TouchableOpacity>
+                            <View style={{ flex: 1 }} />
+                            <TouchableOpacity onPress={this.toggleFlash.bind(this)}>
+                                <Image source={require('../../assets/Icons/flash.png')} style={{ width: 25, height: 25, resizeMode: "contain" }} />
+                            </TouchableOpacity>
+                            <View style={{ flex: 1 }} />
                         </View>
                     </View>
                     {!!canDetectFaces && this.renderLandmarks()}
