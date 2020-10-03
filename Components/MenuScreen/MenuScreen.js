@@ -13,8 +13,9 @@ isPortrait = () => {
 
 const MenuScreen = (props) => { 
         return (
-            <View style={{flex:1}}>
-                <ImageBackground source={require('../../Assets/icons/bg2.jpg')} style={styles.outerMenu} imageStyle={styles.imageMenu}>
+            <View style={{flex:1,backgroundColor:'#E6F0F5'}}>
+                {/* <ImageBackground source={require('../../Assets/icons/bg2.jpg')} style={styles.outerMenu} imageStyle={styles.imageMenu}> */}
+                <View style={{backgroundColor:'#E6F0F5'}}>
                 {
                 useIsDrawerOpen()?
                 <TouchableOpacity 
@@ -23,7 +24,7 @@ const MenuScreen = (props) => {
                     <Animatable.Image
                     animation='slideInLeft'
                       duration={1200}
-                    source={ require('../../Assets/icons/closeicon.png')}
+                    source={ require('../../Assets/icons/close.png')}
                         style={{
                             width: 25, resizeMode: "contain",
                             height: 25
@@ -34,24 +35,28 @@ const MenuScreen = (props) => {
                 {
                 useIsDrawerOpen()?
                 <View 
-                 style={{flex:1,justifyContent:'center',marginTop:50}}
+                //  style={{flex:1,justifyContent:'center',marginTop:50}}
                 >
-                <Animatable.Text animation="slideInLeft" duration={800} style={{fontSize:35,textAlign:'center',padding:20,fontFamily:'KaushanScript-Regular',color:'#ffffff'}}>Food Gapp</Animatable.Text>
-                    <Animatable.Text animation="slideInLeft" duration={800} style={{fontSize:20,textAlign:'center',padding:20,fontFamily:'KaushanScript-Regular',color:'#ffffff',marginTop:25}}>Home</Animatable.Text>
-                    <Animatable.Text animation="slideInLeft" duration={800} delay={200} style={{fontSize:20,textAlign:'center',padding:20,fontFamily:'KaushanScript-Regular',color:'#ffffff'}}>Camera</Animatable.Text>
-                    <Animatable.Text animation="slideInLeft" duration={800} delay={200} style={{fontSize:20,textAlign:'center',padding:20,fontFamily:'KaushanScript-Regular',color:'#ffffff'}}>My Cart</Animatable.Text>
-                    <Animatable.Text animation="slideInLeft" duration={800} delay={200} style={{fontSize:20,textAlign:'center',padding:20,fontFamily:'KaushanScript-Regular',color:'#ffffff'}}>Favourites</Animatable.Text>
-                    <Animatable.Text animation="slideInLeft" duration={800} delay={200} style={{fontSize:20,textAlign:'center',padding:20,fontFamily:'KaushanScript-Regular',color:'#ffffff'}}>Sign In</Animatable.Text>
+                <Animatable.Text animation="slideInLeft" duration={800} style={{fontSize:35,textAlign:'center',padding:20,fontFamily:'KaushanScript-Regular',color:'#000'}}>Food Gapp</Animatable.Text>
+                    <Animatable.Text animation="slideInLeft" duration={800} style={{fontSize:20,textAlign:'center',padding:20,fontFamily:'KaushanScript-Regular',color:'#000',marginTop:25}}>Home</Animatable.Text>
+                    <Animatable.Text animation="slideInLeft" duration={800} delay={200} style={{fontSize:20,textAlign:'center',padding:20,fontFamily:'KaushanScript-Regular',color:'#000'}}>Camera</Animatable.Text>
+                    <Animatable.Text animation="slideInLeft" duration={800} delay={200} style={{fontSize:20,textAlign:'center',padding:20,fontFamily:'KaushanScript-Regular',color:'#000'}}>My Cart</Animatable.Text>
+                    <Animatable.Text animation="slideInLeft" duration={800} delay={200} style={{fontSize:20,textAlign:'center',padding:20,fontFamily:'KaushanScript-Regular',color:'#000'}}>Favourites</Animatable.Text>
+                    <Animatable.Text animation="slideInLeft" duration={800} delay={200} style={{fontSize:20,textAlign:'center',padding:20,fontFamily:'KaushanScript-Regular',color:'#000'}}>Sign In</Animatable.Text>
                 </View>
                 :null
                 }
-                </ImageBackground>
+                </View>
+                {/* </ImageBackground> */}
                 
             </View>
         )
 }
 
 const styles = StyleSheet.create({
+    full:{
+
+    },
     outerMenu: {
         display: 'flex',
         resizeMode: "cover",
