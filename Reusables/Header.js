@@ -1,8 +1,12 @@
 import React from 'react';
 import { View, Image, TouchableOpacity, StyleSheet} from 'react-native';
 import * as Animatable from "react-native-animatable";
+import Animated  from 'react-native-reanimated';
 
 class Header extends React.Component {
+    // componentDidMount=()=>{
+    //     console.log(this.props.navigation.canGoBack());
+    // }
     render() {
         return (
             <Animatable.View
@@ -22,6 +26,7 @@ class Header extends React.Component {
                                 />
                             </TouchableOpacity>
                             :
+                            
                             <TouchableOpacity style={styles.headerIcon}
                                 onPress={() => { this.props.navigation.openDrawer() }} >
                                 <Image source={require('../Assets/icons/menu.png')}

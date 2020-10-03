@@ -11,11 +11,31 @@ const MinBorder = 80,
     image = Dimensions.get('window').width / 1.8
 
 export class RecipeScreen extends Component {
-    state = {
-        scrollY: new Animated.Value(0),
-        setter:0
+    
+    constructor () {
+        super()
+        this.state = {
+            scrollY: new Animated.Value(0),
+            setter:0
+        }
+        this.spinValue = new Animated.Value(0)
+      }
+
+      poser=()=>{
+        // this.spinValue.setValue(0)
+        Animated.timing(
+          this.state.scrollY,
+          {
+            toValue: 300,
+            duration: 200,
+            
+          useNativeDriver:false
+          },
+        ).start()
     }
+    
     render() {
+        // const scrollY = useRef(new Animated.Value(0)).current
         const set = this.state.setter===0?recipes:ingredient
         var widthSmaller = this.state.scrollY.interpolate({
             inputRange: [0, 300],
@@ -23,14 +43,14 @@ export class RecipeScreen extends Component {
             extrapolate: "clamp",
         })
 
-        var topPositionY = this.state.scrollY.interpolate({
+        var topPositionY = this.spinValue.interpolate({
             inputRange: [0, 300],
             outputRange: [0.01 * MAX_HEIGHT, 0],
             extrapolate: "clamp",
 
         })
 
-        var topPositionX = this.state.scrollY.interpolate({
+        var topPositionX = this.spinValue.interpolate({
             inputRange: [0, 300],
             outputRange: [20, 15],
             extrapolate: "clamp",
@@ -74,6 +94,9 @@ export class RecipeScreen extends Component {
 
         })
 
+
+   
+
         return (
             <View style={styles.full}>
                 <StatusBar barStyle='dark-content' backgroundColor='#E6F0F5' />
@@ -84,7 +107,7 @@ export class RecipeScreen extends Component {
                 style={{ display: 'flex', flexDirection: "row" }}>
                     <Animated.View style={{ padding: 25 
                     }}>
-                        <Animated.Text style={{ fontSize: 30, fontFamily: 'PatrickHand-Regular' }}>American Pizza</Animated.Text>
+                        <Animated.Text  style={{ fontSize: 30, fontFamily: 'PatrickHand-Regular' }}>American Pizza</Animated.Text>
                         <Animated.View style={{ paddingTop: 25 ,transform: [{
                             translateY: sizer
                          }
@@ -166,7 +189,7 @@ export class RecipeScreen extends Component {
                     {/* <Animated.View
                         style={{ width: Dimensions.get('window').width / 3, backgroundColor: '#e5e5e5', padding: 3, alignSelf: 'center', borderRadius: 15,marginBottom:5 }}
                     /> */}
-                    <Text style={{ fontSize: 25, fontWeight: '900', padding:10,textAlign:'center',paddingTop:2}}>{this.state.setter===0?'How To Cook':'Ingredients Required'}</Text>
+                    <Text onPress={()=>this.poser()} style={{ fontSize: 25, fontWeight: '900', padding:10,textAlign:'center',paddingTop:2}}>{this.state.setter===0?'How To Cook':'Ingredients Required'}</Text>
                     <Animated.ScrollView showsVerticalScrollIndicator={false} ref={ref => this.myref = ref}
                         onScroll={Animated.event(
                             [
