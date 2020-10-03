@@ -90,7 +90,7 @@ export class RecipeScreen extends Component {
                          }
                         ]}}>
                             <View style={{ display: 'flex', flexDirection: "row" }}>
-                                <Image source={require('../../Assets/icons/clock.png')}
+                                <Image source={require('../../assets/Icons/clock.png')}
                                     style={{
                                         width: 20,
                                         height: 20,
@@ -103,7 +103,7 @@ export class RecipeScreen extends Component {
                          },
                          {translateX:opX}
                         ]}}>
-                                <Image source={require('../../Assets/icons/calories.png')}
+                                <Image source={require('../../assets/Icons/calories.png')}
                                     style={{
                                         width: 20,
                                         height: 20,
@@ -116,7 +116,7 @@ export class RecipeScreen extends Component {
                          },
                         //  {translateX:opX}
                         ]}}>
-                                <Image source={require('../../Assets/icons/veg.png')}
+                                <Image source={require('../../assets/Icons/veg.png')}
                                     style={{
                                         width: 18,
                                         height: 18,
@@ -132,7 +132,7 @@ export class RecipeScreen extends Component {
                         }, { translateY: topPositionY }],
                     }}
                     >
-                        <Image source={require('../../Assets/images/pizza.jpg')}
+                        <Image source={require('../../assets/Images/pizza.jpg')}
                             style={{
                                 width: null,
                                 height: null,
@@ -205,7 +205,7 @@ export class RecipeScreen extends Component {
                 duration={300}
                 elevation={5} style={{position:'absolute',bottom:0,left:0,display:'flex',flexDirection:'row',backgroundColor:'#fff',width:Dimensions.get('window').width,padding:10,height:50}}>
                         <TouchableOpacity style={{flex:1,alignItems:'center',borderRightWidth:1,borderColor:'#e5e5e5'}} onPress={()=>{this.myref.scrollTo({ x: 0, y: 0, animated: true });   this.setState({setter:0})}}>
-                        <Image source={require('../../Assets/icons/recipe.png')}
+                        <Image source={require('../../assets/Icons/recipe.png')}
                                     style={{
                                         width: Dimensions.get('window').width/15,
                                         height: Dimensions.get('window').width/15,
@@ -213,7 +213,7 @@ export class RecipeScreen extends Component {
                                 />
                         </TouchableOpacity>
                         <TouchableOpacity style={{flex:1,alignItems:'center'}} onPress={()=>{this.myref.scrollTo({ x: 0, y: 0, animated: true });this.setState({setter:1})}}>
-                        <Image source={require('../../Assets/icons/ingredients.png')}
+                        <Image source={require('../../assets/Icons/ingredients.png')}
                                     style={{
                                         width: Dimensions.get('window').width/15,
                                         height: Dimensions.get('window').width/15,

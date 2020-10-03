@@ -14,7 +14,7 @@ class Header extends React.Component {
                         this.props.back ?
                             <TouchableOpacity style={styles.headerIcon}
                                 onPress={() => { this.props.navigation.goBack() }} >
-                                <Image source={require('../Assets/icons/back.png')}
+                                <Image source={require('../assets/Icons/back.png')}
                                     style={{
                                         width: 20, resizeMode: "contain",
                                         height: 20
@@ -24,7 +24,7 @@ class Header extends React.Component {
                             :
                             <TouchableOpacity style={styles.headerIcon}
                                 onPress={() => { this.props.navigation.openDrawer() }} >
-                                <Image source={require('../Assets/icons/menu.png')}
+                                <Image source={require('../assets/Icons/menu.png')}
                                     style={{
                                         width: 20, resizeMode: "contain",
                                         height: 20

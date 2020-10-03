@@ -54,8 +54,8 @@ class App extends React.Component{
         }}
         drawerContent={(props) => <MenuScreen {...props} />}
         >
-          <Drawer.Screen name="FoodRecipe" component={FoodRecipe}/>
           <Drawer.Screen name="Home" component={HomeStack}/>
+          <Drawer.Screen name="FoodRecipe" component={FoodRecipe}/>
           <Drawer.Screen name="Camera" component={CameraStack}/>
         </Drawer.Navigator>
       </NavigationContainer>

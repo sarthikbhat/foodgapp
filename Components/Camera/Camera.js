@@ -7,7 +7,7 @@ export class Camera extends Component {
             <View style={{margin:5}}>
                 <TouchableOpacity style={{padding:10}}
                     onPress={() => { this.props.navigation.openDrawer() }} >
-                    <Image source={ require('../../Assets/icons/menu.png')}
+                    <Image source={ require('../../assets/Icons/menu.png')}
                         style={{
                             width: 25, resizeMode: "contain",
                             height: 25

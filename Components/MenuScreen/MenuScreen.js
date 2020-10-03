@@ -14,7 +14,7 @@ isPortrait = () => {
 const MenuScreen = (props) => { 
         return (
             <View style={{flex:1,backgroundColor:'#E6F0F5'}}>
-                {/* <ImageBackground source={require('../../Assets/icons/bg2.jpg')} style={styles.outerMenu} imageStyle={styles.imageMenu}> */}
+                {/* <ImageBackground source={require('../../assets/Icons/bg2.jpg')} style={styles.outerMenu} imageStyle={styles.imageMenu}> */}
                 <View style={{backgroundColor:'#E6F0F5'}}>
                 {
                 useIsDrawerOpen()?
@@ -24,7 +24,7 @@ const MenuScreen = (props) => {
                     <Animatable.Image
                     animation='slideInLeft'
                       duration={1200}
-                    source={ require('../../Assets/icons/close.png')}
+                    source={ require('../../assets/Icons/close.png')}
                         style={{
                             width: 25, resizeMode: "contain",
                             height: 25

@@ -38,7 +38,7 @@ export class RecipeListing extends Component {
                                                         borderRadius: 50, overflow: 'hidden', position: 'absolute', right: -20, top: -15
                                                     }}
                                                     >
-                                                        <Image source={require('../../Assets/images/pizza.jpg')}
+                                                        <Image source={require('../../assets/Images/pizza.jpg')}
                                                             style={{
                                                                 width: Dimensions.get('window').width / 6,
                                                                 height: Dimensions.get('window').width / 6,
@@ -51,7 +51,7 @@ export class RecipeListing extends Component {
                                                     <View style={{ flexDirection: 'row',padding:10 }}>
 
                                                         <View style={{ display: 'flex', flexDirection: "row", }}>
-                                                            <Image source={require('../../Assets/icons/clock.png')}
+                                                            <Image source={require('../../assets/Icons/clock.png')}
                                                                 style={{
                                                                     width: 15,
                                                                     height: 15,
@@ -60,7 +60,7 @@ export class RecipeListing extends Component {
                                                             <Animated.Text style={{ fontSize: 12, alignSelf: 'center', paddingLeft: 2 }}>10 minutes</Animated.Text>
                                                         </View>
                                                         <View style={{ display: 'flex', flexDirection: "row",marginLeft:4 }}>
-                                                            <Image source={require('../../Assets/icons/calories.png')}
+                                                            <Image source={require('../../assets/Icons/calories.png')}
                                                                 style={{
                                                                     width: 15,
                                                                     height: 15,
@@ -99,7 +99,7 @@ export class RecipeListing extends Component {
                                                 borderRadius: 50, overflow: 'hidden', position: 'absolute', right: -20, top: -15
                                             }}
                                             >
-                                                <Image source={require('../../Assets/images/pizza.jpg')}
+                                                <Image source={require('../../assets/Images/pizza.jpg')}
                                                     style={{
                                                         width: Dimensions.get('window').width / 6,
                                                         height: Dimensions.get('window').width / 6,
@@ -112,7 +112,7 @@ export class RecipeListing extends Component {
                                             <View style={{ flexDirection: 'row',padding:10 }}>
 
                                                 <View style={{ display: 'flex', flexDirection: "row",  }}>
-                                                    <Image source={require('../../Assets/icons/clock.png')}
+                                                    <Image source={require('../../assets/Icons/clock.png')}
                                                         style={{
                                                             width: 15,
                                                             height: 15,
@@ -121,7 +121,7 @@ export class RecipeListing extends Component {
                                                     <Animated.Text style={{ fontSize: 12, alignSelf: 'center', paddingLeft: 2 }}>10 minutes</Animated.Text>
                                                 </View>
                                                 <View style={{ display: 'flex', flexDirection: "row",marginLeft:4 }}>
-                                                    <Image source={require('../../Assets/icons/calories.png')}
+                                                    <Image source={require('../../assets/Icons/calories.png')}
                                                         style={{
                                                             width: 15,
                                                             height: 15,
