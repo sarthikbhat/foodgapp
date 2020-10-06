@@ -97,7 +97,7 @@ export default class SignUp extends Component {
                         <Text onPress={() => this.props.navigation.reset({
                                 index: 0,
                                 routes: [{ name: 'Authentication' }],
-                            })} style={{ fontSize: 17, fontWeight: 'bold', opacity: 0.8, fontFamily: 'Roboto', color: '#000000', padding: 14, textDecorationLine: 'underline' }}>Sign Up</Text>
+                            })} style={{ fontSize: 17, fontWeight: 'bold', opacity: 0.8, fontFamily: 'Roboto', color: '#000000', padding: 14, textDecorationLine: 'underline' }}>Sign In</Text>
                             <View style={{ flex: 1 }} />
                             <View style={{ flex: 2 }} />
                             <TouchableOpacity

@@ -1,7 +1,7 @@
 import React from 'react';
-import { View, Image, TouchableOpacity, StyleSheet} from 'react-native';
+import { View, Image, TouchableOpacity, StyleSheet,Text } from 'react-native';
 import * as Animatable from "react-native-animatable";
-import Animated  from 'react-native-reanimated';
+import Animated from 'react-native-reanimated';
 
 class Header extends React.Component {
     // componentDidMount=()=>{
@@ -26,7 +26,7 @@ class Header extends React.Component {
                                 />
                             </TouchableOpacity>
                             :
-                            
+
                             <TouchableOpacity style={styles.headerIcon}
                                 onPress={() => { this.props.navigation.openDrawer() }} >
                                 <Image source={require('../Assets/icons/menu.png')}
@@ -46,15 +46,15 @@ class Header extends React.Component {
 const styles = StyleSheet.create({
     header: {
         display: "flex",
-        paddingTop: 15,
+        paddingTop: 25,
         paddingLeft: 20,
         paddingRight: 20,
-        paddingBottom: 10,
+        paddingBottom: 15,
         flexDirection: "row"
     },
     headerIcon: {
         padding: 10
-    },
+    },   
 })
 
 
