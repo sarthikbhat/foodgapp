@@ -9,32 +9,32 @@ import {
   
   const AnimatedSvg = Animated.createAnimatedComponent(Svg);
   const width= Dimensions.get("window").width+0;
-  const height = 64;
+  const height = 65;
   const tabs = [
     {
-      name: "home",
+      name: "Discover",
       image:require("../../assets/Icons/home.png"),
-      image_selected:require("../../assets/Icons/home.png"),
+      image_selected:require("../../assets/Icons/home_white.png"),
       width:25,
       height:25
     },
     {
-      name: "trending",
-      image:require("../../assets/Icons/trending.png"),
-      image_selected:require("../../assets/Icons/trending.png"),
-      width:30,
-      height:30
+      name: "Ingredients",
+      image:require("../../assets/Icons/cart.png"),
+      image_selected:require("../../assets/Icons/cart_white.png"),
+      width:25,
+      height:25
     },
     {
-      name: "user",
+      name: "Profile",
       image:require("../../assets/Icons/user.png"),
-      image_selected:require("../../assets/Icons/user.png"),
+      image_selected:require("../../assets/Icons/user_white.png"),
       width:25,
       height:25
     },
   ];
   const tabWidth = width / tabs.length;
-  const backgroundColor = "white";
+  const backgroundColor = "#eee"; //#ffcc7e
   
   const getPath = () => {
     const left = shape.line().x(d => d.x).y(d => d.y)([
@@ -45,8 +45,8 @@ import {
       { x: width, y: 0 },
       { x: width + 5, y: 0 },
       { x: width + 20, y: 10 },
-      { x: width + 28, y: height-10 },
-      { x: width + tabWidth - 28, y: height-10 },
+      { x: width + 32, y: height-15 },
+      { x: width + tabWidth - 32, y: height-15 },
       { x: width + tabWidth - 20, y: 10 },
       { x: width + tabWidth - 5, y: 0 },
       { x: width + tabWidth, y: 0 },
@@ -74,7 +74,7 @@ import {
       });
       return (
         <>
-          <View {...{ height, width }} style={{marginBottom:-10}} >
+          <View {...{ height, width }} style={{elevation:10,marginBottom:-10}} >
             <AnimatedSvg width={width * 2} {...{ height }} style={{ transform: [{ translateX }] }}>
               <Path fill={backgroundColor} {...{ d }} />
             </AnimatedSvg>

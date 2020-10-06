@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  View, StyleSheet, TouchableWithoutFeedback, Animated, Dimensions,Image, Easing
+  View, StyleSheet, TouchableWithoutFeedback, Animated, Dimensions, Image, Easing, Text
 } from "react-native";
 
 const { width } = Dimensions.get("window");
@@ -21,19 +21,19 @@ export default class StaticTabbar extends React.PureComponent {
         this.values.map(v => Animated.timing(v, {
           toValue: 0,
           duration: 120,
-          easing:Easing.in,
+          easing: Easing.in,
           useNativeDriver: true,
         })),
       ),
       Animated.parallel([
         Animated.spring(value, {
           toValue: tabWidth * index,
-          easing:Easing.in,
+          easing: Easing.in,
           useNativeDriver: true,
         }),
         Animated.spring(this.values[index], {
           toValue: 1,
-          easing:Easing.in,
+          easing: Easing.in,
           useNativeDriver: true,
         }),
       ]),
@@ -56,7 +56,7 @@ export default class StaticTabbar extends React.PureComponent {
             });
             const translateY = this.values[key].interpolate({
               inputRange: [0, 1],
-              outputRange: [64, 0],
+              outputRange: [44, 0],
               extrapolate: "clamp",
             });
             const opacity1 = this.values[key].interpolate({
@@ -67,8 +67,9 @@ export default class StaticTabbar extends React.PureComponent {
             return (
               <React.Fragment {...{ key }}>
                 <TouchableWithoutFeedback onPress={() => onPress(key)}>
-                  <Animated.View style={[styles.tab, { opacity }]}>
-                    <Image source={tab.image} style={{width:tab.width,height:tab.height, resizeMode:"contain"}} />
+                  <Animated.View style={[styles.tab, { opacity }, {}]}>
+                    <Image source={tab.image} style={{ width: tab.width-5, height: tab.height-5 }} resizeMode="contain" />
+                    <Text style={{fontFamily:"OpenSans-Regular", fontSize:12.3, padding:3}} >{tab.name}</Text>
                   </Animated.View>
                 </TouchableWithoutFeedback>
                 <Animated.View
@@ -85,7 +86,8 @@ export default class StaticTabbar extends React.PureComponent {
                   }}
                 >
                   <View style={styles.activeIcon}>
-                  <Image source={tab.image_selected} style={{width:tab.width,height:tab.height, alignSelf:"center", resizeMode:"contain"}} />
+                    <Image source={tab.image_selected} style={{ width: tab.width, height: tab.height }} resizeMode="contain" />
+                    {/* <Text>a</Text> */}
                   </View>
                 </Animated.View>
               </React.Fragment>
@@ -103,18 +105,19 @@ const styles = StyleSheet.create({
   },
   tab: {
     flex: 1,
+    display: "flex",
     justifyContent: "center",
     alignItems: "center",
     height: 64,
   },
   activeIcon: {
-    backgroundColor: "white",
+    elevation:10,
+    backgroundColor: "#fc6474",
     width: 60,
     height: 60,
-    borderRadius: 35,
-    marginBottom:25,
-    display:"flex",
-    alignItems:"center",
+    borderRadius: 30,
+    marginBottom: 35,
+    display: "flex",
     justifyContent: "center",
     alignItems: "center",
   },

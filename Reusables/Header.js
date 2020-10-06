@@ -32,6 +32,20 @@ class Header extends React.Component {
                                 />
                             </TouchableOpacity>
                     }
+                    <View style={{flex:1}}/>
+                    {
+                         this.props.user ?
+                         <TouchableOpacity style={styles.headerIcon}
+                             onPress={() => { this.props.navigation.goBack() }} >
+                             <Image source={require('../assets/Icons/user.png')}
+                                 style={{
+                                     width: 20, resizeMode: "contain",
+                                     height: 20
+                                 }}
+                             />
+                         </TouchableOpacity>
+                         :null
+                    }
                 </View>
             </Animatable.View>
         )
@@ -42,8 +56,8 @@ const styles = StyleSheet.create({
     header: {
         display: "flex",
         paddingTop: 15,
-        paddingLeft: 20,
-        paddingRight: 20,
+        paddingLeft: 15,
+        paddingRight: 15,
         paddingBottom: 10,
         flexDirection: "row"
     },
