@@ -24,6 +24,7 @@ export class Home extends Component {
                                 animation="zoomIn"
                                 duration={500}
                                 useNativeDriver elevation={5} style={{ backgroundColor: "#fc6474", display: 'flex', flexDirection: "row", padding: 16, alignItems: "center", justifyContent: "center", borderRadius: 50, marginTop: 20, marginBottom: 5 }} >
+
                                 <Image source={require('../../assets/Icons/camera_white.png')} style={{ width: 20, height: 20, marginLeft: 10 }} resizeMode="contain" />
                                 <Text style={{ fontFamily: "OpenSans-Regular", color: "white", fontSize: 15, marginLeft: 15 }} >Scan for ingredients</Text>
                             </Animatable.View>
@@ -49,6 +50,7 @@ export class Home extends Component {
                                 delay={100}
                                 duration={500}
                                 useNativeDriver elevation={1} style={{ height: 250, width: 180, borderRadius: 25, backgroundColor: "#ffd18c", alignItems: 'center', padding: 20, marginRight: 25, marginBottom:5 }} >
+
                                 <Image source={require('../../assets/Images/Noodles.png')} style={{ marginTop: 10, width: 120, height: 120 }} resizeMode="contain" />
                                 <Text style={{ fontFamily: "OpenSans-SemiBold", fontSize: 13, color: "#624e30", marginTop: 20 }} >Royal Manchow Noodles</Text>
                                 <View style={{ width: 50, height: 20, backgroundColor: "white", borderRadius: 10, alignSelf: "flex-start", display: 'flex', flexDirection: "row", alignItems: "center", justifyContent: "center", marginTop: 10 }}>
@@ -61,6 +63,7 @@ export class Home extends Component {
                                 delay={150}
                                 duration={500}
                                 useNativeDriver elevation={1} style={{ height: 250, width: 180, borderRadius: 25, backgroundColor: "#e8d9db", alignItems: 'center', padding: 20, marginRight: 25, marginBottom:5 }} >
+
                                 <Image source={require('../../assets/Images/PaneerNoodle.png')} style={{ marginTop: 10, width: 140, height: 120 }} resizeMode="contain" />
                                 <Text style={{ fontFamily: "OpenSans-SemiBold", fontSize: 13, color: "#624e30", marginTop: 20 }} >Indian Paneer Noodles</Text>
                                 <View style={{ width: 50, height: 20, backgroundColor: "white", borderRadius: 10, alignSelf: "flex-start", display: 'flex', flexDirection: "row", alignItems: "center", justifyContent: "center", marginTop: 10 }}>

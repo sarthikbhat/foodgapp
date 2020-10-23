@@ -4,6 +4,7 @@ import {
 } from 'react-native';
 // eslint-disable-next-line import/no-unresolved
 import ModalButtons from '../Camera/ModalButtons'
+
 import { RNCamera } from 'react-native-camera';
 import Tflite from 'tflite-react-native';
 
@@ -396,6 +397,8 @@ export default class CameraScreen extends React.Component {
         };
         return (
             <>
+
+
                     <StatusBar translucent />
                 <RNCamera
                     useNativeZoom={true}

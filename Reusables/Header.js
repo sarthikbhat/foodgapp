@@ -60,6 +60,8 @@ const styles = StyleSheet.create({
         paddingRight: 15,
         paddingBottom: 10,
         flexDirection: "row"
+        flexDirection: "row",
+        zIndex:1
     },
     headerIcon: {
         padding: 10

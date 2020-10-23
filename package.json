@@ -25,6 +25,7 @@
     "react-native-screens": "^2.11.0",
     "react-native-svg": "^12.1.0",
     "tflite-react-native": "^0.0.5"
+
   },
   "devDependencies": {
     "@babel/core": "^7.8.4",

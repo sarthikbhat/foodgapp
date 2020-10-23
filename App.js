@@ -19,6 +19,7 @@ import * as Animatable from 'react-native-animatable'
 import { useIsDrawerOpen } from '@react-navigation/drawer';
 import SignIn from './Components/Authentication/SignIn';
 import SignUp from './Components/Authentication/SignUp';
+
 import CheckBoxer from './Components/CheckBoxer/Checker'
 
 const Drawer = createDrawerNavigator();
@@ -55,7 +56,9 @@ class CameraStack extends React.Component {
       <Animated.View style={StyleSheet.flatten([styles.stack, this.props.style])}>
       <Stack.Navigator headerMode={"none"}>
         <Stack.Screen name="Camera" component={Camera} />
+
         <Stack.Screen name="CheckBoxer" component={CheckBoxer} />
+
       </Stack.Navigator>
       </Animated.View>
     )
@@ -150,15 +153,19 @@ const App=()=> {
           }
           }
         >
+
           <Drawer.Screen name="Home">
           {props => <HomeStack {...props} style={animatedStyle} />}
           </Drawer.Screen>
+
           <Drawer.Screen name="FoodRecipe">
           {props => <FoodRecipe {...props} style={animatedStyle} />}
           </Drawer.Screen>
           <Drawer.Screen name="Authentication">
           {props => <Authentication {...props} style={animatedStyle} />}
           </Drawer.Screen>
+
+  
           <Drawer.Screen name="Camera">
           {props => <CameraStack {...props} style={animatedStyle} />}
           </Drawer.Screen>
