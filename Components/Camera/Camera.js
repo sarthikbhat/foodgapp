@@ -3,7 +3,6 @@ import {
     StyleSheet, Text, View, TouchableOpacity, TouchableWithoutFeedback, Image, Dimensions, Modal, ToastAndroid, StatusBar
 } from 'react-native';
 // eslint-disable-next-line import/no-unresolved
-import ModalButtons from '../Camera/ModalButtons'
 import { RNCamera } from 'react-native-camera';
 import Tflite from 'tflite-react-native';
 
@@ -79,36 +78,36 @@ export default class CameraScreen extends React.Component {
                 } else
                     ToastAndroid.show("Model loaded successfully", ToastAndroid.SHORT);
             });
-        // this.timerHandle = setInterval(async () => {    // ***
-        //     console.log('iiii')
-        //     if (this.camera) {
-        //         const data = await this.camera.takePictureAsync();
-        //         console.log('takePicture ', data);
-        //         try {
-        //             tflite.detectObjectOnImage({
-        //                 path: data.uri,
-        //                 model: 'SSDMobileNet',
-        //                 // imageMean: 127.5,
-        //                 // imageStd: 127.5,
-        //                 threshold: 0.3,       // defaults to 0.1
-        //                 numResultsPerClass: 2,// defaults to 5
-        //             },
-        //                 (err, res) => {
-        //                     if (err)
-        //                         console.log(err);
-        //                     else {
-        //                         console.log(res);
-        //                         this.setState({
-        //                             pictureData: data,
-        //                             values: res
-        //                         })
-        //                     }
-        //                 });
-        //         } catch (e) {
-        //             console.warn(e)
-        //         }
-        //     }                  // ***
-        // }, 2000);                                // ***
+        this.timerHandle = setInterval(async () => {    // ***
+            console.log('iiii')
+            if (this.camera) {
+                const data = await this.camera.takePictureAsync();
+                console.log('takePicture ', data);
+                try {
+                    tflite.detectObjectOnImage({
+                        path: data.uri,
+                        model: 'SSDMobileNet',
+                        // imageMean: 127.5,
+                        // imageStd: 127.5,
+                        threshold: 0.3,       // defaults to 0.1
+                        numResultsPerClass: 2,// defaults to 5
+                    },
+                        (err, res) => {
+                            if (err)
+                                console.log(err);
+                            else {
+                                console.log(res);
+                                this.setState({
+                                    pictureData: data,
+                                    values: res
+                                })
+                            }
+                        });
+                } catch (e) {
+                    console.warn(e)
+                }
+            }                  // ***
+        }, 2000);                                // ***
     };                                         // ***
 
     componentWillUnmount = () => {             // ***
@@ -184,32 +183,37 @@ export default class CameraScreen extends React.Component {
     }
 
     takePicture = async function () {
-        if (this.camera) {
-            const data = await this.camera.takePictureAsync();
-            console.log('takePicture ', data);
-            try {
-                tflite.detectObjectOnImage({
-                    path: data.uri,
-                    model: 'SSDMobileNet',
-                    // imageMean: 127.5,
-                    // imageStd: 127.5,
-                    threshold: 0.3,       // defaults to 0.1
-                    numResultsPerClass: 2,// defaults to 5
-                },
-                    (err, res) => {
-                        if (err)
-                            console.log(err);
-                        else {
-                            console.log(res);
-                            this.setState({
-                                values: res
-                            })
-                        }
-                    });
-            } catch (e) {
-                console.warn(e)
-            }
+        if (this.timerHandle) {                  // ***
+            clearTimeout(this.timerHandle);      // ***
+            this.timerHandle = 0;                // ***
         }
+        this.props.navigation.replace("CheckBoxer", { values: this.state.values })
+        // if (this.camera) {
+        //     const data = await this.camera.takePictureAsync();
+        //     console.log('takePicture ', data);
+        //     try {
+        //         tflite.detectObjectOnImage({
+        //             path: data.uri,
+        //             model: 'SSDMobileNet',
+        //             // imageMean: 127.5,
+        //             // imageStd: 127.5,
+        //             threshold: 0.3,       // defaults to 0.1
+        //             numResultsPerClass: 2,// defaults to 5
+        //         },
+        //             (err, res) => {
+        //                 if (err)
+        //                     console.log(err);
+        //                 else {
+        //                     console.log(res);
+        //                     this.setState({
+        //                         values: res
+        //                     })
+        //                 }
+        //             });
+        //     } catch (e) {
+        //         console.warn(e)
+        //     }
+        // }
     };
 
     takeVideo = async () => {
@@ -396,7 +400,7 @@ export default class CameraScreen extends React.Component {
         };
         return (
             <>
-                    <StatusBar translucent />
+                <StatusBar barStyle="light-content" backgroundColor="rgb(0,0,0)" />
                 <RNCamera
                     useNativeZoom={true}
                     ref={ref => {
@@ -460,37 +464,37 @@ export default class CameraScreen extends React.Component {
 
                         </View>
                     </View>
-                    <ModalButtons visible={true}/>
-                    <View style={{ bottom: 0 }}>
-
-                        <View
-                            style={{
-                                backgroundColor: 'transparent',
-                                flexDirection: 'row',
-                                alignSelf: 'center',
-                                alignItems:"center",
-                                marginBottom: 5
-                            }}
-                        >
-                            <View style={{ flex: 1 }} />
-                            <TouchableOpacity style={{marginTop:3}} onPress={this.toggleFacing.bind(this)}>
-                                <Image source={require('../../assets/Icons/flip.png')} style={{ width: 35, height: 30, resizeMode: "contain" }} />
-                            </TouchableOpacity>
-                            <View style={{ flex: 1 }} />
-                            <TouchableOpacity
-                                style={{ width: 100, height: 100, borderRadius: 50, borderWidth: 5, borderColor: "white" }}
-                                onPress={this.takePicture.bind(this)}
-                            >
-                            </TouchableOpacity>
-                            <View style={{ flex: 1 }} />
-                            <TouchableOpacity onPress={this.toggleFlash.bind(this)}>
-                                <Image source={require('../../assets/Icons/flash.png')} style={{ width: 25, height: 25, resizeMode: "contain" }} />
-                            </TouchableOpacity>
-                            <View style={{ flex: 1 }} />
-                        </View>
-                    </View>
                     {!!canDetectFaces && this.renderLandmarks()}
                 </RNCamera>
+                {/* <ModalButtons takePicture={this.takePicture} toggleFacing={this.toggleFacing} toggleFlash={this.toggleFlash} visible={true} navigation={this.props.navigation} /> */}
+                <View style={{ height: 110, backgroundColor: "black", alignItems: "center", justifyContent: "center" }}>
+
+                    <View
+                        style={{
+                            backgroundColor: 'transparent',
+                            flexDirection: 'row',
+                            alignSelf: 'center',
+                            alignItems: "center",
+                            marginBottom: 5
+                        }}
+                    >
+                        <View style={{ flex: 1 }} />
+                        <TouchableOpacity style={{ marginTop: 3 }} onPress={this.toggleFacing.bind(this)}>
+                            <Image source={require('../../assets/Icons/flip.png')} style={{ width: 35, height: 30, resizeMode: "contain" }} />
+                        </TouchableOpacity>
+                        <View style={{ flex: 1 }} />
+                        <TouchableOpacity
+                            style={{ width: 100, height: 100, borderRadius: 50, borderWidth: 5, borderColor: "white" }}
+                            onPress={this.takePicture.bind(this)}
+                        >
+                        </TouchableOpacity>
+                        <View style={{ flex: 1 }} />
+                        <TouchableOpacity onPress={this.toggleFlash.bind(this)}>
+                            <Image source={require('../../assets/Icons/flash.png')} style={{ width: 25, height: 25, resizeMode: "contain" }} />
+                        </TouchableOpacity>
+                        <View style={{ flex: 1 }} />
+                    </View>
+                </View>
             </>
         );
     }
