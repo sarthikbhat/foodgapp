@@ -1,44 +1,127 @@
 import React, { Component } from 'react'
-import { Text, TouchableOpacity, View, Image, StatusBar, StyleSheet, Dimensions, Animated, ScrollView, FlatList } from 'react-native'
+import { Text, TouchableOpacity, View, Image, StatusBar, StyleSheet, Dimensions, Animated, ScrollView, FlatList,Platform,LayoutAnimation,UIManager } from 'react-native'
 import Header from '../../Reusables/Header'
 import { recipes, ingredient } from '../../Constants/recipe'
 import * as Animatable from 'react-native-animatable'
 
 const heighter =(Dimensions.get('window').width / 1.3)
 
+// var opacity=1
+// var zIndex=1
+
 export class RecipeListing extends Component {
-    state = {
-        focus: true,
-    }
+    constructor(props){
+        super(props)
+        this.state = {
+            focus: true,
+            anim: new Animated.Value(1),
+            index: 0,
+            loop: false
+        }
+        if (
+            Platform.OS === "android" &&
+            UIManager.setLayoutAnimationEnabledExperimental
+          ) {
+            UIManager.setLayoutAnimationEnabledExperimental(true);
+          }
+        // //   this.animater = this.animater.bind(this);
+        }
 
     componentDidMount = () => {
-        this.subs = this.props.navigation.addListener('focus', async () => {
-            this.setState({ focus: true })
-        })
-        this.subsb = this.props.navigation.addListener('blur', async () => {
-            this.setState({ focus: false })
-        })
+        this.animater()
+        // setTimeout(() => {
+        //     opacity=0
+        //     zIndex=-10
+        // }, 4000);
     }
 
-    componentWillUnmount = () => {
-        this.subs
-        this.subsb
+    animater = () => {
+        this.setState(prevState => ({ index: !prevState.index, loop: this.state.loop - 1 }))
+            Animated.sequence([
+        
+                Animated.timing(this.state.anim, {
+                    toValue: 0,
+                    duration: 1000,
+                    useNativeDriver: false
+                }),
+            ]).start();
+        
     }
+
     render() {
+
+        const rotateY = this.state.anim.interpolate({
+            inputRange: [0, 0.5, 1],
+            outputRange: ["0deg", "-90deg", "-180deg"]
+        })
+
+        const scale = this.state.anim.interpolate({
+            inputRange: [0, 0.5, 1],
+            outputRange: [1, 9, 1]
+        })
+
+        const translateX = this.state.anim.interpolate({
+            inputRange: [0, 0.5, 1],
+            // outputRange: ['0%','50%','0%']
+            outputRange: [0, 10, 0]
+        })
+
+        const zIndex = this.state.anim.interpolate({
+            inputRange: [0, 1],
+            outputRange: [10,0]
+        })
+        const opacity = this.state.anim.interpolate({
+            inputRange: [0,0.99,1],
+            outputRange: [0,1,1]
+        })
+        // const opacityOp = this.state.anim.interpolate({
+        //     inputRange: [0, 1],
+        //     outputRange: [1,0]
+        // })
+
+        const backgroundColor = this.state.anim.interpolate({
+            inputRange: [0, 0.001, 0.5, 0.501, 1],
+            outputRange: [
+                '#fff',
+                '#fff',
+                '#fff',
+                '#444',
+                '#444',
+            ],
+        });
+        const dotbgColor = this.state.anim.interpolate({
+            inputRange: [0, 0.001, 0.5, 0.501, 0.9, 1],
+            outputRange: [
+                '#444',
+                '#444',
+                '#444',
+                '#fff',
+                '#fff',
+                '#fff',
+            ],
+        });
         
         return (
             <View style={styles.full}>
+              
                 <StatusBar barStyle='dark-content' backgroundColor='#E6F0F5' />
                     <Header backgroundColor="#E6F0F5" navigation={this.props.navigation} style={this.props.style} />
+                    {/* <Animated.View style={{
+                    ...StyleSheet.absoluteFillObject,
+                    backgroundColor: backgroundColor,
+                     position: 'absolute', top: 0, left: 0, width: Dimensions.get('window').width,
+                     zIndex,opacity
+                }}>
+                </Animated.View> */}
                 <ScrollView>
                     <View style={{ 
                     // padding: 25,
                     marginBottom:30, 
+                    
                     }}>
-                    <FlatList
-                        data={recipes}
-                        renderItem={({ item: elm, index }) =>
-                            <View style={{
+                    {recipes.map(recipes=>{
+                        return(
+<View style={{
                                 backgroundColor: '#fff', width: Dimensions.get('window').width - 80, height: Dimensions.get('window').width / 1.3, borderRadius: 35, alignSelf: 'center',
                                 margin: 20,
                             }}>
@@ -113,10 +196,36 @@ export class RecipeListing extends Component {
                                     </View>
                                 </View>
                             </View>
-                        }
-                    />
+                        )
+                    })}
+                            
+                        
                 </View>
                 </ScrollView>
+                {/* <Animated.View style={{
+                    backgroundColor: 'transparent', width: Dimensions.get('window').width, height: Dimensions.get('window').width / 8,
+                    borderRadius: Dimensions.get('window').width / 10, position: 'absolute', bottom: 0, justifyContent: 'center', alignItems: 'center', zIndex: 100,
+                    opacity
+                }}>
+
+                    <Animated.View style={{
+                        backgroundColor: dotbgColor, width: Dimensions.get('window').width / 8, height: Dimensions.get('window').width / 8,
+                        borderRadius: Dimensions.get('window').width / 10,
+                        transform: [{ perspective: 200 }, { rotateY }, { scale }, { translateX }]
+                    }}>
+                        <TouchableOpacity onPress={() => this.animater()} style={{
+                            width: Dimensions.get('window').width / 8, height: Dimensions.get('window').width / 8
+                            , borderRadius: Dimensions.get('window').width / 10, alignItems: 'center', backgroundColor: 'transparent', justifyContent: 'center'
+                        }}>
+                            <Image source={require('../../assets/Icons/right.png')}
+                                style={{
+                                    width: 20, resizeMode: "contain",
+                                    height: 20
+                                }}
+                            />
+                        </TouchableOpacity>
+                    </Animated.View>
+                </Animated.View> */}
             </View>
         )
     }
@@ -128,6 +237,7 @@ const styles = StyleSheet.create({
     full: {
         flex: 1,
         backgroundColor: '#E6F0F5',
+        zIndex:1
 // padding:25
     },
     half: {
