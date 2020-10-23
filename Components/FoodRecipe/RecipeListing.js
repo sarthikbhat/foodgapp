@@ -113,15 +113,16 @@ export class RecipeListing extends Component {
                      zIndex,opacity
                 }}>
                 </Animated.View> */}
+
                 <ScrollView>
                     <View style={{ 
                     // padding: 25,
-                    marginBottom:30, 
-                    
+                    marginBottom:30,                     
                     }}>
                     {recipes.map(recipes=>{
                         return(
 <View style={{
+
                                 backgroundColor: '#fff', width: Dimensions.get('window').width - 80, height: Dimensions.get('window').width / 1.3, borderRadius: 35, alignSelf: 'center',
                                 margin: 20,
                             }}>
@@ -196,6 +197,7 @@ export class RecipeListing extends Component {
                                     </View>
                                 </View>
                             </View>
+
                         )
                     })}
                             
@@ -237,7 +239,9 @@ const styles = StyleSheet.create({
     full: {
         flex: 1,
         backgroundColor: '#E6F0F5',
+
         zIndex:1
+
 // padding:25
     },
     half: {

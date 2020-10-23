@@ -3,7 +3,8 @@ import {
     StyleSheet, Text, View, TouchableOpacity, TouchableWithoutFeedback, Image, Dimensions, Modal, ToastAndroid, StatusBar
 } from 'react-native';
 // eslint-disable-next-line import/no-unresolved
-import ModalButtons from './ModalButtons'
+import ModalButtons from '../Camera/ModalButtons'
+
 import { RNCamera } from 'react-native-camera';
 import Tflite from 'tflite-react-native';
 
@@ -395,9 +396,9 @@ export default class CameraScreen extends React.Component {
             left: this.state.autoFocusPoint.drawRectPosition.x - 32,
         };
         return (
-            <Modal visible={this.props.pitcherVisible}
-                onRequestClose={() => { this.props.togglePitcher(false) }}
-                animationType="slide" transparent={false} >
+            <>
+
+
                     <StatusBar translucent />
                 <RNCamera
                     useNativeZoom={true}
@@ -493,7 +494,7 @@ export default class CameraScreen extends React.Component {
                     </View>
                     {!!canDetectFaces && this.renderLandmarks()}
                 </RNCamera>
-            </Modal>
+            </>
         );
     }
 
