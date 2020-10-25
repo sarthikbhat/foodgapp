@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, Image, View, ScrollView, StatusBar, TextInput } from 'react-native'
+import { Text, Image, View, ScrollView, StatusBar, TextInput, TouchableNativeFeedback } from 'react-native'
 import Tabbar from '../Tabbar/Tabbar'
 import Header from '../../Reusables/Header'
 import * as Animatable from 'react-native-animatable'
@@ -9,9 +9,9 @@ export class Home extends Component {
     render() {
         //e8d9db ffcc7e
         return (
-            <View style={{ paddingTop: 5, flex: 1, backgroundColor: "#fff" }}>
-                <StatusBar barStyle="dark-content" backgroundColor="#fff" />
-                <Header backgroundColor="#fff" user={true} navigation={this.props.navigation} />
+            <View style={{ paddingTop: 5, flex: 1, backgroundColor: "#f6f6f6" }}>
+                <StatusBar barStyle="dark-content" backgroundColor="#f6f6f6" />
+                <Header backgroundColor="#f6f6f6" user={true} navigation={this.props.navigation} />
                 <View style={{ flex: 1 }}>
                     <ScrollView style={{ paddingTop: 5 }} >
                         <Animatable.View
@@ -20,14 +20,17 @@ export class Home extends Component {
                             useNativeDriver style={{ marginLeft: 22, marginRight: 22 }}>
                             <Text style={{ fontFamily: "OpenSans-Bold", fontSize: 25, color: "#222222" }} >Poozle</Text>
                             <Text style={{ fontFamily: "OpenSans-Regular", fontSize: 23, color: "#222222" }} >your cravings</Text>
+                            <TouchableNativeFeedback onPress={()=>this.props.navigation.navigate('Camera')}
+                            elevation={5} style={{ backgroundColor: "#fc6474", display: 'flex', flexDirection: "row", padding: 16, alignItems: "center", justifyContent: "center", borderRadius: 50, marginTop: 20, marginBottom: 5 }}
+                            >
                             <Animatable.View
                                 animation="zoomIn"
                                 duration={500}
-                                useNativeDriver elevation={5} style={{ backgroundColor: "#fc6474", display: 'flex', flexDirection: "row", padding: 16, alignItems: "center", justifyContent: "center", borderRadius: 50, marginTop: 20, marginBottom: 5 }} >
-
+                                useNativeDriver elevation={8} style={{ backgroundColor: "#fc6474", display: 'flex', flexDirection: "row", padding: 16, alignItems: "center", justifyContent: "center", borderRadius: 50, marginTop: 20, marginBottom: 5 }} >
                                 <Image source={require('../../assets/Icons/camera_white.png')} style={{ width: 20, height: 20, marginLeft: 10 }} resizeMode="contain" />
                                 <Text style={{ fontFamily: "OpenSans-Regular", color: "white", fontSize: 15, marginLeft: 15 }} >Scan for ingredients</Text>
                             </Animatable.View>
+                            </TouchableNativeFeedback>
                             <View style={{ display: "flex", flexDirection: "row", alignItems: "center", padding: 10 }}>
                                 <View style={{ flex: 1, borderBottomWidth: 1, borderBottomColor: "#cacaca" }} />
                                 <Text style={{ fontFamily: "OpenSans-Regular", fontSize: 15, color: "#cacaca", marginLeft: 15, marginRight: 15 }} >OR</Text>
@@ -37,7 +40,7 @@ export class Home extends Component {
                                 animation="zoomIn"
                                 delay={50}
                                 duration={500}
-                                useNativeDriver elevation={1} style={{ backgroundColor: "#f6f6f5", display: 'flex', flexDirection: "row", padding: 14, alignItems: "center", borderRadius: 50, marginTop: 5 }} >
+                                useNativeDriver elevation={2} style={{ backgroundColor: "#f6f6f5", display: 'flex', flexDirection: "row", padding: 14, alignItems: "center", borderRadius: 50, marginTop: 5 }} >
                                 <Image source={require('../../assets/Icons/search.png')} style={{ width: 15, height: 15, marginLeft: 10 }} resizeMode="contain" />
                                 <TextInput style={{ flex: 1, padding: 0, marginLeft: 20 }} placeholder="Seach for a dish name" />
                             </Animatable.View>

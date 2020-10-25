@@ -21,6 +21,7 @@ import SignIn from './Components/Authentication/SignIn';
 import SignUp from './Components/Authentication/SignUp';
 
 import CheckBoxer from './Components/CheckBoxer/Checker'
+import AfterCamera from './Components/AfterCamera/AfterCamera';
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
@@ -55,9 +56,8 @@ class CameraStack extends React.Component {
     return (
       <Animated.View style={StyleSheet.flatten([styles.stack, this.props.style])}>
       <Stack.Navigator headerMode={"none"}>
+        <Stack.Screen name="After" component={AfterCamera} />
         <Stack.Screen name="Camera" component={Camera} />
-
-        <Stack.Screen name="CheckBoxer" component={CheckBoxer} />
 
       </Stack.Navigator>
       </Animated.View>
@@ -83,9 +83,7 @@ class Authentication extends React.Component {
 
 const DrawerContent = (props) => {
   return (
-    // <DrawerContentScrollView {...props} contentContainerStyle={{color:'#fff',backgroundColor:'#fff',flex:1}}>
-      // {/* <DrawerItemList {...props} /> */}
-       <View style={{flex:1}}>
+       <View style={{flex:1,backgroundColor:'#f6f6f6'}}>
                 {/* {
                 useIsDrawerOpen()?
                 <TouchableOpacity 
@@ -105,20 +103,18 @@ const DrawerContent = (props) => {
                 {
                 useIsDrawerOpen()?
                 <View 
-                //  style={{flex:1,justifyContent:'center',marginTop:50}}
                 >
-                <Animatable.Text animation="slideInLeft" duration={800} style={{fontSize:35,textAlign:'center',padding:20,fontFamily:'KaushanScript-Regular',color:'#000'}}>Food Gapp</Animatable.Text>
-                    <Animatable.Text onPress={()=>props.navigation.navigate('FoodRecipe')} animation="slideInLeft" duration={800} style={{fontSize:20,textAlign:'center',padding:20,fontFamily:'KaushanScript-Regular',color:'#000',marginTop:25}}>Recipe Screen</Animatable.Text>
-                    <Animatable.Text onPress={()=>props.navigation.navigate('Home')} animation="slideInLeft" duration={800} delay={200} style={{fontSize:20,textAlign:'center',padding:20,fontFamily:'KaushanScript-Regular',color:'#000'}}>Home</Animatable.Text>
-                    <Animatable.Text onPress={()=>props.navigation.navigate('Camera')}animation="slideInLeft" duration={800} delay={200} style={{fontSize:20,textAlign:'center',padding:20,fontFamily:'KaushanScript-Regular',color:'#000'}}>Camera</Animatable.Text>
-                    <Animatable.Text animation="slideInLeft" duration={800} delay={200} style={{fontSize:20,textAlign:'center',padding:20,fontFamily:'KaushanScript-Regular',color:'#000'}}>My Cart</Animatable.Text>
-                    <Animatable.Text animation="slideInLeft" duration={800} delay={200} style={{fontSize:20,textAlign:'center',padding:20,fontFamily:'KaushanScript-Regular',color:'#000'}}>Favourites</Animatable.Text>
-                    <Animatable.Text animation="slideInLeft" duration={800} delay={200} style={{fontSize:20,textAlign:'center',padding:20,fontFamily:'KaushanScript-Regular',color:'#000'}}>Sign In</Animatable.Text>
+                <Animatable.Text animation="slideInLeft" duration={800} style={{fontSize:35,textAlign:'center',padding:20,fontFamily:'PatrickHand-Regular',color:'#000'}}>Food Gapp</Animatable.Text>
+                    <Animatable.Text onPress={()=>props.navigation.navigate('Home')} animation="slideInLeft" duration={800} delay={200} style={{fontSize:20,textAlign:'center',padding:20,fontFamily:'PatrickHand-Regular',color:'#000',marginTop:25}}>Home</Animatable.Text>
+                    <Animatable.Text onPress={()=>props.navigation.navigate('Camera')}animation="slideInLeft" duration={800} delay={200} style={{fontSize:20,textAlign:'center',padding:20,fontFamily:'PatrickHand-Regular',color:'#000'}}>Camera</Animatable.Text>
+                    <Animatable.Text onPress={()=>props.navigation.navigate('FoodRecipe')} animation="slideInLeft" duration={800} style={{fontSize:20,textAlign:'center',padding:20,fontFamily:'PatrickHand-Regular',color:'#000',}}>Recipe Screen</Animatable.Text>
+                    <Animatable.Text  animation="slideInLeft" duration={800} delay={200} style={{fontSize:20,textAlign:'center',padding:20,fontFamily:'PatrickHand-Regular',color:'#000'}}>My Cart</Animatable.Text>
+                    <Animatable.Text animation="slideInLeft" duration={800} delay={200} style={{fontSize:20,textAlign:'center',padding:20,fontFamily:'PatrickHand-Regular',color:'#000'}}>Favourites</Animatable.Text>
+                    <Animatable.Text onPress={()=>props.navigation.navigate('Authentication')} animation="slideInLeft" duration={800} delay={200} style={{fontSize:20,textAlign:'center',padding:20,fontFamily:'PatrickHand-Regular',color:'#000'}}>Sign In</Animatable.Text>
                 </View>
                 :null
                 }
                 </View>
-    // </DrawerContentScrollView>
   );
 }
 
@@ -146,7 +142,7 @@ const App=()=> {
           activeTintColor: 'white',
           inactiveTintColor: 'white',
         }}
-        sceneContainerStyle={{ backgroundColor: 'transparent' }}
+        sceneContainerStyle={{ backgroundColor: '#f6f6f6' }}
           drawerContent={props => {
            setProgress(props.progress);
           return <DrawerContent {...props} />;
@@ -157,7 +153,6 @@ const App=()=> {
           <Drawer.Screen name="Home">
           {props => <HomeStack {...props} style={animatedStyle} />}
           </Drawer.Screen>
-
           <Drawer.Screen name="FoodRecipe">
           {props => <FoodRecipe {...props} style={animatedStyle} />}
           </Drawer.Screen>
@@ -184,8 +179,8 @@ const styles = StyleSheet.create({
       height: 8,
     },
     shadowOpacity: 0.44,
-    shadowRadius: 10.32,
-    elevation: 5,
+    shadowRadius: 15.32,
+    elevation: 3,
     // overflow: 'scroll',
     // borderWidth: 1,
     // backgroundColor:'#000'

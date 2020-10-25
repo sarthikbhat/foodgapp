@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, View, Image, TextInput, StatusBar, ScrollView, Dimensions, TouchableOpacity, Animated, StyleSheet,Platform,LayoutAnimation,UIManager } from 'react-native'
+import { Text, View, Image, TextInput, StatusBar, ScrollView, Dimensions, TouchableOpacity, Animated, StyleSheet, Platform, LayoutAnimation, UIManager } from 'react-native'
 import Header from '../../Reusables/Header'
 import * as Animatable from 'react-native-animatable'
 import { recipes } from '../../Constants/recipe'
@@ -11,38 +11,48 @@ const bgcolor = [
 
 ]
 
-var zIndex = -10
-
+var zindex = -10
 export default class AfterCamera extends Component {
-    constructor(props){
+    constructor(props) {
         super(props)
         this.state = {
             focus: true,
             anim: new Animated.Value(0),
             index: 0,
-            loop: false
+            loop: false,
+            show: true,
         }
         if (
             Platform.OS === "android" &&
             UIManager.setLayoutAnimationEnabledExperimental
-          ) {
+        ) {
             UIManager.setLayoutAnimationEnabledExperimental(true);
-          }
-        // //   this.animater = this.animater.bind(this);
         }
+    }
 
 
-        componentDidMount=()=>{
-
-        }
+    componentDidMount = () => {
+        this._unsubscribe = this.props.navigation.addListener('focus', async () => {
+            console.log('focus');
+            this.setState({
+                focus: true,
+                anim: new Animated.Value(0),
+                index: 0,
+                loop: false,
+                show: true,
+            })
+        })
+    }
+    componentWillUnmount() {
+        this._unsubscribe()
+    }
 
 
     animater = () => {
-         zIndex = 10
         Animated.sequence([
             Animated.timing(this.state.anim, {
                 toValue: 2,
-                duration: 2000,
+                duration: 1800,
                 useNativeDriver: false
             }),
             // Animated.timing(this.state.anim, {
@@ -59,56 +69,58 @@ export default class AfterCamera extends Component {
         setTimeout(() => {
             // console.log('Hello');
             LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
-            this.props.navigation.navigate('RecipeList')
-        }, 2000);
+            this.props.navigation.navigate('FoodRecipe')
+        }, 1750);
     }
 
     render() {
 
         const rotateY = this.state.anim.interpolate({
-            inputRange: [0, 0.5, 1,1.5,2],
-            outputRange: ["0deg", "-90deg", "-180deg","-90deg","0deg"]
+            inputRange: [0, 0.5, 1, 1.5, 2],
+            outputRange: ["0deg", "-90deg", "-180deg", "-90deg", "0deg"]
         })
 
         const scale = this.state.anim.interpolate({
-            inputRange: [0, 0.5, 1,1.5,2],
-            outputRange: [1, 9, 1,9,1]
+            inputRange: [0, 0.5, 1, 1.5, 2],
+            outputRange: [1, 9, 1, 9, 1]
         })
 
         const translateX = this.state.anim.interpolate({
-            inputRange: [0, 0.5, 1,1.5,2],
+            inputRange: [0, 0.5, 1, 1.5, 2],
             // outputRange: ['0%','50%','0%']
-            outputRange: [0, 10, 0,10,0]
+            outputRange: [0, 10, 0, 10, 0]
         })
 
-        // const zIndex = this.state.anim.interpolate({
-        //     inputRange: [0, 1],
-        //     outputRange: [10,10]
-        // })
+        const zIndex = this.state.anim.interpolate({
+            inputRange: [0, 1, 2],
+            outputRange: [-10, 10, 0]
+        })
 
         const backgroundColor = this.state.anim.interpolate({
-            inputRange: [0, 0.001, 0.5, 0.501, 1],
+            inputRange: [0, 0.001, 0.5, 0.501, 1, 2],
             outputRange: [
-                '#fff',
-                '#fff',
-                '#fff',
+                '#f6f6f6',
+                '#f6f6f6',
+                '#f6f6f6',
                 '#444',
                 '#444',
+                '#f6f6f6',
             ],
         });
         const dotbgColor = this.state.anim.interpolate({
-            inputRange: [0, 0.001, 0.5, 0.501, 0.9, 1],
+            inputRange: [0, 0.001, 0.5, 0.501, 0.9, 1,2.1],
             outputRange: [
                 '#444',
                 '#444',
                 '#444',
-                '#fff',
-                '#fff',
-                '#fff',
+                '#f6f6f6',
+                '#f6f6f6',
+                '#f6f6f6',
+                '#444'
             ],
         });
         return (
-            <View style={{ paddingTop: 5, flex: 1,zIndex:1 }}>
+            <View style={{ paddingTop: 5, flex: 1, zIndex: 1 }}>
                 <Animated.View style={{
                     ...StyleSheet.absoluteFillObject,
                     backgroundColor: backgroundColor,
@@ -116,7 +128,7 @@ export default class AfterCamera extends Component {
                 }}>
                 </Animated.View>
                 <StatusBar barStyle="dark-content" backgroundColor="#fff" />
-                <Header backgroundColor="#fff" user={true} navigation={this.props.navigation} />
+                <Header backgroundColor="#f6f6f6" user={true} navigation={this.props.navigation} />
                 <View >
                     <View style={{ padding: 20 }}>
 
@@ -124,7 +136,7 @@ export default class AfterCamera extends Component {
                             animation="zoomIn"
                             delay={50}
                             duration={500}
-                            useNativeDriver style={{ backgroundColor: "#f6f6f5", display: 'flex', flexDirection: "row", padding: 14, alignItems: "center", borderRadius: 50, marginTop: 5 }} >
+                            useNativeDriver style={{ backgroundColor: "#ffffff", display: 'flex', flexDirection: "row", padding: 14, alignItems: "center", borderRadius: 50, marginTop: 5 }} >
                             <Image source={require('../../assets/Icons/search.png')} style={{ width: 15, height: 15, marginLeft: 10 }} resizeMode="contain" />
                             <TextInput style={{ flex: 1, padding: 0, marginLeft: 20 }} placeholder="Seach for an ingredient" />
                         </Animatable.View>
@@ -164,7 +176,7 @@ export default class AfterCamera extends Component {
                                             animation="zoomIn"
                                             delay={50}
                                             duration={500}
-                                            useNativeDriver style={{ backgroundColor: "#f6f6f5", display: 'flex', flexDirection: "row", padding: 14, alignItems: "center", borderRadius: 50, margin: 10, width: Dimensions.get('window').width / 2.3 - 20, justifyContent: 'center' }} >
+                                            useNativeDriver elevation={1} style={{ backgroundColor: "#f6f6f5", display: 'flex', flexDirection: "row", padding: 14, alignItems: "center", borderRadius: 50, margin: 10, width: Dimensions.get('window').width / 2.3 - 20, justifyContent: 'center' }} >
                                             <Image source={require('../../assets/Images/l5.jpg')} style={{ width: 30, height: 30, borderRadius: 30 }} />
                                             <Text style={{ fontFamily: "PatrickHand-Regular", fontSize: 15, color: "#624e30", textAlign: 'center', flex: 1 }} >Some Ingredient</Text>
                                             <Image source={require('../../assets/Icons/plus.png')} style={{ width: 15, height: 15, borderRadius: 30 }} />
