@@ -1,22 +1,31 @@
 import React, { Component } from 'react'
-import { Text, TouchableOpacity, View, Image, StatusBar, StyleSheet, Dimensions, Animated, ScrollView, FlatList, Platform, LayoutAnimation, UIManager } from 'react-native'
+import { Text, TouchableOpacity, View, ImageBackground, StatusBar, StyleSheet, Dimensions, Animated, ScrollView, Image, Platform, TextInput, UIManager, TouchableWithoutFeedback } from 'react-native'
 import Header from '../../Reusables/Header'
 import { recipes, ingredient } from '../../Constants/recipe'
 import * as Animatable from 'react-native-animatable'
+import { min } from 'react-native-reanimated'
+import RecipeCard from './RecipeCard'
+
+
 
 const heighter = (Dimensions.get('window').width / 1.3)
 
 // var opacity=1
 // var zIndex=1
 
+var minWidth = 180
+var maxWidth = Dimensions.get("window").width - 40
+
 export class RecipeListing extends Component {
     constructor(props) {
         super(props)
         this.state = {
             focus: true,
-            anim: new Animated.Value(1),
+            anim: new Animated.Value(0),
             index: 0,
-            loop: false
+            loop: false,
+            array: [],
+            count: ['All', 'South Indian', 'North Indian', 'Italian', 'Chinese']
         }
         if (
             Platform.OS === "android" &&
@@ -28,214 +37,161 @@ export class RecipeListing extends Component {
     }
 
     componentDidMount = () => {
-        this.animater()
-        // setTimeout(() => {
-        //     opacity=0
-        //     zIndex=-10
-        // }, 4000);
+        this.setState({ array: ingredient })
     }
 
+
+    // passer=(i)=>{
+    //     if((i+1)%2==0){
+    //         var array =this.state.array
+    //         console.log(i);
+    //         array.splice(i-1,1)
+    //         console.log(array.length);
+    //         var temp = this.state.array[i-1]
+    //         array.splice(i+1,0,temp)
+    //         console.log(array.length);
+    //         this.setState({array})
+    //     }
+    // }
+
     animater = () => {
-        this.setState(prevState => ({ index: !prevState.index, loop: this.state.loop - 1 }))
-        Animated.sequence([
-
-            Animated.timing(this.state.anim, {
-                toValue: 0,
-                duration: 1000,
-                useNativeDriver: false
-            }),
-        ]).start();
-
+        var index
+        if (this.state.index == 0) {
+            index = 1
+        }
+        else {
+            index = 0
+        }
+        this.setState(prevState => ({ index: index, loop: this.state.loop - 1 }))
+        console.log(this.state.index);
     }
 
     render() {
 
-        const rotateY = this.state.anim.interpolate({
-            inputRange: [0, 0.5, 1],
-            outputRange: ["0deg", "-90deg", "-180deg"]
+        var heightTop = this.state.anim.interpolate({
+            inputRange: [0, 300],
+            outputRange: [Dimensions.get('window').height / 4, Dimensions.get('window').height / 8],
+            extrapolate: "clamp",
         })
 
-        const scale = this.state.anim.interpolate({
-            inputRange: [0, 0.5, 1],
-            outputRange: [1, 9, 1]
+        var heightDown = this.state.anim.interpolate({
+            inputRange: [0, 300],
+            outputRange: [Dimensions.get('window').height - Dimensions.get('window').height / 4, Dimensions.get('window').height - Dimensions.get('window').height / 8],
+            extrapolate: "clamp",
         })
 
-        const translateX = this.state.anim.interpolate({
-            inputRange: [0, 0.5, 1],
-            // outputRange: ['0%','50%','0%']
-            outputRange: [0, 10, 0]
+        var fontSize = this.state.anim.interpolate({
+            inputRange: [0, 300],
+            outputRange: [25, 20],
+            extrapolate: "clamp",
         })
 
-        const zIndex = this.state.anim.interpolate({
-            inputRange: [0, 1],
-            outputRange: [10, 0]
+        var fontSize2 = this.state.anim.interpolate({
+            inputRange: [0, 300],
+            outputRange: [15, 12],
+            extrapolate: "clamp",
         })
-        const opacity = this.state.anim.interpolate({
-            inputRange: [0, 0.99, 1],
-            outputRange: [0, 1, 1]
-        })
-        // const opacityOp = this.state.anim.interpolate({
-        //     inputRange: [0, 1],
-        //     outputRange: [1,0]
-        // })
 
-        const backgroundColor = this.state.anim.interpolate({
-            inputRange: [0, 0.001, 0.5, 0.501, 1],
-            outputRange: [
-                '#fff',
-                '#fff',
-                '#fff',
-                '#444',
-                '#444',
-            ],
-        });
-        const dotbgColor = this.state.anim.interpolate({
-            inputRange: [0, 0.001, 0.5, 0.501, 0.9, 1],
-            outputRange: [
-                '#444',
-                '#444',
-                '#444',
-                '#fff',
-                '#fff',
-                '#fff',
-            ],
-        });
+        var opacityTop = this.state.anim.interpolate({
+            inputRange: [0, 50],
+            outputRange: [1, 0],
+            extrapolate: "clamp",
+        })
+
+        var Topper = this.state.anim.interpolate({
+            inputRange: [0, 300],
+            outputRange: [0, -Dimensions.get('window').height / 10],
+            extrapolate: "clamp",
+        })
 
         return (
             <View style={styles.full}>
 
-                <StatusBar barStyle='dark-content' backgroundColor='#E6F0F5' />
-                <Header backgroundColor="#E6F0F5" navigation={this.props.navigation} style={this.props.style} />
-                {/* <Animated.View style={{
-                    ...StyleSheet.absoluteFillObject,
-                    backgroundColor: backgroundColor,
-                     position: 'absolute', top: 0, left: 0, width: Dimensions.get('window').width,
-                     zIndex,opacity
-                }}>
-                </Animated.View> */}
-
-                <ScrollView>
-                <Text style={{ fontFamily: "OpenSans-Bold", fontSize: 25, color: "#222222", textAlign:'center' }} >Your Recommendations</Text>
-                    <View style={{
-                        // padding: 25,
-                        marginBottom: 30,
-                    }}>
-                        {recipes.map(recipes => {
-                            return (
-                                <TouchableOpacity onPress={()=>this.props.navigation.navigate('Recipe')} style={{
-                                    shadowColor: '#FFF',
-                                    shadowOffset: {
-                                      width: 0,
-                                      height: 8,
-                                    },
-                                    shadowOpacity: 0.44,
-                                    shadowRadius: 15.32,
-                                    elevation: 3,
-                                    backgroundColor: '#f6f6f5', width: Dimensions.get('window').width - 80, height: Dimensions.get('window').width / 1.3, borderRadius: 35, alignSelf: 'center',
-                                    margin: 20,
-                                }}>
-                                    <Image source={require('../../assets/Images/sp.jpg')}
-                                        style={{
-                                            width: null,
-                                            height: null,
-                                            flex: 1,
-                                            borderRadius: 25,
-                                        }}
-                                    />
-                                    <View style={{ display: 'flex', flexDirection: 'row', }}>
-                                        <Text style={{ fontSize: 25, fontFamily: 'PatrickHand-Regular', padding: 25, paddingTop: 10, paddingBottom: 10 }}>Some Dish</Text>
-                                        <View style={{ flex: 1 }} />
-                                        <View style={{ padding: 15, paddingRight: 20 }}>
-                                            <Image source={require('../../assets/Icons/wish.png')}
-                                                style={{
-                                                    width: 25,
-                                                    height: 25,
-                                                    marginBottom: 10
-                                                }}
-                                            />
-
-                                        </View>
-                                    </View>
-                                    <View style={{ display: 'flex', flexDirection: 'row', padding: 25, paddingTop: 0 }}>
-
-                                        <View style={{ display: 'flex', flexDirection: "row", }}>
-                                            <Image source={require('../../assets/Icons/clock.png')}
-                                                style={{
-                                                    width: 15,
-                                                    height: 15,
-                                                }}
-                                            />
-                                            <Text style={{ fontSize: 12, alignSelf: 'center', paddingLeft: 2 }}>10 minutes</Text>
-                                        </View>
-                                        <View style={{ display: 'flex', flexDirection: "row", marginLeft: 4 }}>
-                                            <Image source={require('../../assets/Icons/calories.png')}
-                                                style={{
-                                                    width: 15,
-                                                    height: 15,
-                                                }}
-                                            />
-                                            <Text style={{ fontSize: 12, alignSelf: 'center', paddingLeft: 3 }}>252 cal</Text>
-                                        </View>
-                                        <View style={{ flex: 1 }} />
-                                        <View style={{ marginLeft: 0, paddingLeft: 0 }}>
-                                            <Image source={require('../../assets/Icons/veg.png')}
-                                                style={{
-                                                    width: 15,
-                                                    height: 15,
-                                                }}
-                                            />
-                                        </View>
-                                    </View>
-                                    <View style={{
-                                        position: "absolute",
-                                        right: 5,
-                                        top: 6,
-                                        backgroundColor: 'rgba(256,256,256,0.5)',
-                                        borderRadius: 25,
-                                        padding: 5
-                                    }}>
-                                        <View
-                                            style={{ display: 'flex', flexDirection: 'row' }}
-                                        >
-                                            <Text style={{ fontSize: 15, alignSelf: 'center', paddingRight: 5, color: '#fff' }}>4.5</Text>
-                                            <Image source={require('../../assets/Icons/star.png')}
-                                                style={{
-                                                    height: 1 * 20, width: 1 * 20, resizeMode: "contain",
-                                                }} />
-                                        </View>
-                                    </View>
-                                </TouchableOpacity>
-
-                            )
-                        })}
-
-
-                    </View>
-                </ScrollView>
-                {/* <Animated.View style={{
-                    backgroundColor: 'transparent', width: Dimensions.get('window').width, height: Dimensions.get('window').width / 8,
-                    borderRadius: Dimensions.get('window').width / 10, position: 'absolute', bottom: 0, justifyContent: 'center', alignItems: 'center', zIndex: 100,
-                    opacity
-                }}>
-
-                    <Animated.View style={{
-                        backgroundColor: dotbgColor, width: Dimensions.get('window').width / 8, height: Dimensions.get('window').width / 8,
-                        borderRadius: Dimensions.get('window').width / 10,
-                        transform: [{ perspective: 200 }, { rotateY }, { scale }, { translateX }]
-                    }}>
-                        <TouchableOpacity onPress={() => this.animater()} style={{
-                            width: Dimensions.get('window').width / 8, height: Dimensions.get('window').width / 8
-                            , borderRadius: Dimensions.get('window').width / 10, alignItems: 'center', backgroundColor: 'transparent', justifyContent: 'center'
-                        }}>
-                            <Image source={require('../../assets/Icons/right.png')}
-                                style={{
-                                    width: 20, resizeMode: "contain",
-                                    height: 20
-                                }}
-                            />
-                        </TouchableOpacity>
+                <StatusBar barStyle='dark-content' translucent={true} backgroundColor='#f6f6f7' />
+                <ImageBackground source={require('../../assets/Images/appbg.png')} style={styles.outerMenu} imageStyle={styles.imageMenu}>
+                    <Header backgroundColor="transparent" navigation={this.props.navigation} style={this.props.style} />
+                    <Animated.View style={{ height: heightTop }}>
+                        <Animated.View
+                            useNativeDriver elevation={5} style={{ width: Dimensions.get("window").width - 40, backgroundColor: "#f6f6f5", display: 'flex', flexDirection: "row", padding: 14, alignItems: "center", borderRadius: 50, marginTop: 5, alignSelf: 'center', opacity: opacityTop }} >
+                            <Image source={require('../../assets/Icons/search.png')} style={{ width: 15, height: 15, marginLeft: 10 }} resizeMode="contain" />
+                            <TextInput style={{ flex: 1, padding: 0, marginLeft: 20 }} placeholder="Seach for a dish name" />
+                        </Animated.View>
+                        <Animated.Text style={{ fontFamily: "OpenSans-Bold", fontSize, color: "#222222", padding: 20, margin: 10, marginBottom: 0, transform: [{ translateY: Topper }] }} >Recommendations</Animated.Text>
+                        <Animated.View style={{ transform: [{ translateY: Topper }] }}>
+                            <ScrollView showsHorizontalScrollIndicator={false} horizontal={true} style={{ marginBottom: 0, marginTop: 0, paddingTop: 0 }} contentContainerStyle={{ alignItems: 'center' }}>
+                                {
+                                    this.state.count.map((mapper, index) => {
+                                        return (
+                                            <>
+                                                <View style={{ width: 25 }} />
+                                                <View style={{ backgroundColor: index == 0 ? '#ffd18c' : '#e8cea7', alignSelf: 'flex-start', padding: 8, borderRadius: 15, minWidth: 50, alignItems: 'center', marginBottom: 25, flexDirection: 'row', justifyContent: 'center' }}>
+                                                    {
+                                                        index == 0
+                                                            ?
+                                                            <Image source={require('../../assets/Icons/all.png')} style={{ width: 10, height: 10, margin: 5 }} resizeMode="contain" />
+                                                            :
+                                                            null
+                                                    }
+                                                    <Animated.Text style={{ fontFamily: "OpenSans-Bold", fontSize: fontSize2, color: "#ffffff", textAlign: 'center' }} >{mapper}</Animated.Text>
+                                                </View>
+                                                <View style={{ width: 0 }} />
+                                            </>
+                                        )
+                                    })
+                                }
+                            </ScrollView>
+                        </Animated.View>
                     </Animated.View>
-                </Animated.View> */}
+                    <Animated.View style={{ marginBottom: 50 }}>
+                        <Animated.ScrollView style={{ padding: 15, height: heightDown }} scrollEventThrottle={16}
+                            onScroll={Animated.event(
+                                [
+                                    {
+                                        nativeEvent: { contentOffset: { y: this.state.anim } }
+                                    }
+                                ],
+                                {
+                                    useNativeDriver: false
+                                }
+                            )}
+                        >
+                            <View style={{ flex: 1, display: "flex", justifyContent: 'center', flexWrap: 'wrap', flexDirection: 'row', marginBottom: 100 }}>
+                                {
+                                    this.state.array.map((recipe, index) => {
+                                        return (
+                                            <View style={{ marginBottom: 25 }}>
+                                                <Animated.View useNativeDriver style={{ height: Dimensions.get("window").width / 1.8, width: Dimensions.get("window").width / 2.5, borderRadius: 25, backgroundColor: 'black', alignSelf: 'center', padding: 20, margin: 10, flexDirection: 'row', display: 'flex', justifyContent: "center", alignItems: 'center' }}>
+                                                    <View>
+                                                        <Animated.View style={{ borderRadius: 150, overflow: 'hidden', width: 150, height: 120, alignSelf: 'center', justifyContent: 'center' }}>
+                                                            <Image source={require('../../assets/Images/PaneerNoodle.png')} style={{ width: null, height: null, flex: 1 }} />
+                                                        </Animated.View>
+
+                                                        <View style={{ backgroundColor: '#ffd18c', width: 55, height: 55, justifyContent: 'center', position: 'absolute', bottom: -65, right: -10, borderTopLeftRadius: 20, borderBottomLeftRadius: 20, borderBottomRightRadius: 20, alignItems: 'center', borderColor: '#ffffff', borderWidth: 2, alignSelf: 'flex-end' }}>
+                                                            <Image source={require('../../assets/Icons/right.png')}
+                                                                style={{ width: 20, height: 20, }}
+                                                            />
+                                                        </View>
+                                                    </View>
+                                                </Animated.View>
+                                                <Animated.View style={{
+                                                    display: 'flex', flexDirection: "row", alignItems: "center", padding: 15, paddingTop: 1,
+                                                }}>
+                                                    <Text style={{ fontFamily: "OpenSans-Bold", fontSize: 20, color: "#222222", fontWeight: '700' }} >Paneer Chilly</Text>
+                                                    <View style={{ flex: 1 }} />
+                                                    <Animated.View style={{ width: 12, height: 12, borderRadius: 10, }}>
+                                                        <Image source={require('../../assets/Icons/veg.png')} style={{ width: null, height: null, flex: 1 }} resizeMode="contain" />
+                                                    </Animated.View>
+                                                </Animated.View>
+
+                                            </View>
+                                        )
+                                    })
+
+                                }
+                            </View>
+                        </Animated.ScrollView>
+                    </Animated.View>
+                </ImageBackground>
             </View>
         )
     }
@@ -246,28 +202,30 @@ export class RecipeListing extends Component {
 const styles = StyleSheet.create({
     full: {
         flex: 1,
-        backgroundColor: '#E6F0F5',
-
-        zIndex: 1
-
-        // padding:25
+        zIndex: 1,
+        padding: 15,
+        alignItems: 'center'
     },
     half: {
         flex: 1,
-        // padding: 15,
-        // display: "flex",
         flexDirection: "row",
-        // flexWrap: "wrap",
-        // width:Dimensions.get('window').width
     },
     floater: {
         display: "flex",
-        padding: 200,
-        // flexDirection: "row",
-
-        borderBottomLeftRadius: 150,
+        padding: 200,borderBottomLeftRadius: 150,
         marginTop: -140,
     },
+    outerMenu: {
+        display: 'flex',
+        resizeMode: "cover",
+        marginTop: 30,
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height,
+    },
+    imageMenu: {
+        width: Dimensions.get('window').width,
+        opacity: 0.4,
+    }
 });
 
 export default RecipeListing

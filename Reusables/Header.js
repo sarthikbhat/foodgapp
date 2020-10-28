@@ -9,7 +9,7 @@ class Header extends React.Component {
                 animation="slideInUp"
                 duration={500}
                 useNativeDriver>
-                <View elevation={this.props.elevation} style={[styles.header, { backgroundColor: this.props.backgroundColor || null }]} >
+                <View elevation={this.props.elevation} style={[styles.header, { backgroundColor: this.props.backgroundColor || null,zIndex: this.props.zIndex || null }]} >
                     {
                         this.props.back ?
                             <TouchableOpacity style={styles.headerIcon}

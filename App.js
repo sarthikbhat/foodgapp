@@ -10,11 +10,10 @@ import { createStackNavigator } from '@react-navigation/stack';
 import Home from './Components/Home/Home';
 import Camera from './Components/Camera/Camera';
 import MenuScreen from './Components/MenuScreen/MenuScreen';
-import { Dimensions } from 'react-native';
 import RecipeScreen from './Components/FoodRecipe/RecipeScreen';
 import RecipeListing from './Components/FoodRecipe/RecipeListing';
 import Animated  from 'react-native-reanimated';
-import { Image, StyleSheet,View,TouchableOpacity } from 'react-native';
+import { Image, StyleSheet,View,Dimensions,ImageBackground } from 'react-native';
 import * as Animatable from 'react-native-animatable'
 import { useIsDrawerOpen } from '@react-navigation/drawer';
 import SignIn from './Components/Authentication/SignIn';
@@ -83,7 +82,7 @@ class Authentication extends React.Component {
 
 const DrawerContent = (props) => {
   return (
-       <View style={{flex:1,backgroundColor:'#f6f6f6'}}>
+       <View style={{flex:1,backgroundColor:'#f6f6f7',paddingTop:50}}>
                 {/* {
                 useIsDrawerOpen()?
                 <TouchableOpacity 
@@ -149,7 +148,6 @@ const App=()=> {
           }
           }
         >
-
           <Drawer.Screen name="Home">
           {props => <HomeStack {...props} style={animatedStyle} />}
           </Drawer.Screen>
@@ -159,8 +157,6 @@ const App=()=> {
           <Drawer.Screen name="Authentication">
           {props => <Authentication {...props} style={animatedStyle} />}
           </Drawer.Screen>
-
-  
           <Drawer.Screen name="Camera">
           {props => <CameraStack {...props} style={animatedStyle} />}
           </Drawer.Screen>
@@ -194,5 +190,16 @@ const styles = StyleSheet.create({
   //   borderColor: 'white',
   //   borderWidth: StyleSheet.hairlineWidth,
   // },
+  outerMenu: {
+    display: 'flex',
+    resizeMode: "cover",
+    marginTop: 30,
+    width: Dimensions.get('window').width,
+    height: Dimensions.get('window').height,
+},
+imageMenu: {
+    width: Dimensions.get('window').width,
+    opacity: 0.4,
+}
 });
 export default App;
