@@ -43,11 +43,5 @@ export const ingredient =[
     'Mushrooms, very thinly sliced if raw, otherwise first sautéed',
     'Bell peppers, stems and seeds removed, very thinly sliced',
     'Italian pepperoncini, thinly sliced',
-    'Italian sausage, cooked ahead and crumbled',
-    'Chopped fresh basil',
-    'Baby arugula, tossed in a little olive oil, added as pizza comes out of the oven',
-    'Pesto',
-    'Pepperoni, thinly sliced',
-    'Onions, thinly sliced raw or caramelized',
-    'Ham, thinly sliced'
+   
 ]

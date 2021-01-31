@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, TouchableOpacity, View, Image, StatusBar, StyleSheet, Dimensions, Animated, ScrollView } from 'react-native'
+import { Text, TouchableOpacity, View, Image, StatusBar, StyleSheet, Dimensions, Animated, ScrollView,ImageBackground } from 'react-native'
 import Header from '../../Reusables/Header'
 import { recipes ,ingredient} from '../../Constants/recipe'
 import * as Animatable from 'react-native-animatable'
@@ -99,8 +99,9 @@ export class RecipeScreen extends Component {
 
         return (
             <View style={styles.full}>
-                <StatusBar barStyle='dark-content' backgroundColor='#E6F0F5' />
-                <Header backgroundColor="#E6F0F5" back={true} navigation={this.props.navigation}/>
+                <StatusBar barStyle='dark-content' backgroundColor='#f6f6f7' translucent={true} />
+                <ImageBackground source={require('../../assets/Images/appbg.png')} style={styles.outerMenu} imageStyle={styles.imageMenu}>
+                <Header backgroundColor="transparent" back={true} navigation={this.props.navigation}/>
                 <Animatable.View 
                 animation="zoomIn"
                 duration={500}
@@ -164,6 +165,7 @@ export class RecipeScreen extends Component {
                         />
                     </Animated.View>
                 </Animatable.View>
+                </ImageBackground>
                 <Animated.View style={{
                     flex: 1,
                     backgroundColor: '#ffffff',
@@ -208,7 +210,7 @@ export class RecipeScreen extends Component {
                                     <View style={{ display: 'flex', flexDirection: 'row', paddingTop: 20 }} key={index}>
                                         <View style={{ justifyContent: 'center', flex: 0.1 }}>
                                             <View
-                                                style={{ width: 30, backgroundColor: '#FFBB55', padding: 8, alignItems: 'center', borderRadius: 15, justifyContent: 'center' }}
+                                                style={{ width: 30, backgroundColor: '#ffd18c', padding: 8, alignItems: 'center', borderRadius: 15, justifyContent: 'center' }}
                                             >
                                                 <Text style={{ fontSize: 10}}>{index+1}</Text>
                                             </View>
@@ -255,7 +257,7 @@ const styles = StyleSheet.create({
     full: {
         // display: 'flex',
         flex: 1,
-        backgroundColor: '#E6F0F5'
+        // backgroundColor: '#E6F0F5'
     },
     half: {
         // display: 'flex',
@@ -266,6 +268,17 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 75,
         elevation: 10,
         padding: 25,
+    },
+    outerMenu: {
+        display: 'flex',
+        resizeMode: "cover",
+        marginTop: 30,
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height,
+    },
+    imageMenu: {
+        width: Dimensions.get('window').width,
+        opacity: 0.4,
     }
 });
 

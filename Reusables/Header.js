@@ -9,7 +9,7 @@ class Header extends React.Component {
                 animation="slideInUp"
                 duration={500}
                 useNativeDriver>
-                <View elevation={this.props.elevation} style={[styles.header, { backgroundColor: this.props.backgroundColor || null }]} >
+                <View elevation={this.props.elevation} style={[styles.header, { backgroundColor: this.props.backgroundColor || null,zIndex: this.props.zIndex || null }]} >
                     {
                         this.props.back ?
                             <TouchableOpacity style={styles.headerIcon}
@@ -23,7 +23,7 @@ class Header extends React.Component {
                             </TouchableOpacity>
                             :
                             <TouchableOpacity style={styles.headerIcon}
-                                onPress={() => { this.props.navigation.openDrawer() }} >
+                                onPress={() => { this.props.navigation.openDrawer({log:'hello'}) }} >
                                 <Image source={require('../assets/Icons/menu.png')}
                                     style={{
                                         width: 20, resizeMode: "contain",
@@ -59,7 +59,6 @@ const styles = StyleSheet.create({
         paddingLeft: 15,
         paddingRight: 15,
         paddingBottom: 10,
-        flexDirection: "row"
         flexDirection: "row",
         zIndex:1
     },
