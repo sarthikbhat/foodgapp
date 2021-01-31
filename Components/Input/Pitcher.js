@@ -477,7 +477,7 @@ export default class CameraScreen extends React.Component {
                         >
                             <View style={{ flex: 1 }} />
                             <TouchableOpacity style={{marginTop:3}} onPress={this.toggleFacing.bind(this)}>
-                                <Image source={require('../../assets/Icons/flip.png')} style={{ width: 35, height: 30, resizeMode: "contain" }} />
+                                <Image source={require('../../Assets/icons/flip.png')} style={{ width: 35, height: 30, resizeMode: "contain" }} />
                             </TouchableOpacity>
                             <View style={{ flex: 1 }} />
                             <TouchableOpacity
@@ -487,7 +487,7 @@ export default class CameraScreen extends React.Component {
                             </TouchableOpacity>
                             <View style={{ flex: 1 }} />
                             <TouchableOpacity onPress={this.toggleFlash.bind(this)}>
-                                <Image source={require('../../assets/Icons/flash.png')} style={{ width: 25, height: 25, resizeMode: "contain" }} />
+                                <Image source={require('../../Assets/icons/flash.png')} style={{ width: 25, height: 25, resizeMode: "contain" }} />
                             </TouchableOpacity>
                             <View style={{ flex: 1 }} />
                         </View>

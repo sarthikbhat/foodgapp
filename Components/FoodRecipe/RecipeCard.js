@@ -98,7 +98,7 @@ export class RecipeCard extends Component {
                                     <Animated.View style={{ borderRadius: 150, overflow: 'hidden', width: 180, height: 150,transform:[{
                                 translateX:topPositionX
                         }],alignSelf:'center'  }}>
-                                        <Image source={require('../../assets/Images/PaneerNoodle.png')} style={{ width: null, height: null, flex: 1 }} />
+                                        <Image source={require('../../Assets/images/PaneerNoodle.png')} style={{ width: null, height: null, flex: 1 }} />
                                     </Animated.View>
                                     <Animated.Text style={{ fontFamily: "OpenSans-SemiBold", fontSize, color: "#624e30" ,transform:[{
                                 translateX:topPositionX
@@ -107,12 +107,12 @@ export class RecipeCard extends Component {
                                 translateX:topPositionX
                         }] }}>
                                         <View style={{ width: 50, height: 20, backgroundColor: "white", borderRadius: 10, alignSelf: "flex-start", display: 'flex', flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
-                                            <Image source={require('../../assets/Icons/star.png')} style={{ width: 12, height: 12 }} resizeMode="contain" />
+                                            <Image source={require('../../Assets/icons/star.png')} style={{ width: 12, height: 12 }} resizeMode="contain" />
                                             <Text style={{ fontFamily: "OpenSans-SemiBold", fontSize: 10, marginLeft: 4, marginRight: 5 }} >8.5</Text>
                                         </View>
                                         <View style={{ flex: 1 }} />
                                         <Animated.View style={{ width: 50, height: 20, backgroundColor: "white", borderRadius: 10, alignSelf: "flex-start", display: 'flex', flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
-                                            <Image source={require('../../assets/Icons/veg.png')} style={{ width: 12, height: 12 }} resizeMode="contain" />
+                                            <Image source={require('../../Assets/icons/veg.png')} style={{ width: 12, height: 12 }} resizeMode="contain" />
                                             <Text style={{ fontFamily: "OpenSans-SemiBold", fontSize: 10, marginLeft: 4, marginRight: 5 }} >Veg</Text>
                                         </Animated.View>
                                     </Animated.View>

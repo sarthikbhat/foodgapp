@@ -108,12 +108,12 @@ export class RecipeListing extends Component {
             <View style={styles.full}>
 
                 <StatusBar barStyle='dark-content' translucent={true} backgroundColor='#f6f6f7' />
-                <ImageBackground source={require('../../assets/Images/appbg.png')} style={styles.outerMenu} imageStyle={styles.imageMenu}>
+                <ImageBackground source={require('../../Assets/images/appbg.png')} style={styles.outerMenu} imageStyle={styles.imageMenu}>
                     <Header backgroundColor="transparent" navigation={this.props.navigation} style={this.props.style} />
                     <Animated.View style={{ height: heightTop }}>
                         <Animated.View
                             useNativeDriver elevation={5} style={{ width: Dimensions.get("window").width - 40, backgroundColor: "#f6f6f5", display: 'flex', flexDirection: "row", padding: 14, alignItems: "center", borderRadius: 50, marginTop: 5, alignSelf: 'center', opacity: opacityTop }} >
-                            <Image source={require('../../assets/Icons/search.png')} style={{ width: 15, height: 15, marginLeft: 10 }} resizeMode="contain" />
+                            <Image source={require('../../Assets/icons/search.png')} style={{ width: 15, height: 15, marginLeft: 10 }} resizeMode="contain" />
                             <TextInput style={{ flex: 1, padding: 0, marginLeft: 20 }} placeholder="Seach for a dish name" />
                         </Animated.View>
                         <Animated.Text style={{ fontFamily: "OpenSans-Bold", fontSize, color: "#222222", padding: 20, margin: 10, marginBottom: 0, transform: [{ translateY: Topper }] }} >Recommendations</Animated.Text>
@@ -128,7 +128,7 @@ export class RecipeListing extends Component {
                                                     {
                                                         index == 0
                                                             ?
-                                                            <Image source={require('../../assets/Icons/all.png')} style={{ width: 10, height: 10, margin: 5 }} resizeMode="contain" />
+                                                            <Image source={require('../../Assets/icons/all.png')} style={{ width: 10, height: 10, margin: 5 }} resizeMode="contain" />
                                                             :
                                                             null
                                                     }
@@ -163,11 +163,11 @@ export class RecipeListing extends Component {
                                                 <Animated.View useNativeDriver style={{ height: Dimensions.get("window").width / 1.8, width: Dimensions.get("window").width / 2.5, borderRadius: 25, backgroundColor: 'black', alignSelf: 'center', padding: 20, margin: 10, flexDirection: 'row', display: 'flex', justifyContent: "center", alignItems: 'center' }}>
                                                     <View>
                                                         <Animated.View style={{ borderRadius: 150, overflow: 'hidden', width: 150, height: 120, alignSelf: 'center', justifyContent: 'center' }}>
-                                                            <Image source={require('../../assets/Images/PaneerNoodle.png')} style={{ width: null, height: null, flex: 1 }} />
+                                                            <Image source={require('../../Assets/images/PaneerNoodle.png')} style={{ width: null, height: null, flex: 1 }} />
                                                         </Animated.View>
 
                                                         <View style={{ backgroundColor: '#ffd18c', width: 55, height: 55, justifyContent: 'center', position: 'absolute', bottom: -65, right: -10, borderTopLeftRadius: 20, borderBottomLeftRadius: 20, borderBottomRightRadius: 20, alignItems: 'center', borderColor: '#ffffff', borderWidth: 2, alignSelf: 'flex-end' }}>
-                                                            <Image source={require('../../assets/Icons/right.png')}
+                                                            <Image source={require('../../Assets/icons/right.png')}
                                                                 style={{ width: 20, height: 20, }}
                                                             />
                                                         </View>
@@ -179,7 +179,7 @@ export class RecipeListing extends Component {
                                                     <Text style={{ fontFamily: "OpenSans-Bold", fontSize: 20, color: "#222222", fontWeight: '700' }} >Paneer Chilly</Text>
                                                     <View style={{ flex: 1 }} />
                                                     <Animated.View style={{ width: 12, height: 12, borderRadius: 10, }}>
-                                                        <Image source={require('../../assets/Icons/veg.png')} style={{ width: null, height: null, flex: 1 }} resizeMode="contain" />
+                                                        <Image source={require('../../Assets/icons/veg.png')} style={{ width: null, height: null, flex: 1 }} resizeMode="contain" />
                                                     </Animated.View>
                                                 </Animated.View>
 

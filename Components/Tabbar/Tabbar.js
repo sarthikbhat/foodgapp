@@ -13,22 +13,22 @@ import {
   const tabs = [
     {
       name: "Discover",
-      image:require("../../assets/Icons/home.png"),
-      image_selected:require("../../assets/Icons/home_white.png"),
+      image:require("../../Assets/icons/home.png"),
+      image_selected:require("../../Assets/icons/home_white.png"),
       width:25,
       height:25
     },
     {
       name: "Ingredients",
-      image:require("../../assets/Icons/cart.png"),
-      image_selected:require("../../assets/Icons/cart_white.png"),
+      image:require("../../Assets/icons/cart.png"),
+      image_selected:require("../../Assets/icons/cart_white.png"),
       width:25,
       height:25
     },
     {
       name: "Profile",
-      image:require("../../assets/Icons/user.png"),
-      image_selected:require("../../assets/Icons/user_white.png"),
+      image:require("../../Assets/icons/user.png"),
+      image_selected:require("../../Assets/icons/user_white.png"),
       width:25,
       height:25
     },

@@ -100,7 +100,7 @@ export class RecipeScreen extends Component {
         return (
             <View style={styles.full}>
                 <StatusBar barStyle='dark-content' backgroundColor='#f6f6f7' translucent={true} />
-                <ImageBackground source={require('../../assets/Images/appbg.png')} style={styles.outerMenu} imageStyle={styles.imageMenu}>
+                <ImageBackground source={require('../../Assets/images/appbg.png')} style={styles.outerMenu} imageStyle={styles.imageMenu}>
                 <Header backgroundColor="transparent" back={true} navigation={this.props.navigation}/>
                 <Animatable.View 
                 animation="zoomIn"
@@ -114,7 +114,7 @@ export class RecipeScreen extends Component {
                          }
                         ]}}>
                             <View style={{ display: 'flex', flexDirection: "row" }}>
-                                <Image source={require('../../assets/Icons/clock.png')}
+                                <Image source={require('../../Assets/icons/clock.png')}
                                     style={{
                                         width: 20,
                                         height: 20,
@@ -127,7 +127,7 @@ export class RecipeScreen extends Component {
                          },
                          {translateX:opX}
                         ]}}>
-                                <Image source={require('../../assets/Icons/calories.png')}
+                                <Image source={require('../../Assets/icons/calories.png')}
                                     style={{
                                         width: 20,
                                         height: 20,
@@ -140,7 +140,7 @@ export class RecipeScreen extends Component {
                          },
                         //  {translateX:opX}
                         ]}}>
-                                <Image source={require('../../assets/Icons/veg.png')}
+                                <Image source={require('../../Assets/icons/veg.png')}
                                     style={{
                                         width: 18,
                                         height: 18,
@@ -156,7 +156,7 @@ export class RecipeScreen extends Component {
                         }, { translateY: topPositionY }],
                     }}
                     >
-                        <Image source={require('../../assets/Images/pizza.jpg')}
+                        <Image source={require('../../Assets/images/pizza.jpg')}
                             style={{
                                 width: null,
                                 height: null,
@@ -230,7 +230,7 @@ export class RecipeScreen extends Component {
                 duration={300}
                 elevation={5} style={{position:'absolute',bottom:0,left:0,display:'flex',flexDirection:'row',backgroundColor:'#fff',width:Dimensions.get('window').width,padding:10,height:50}}>
                         <TouchableOpacity style={{flex:1,alignItems:'center',borderRightWidth:1,borderColor:'#e5e5e5'}} onPress={()=>{this.myref.scrollTo({ x: 0, y: 0, animated: true });   this.setState({setter:0})}}>
-                        <Image source={require('../../assets/Icons/recipe.png')}
+                        <Image source={require('../../Assets/icons/recipe.png')}
                                     style={{
                                         width: Dimensions.get('window').width/15,
                                         height: Dimensions.get('window').width/15,
@@ -238,7 +238,7 @@ export class RecipeScreen extends Component {
                                 />
                         </TouchableOpacity>
                         <TouchableOpacity style={{flex:1,alignItems:'center'}} onPress={()=>{this.myref.scrollTo({ x: 0, y: 0, animated: true });this.setState({setter:1})}}>
-                        <Image source={require('../../assets/Icons/ingredients.png')}
+                        <Image source={require('../../Assets/icons/ingredients.png')}
                                     style={{
                                         width: Dimensions.get('window').width/15,
                                         height: Dimensions.get('window').width/15,

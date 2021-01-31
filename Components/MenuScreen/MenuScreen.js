@@ -12,7 +12,7 @@ export default class SignIn extends Component {
                 >
                     <View style={{ flex: 1 }}>
                         <View style={{ width: "100%", height: 0.5 * Dimensions.get('window').height }} >
-                            <Image source={require("../../assets/Images/l5.jpg")} style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').width - 120, }} />
+                            <Image source={require("../../Assets/images/l5.jpg")} style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').width - 120, }} />
                         </View>
                         <View style={{ flex: 1, backgroundColor: "#ffffff", marginTop: -0.2 * Dimensions.get('window').height, borderTopLeftRadius: 50, borderTopRightRadius: 50, overflow: "hidden", padding: 25 }} >
                             <Text style={{ fontSize: 40, textAlign: 'center', margin: 5, fontFamily: 'PatrickHand-Regular' }}>Food Gapp</Text>
@@ -28,7 +28,7 @@ export default class SignIn extends Component {
                                     style={{ backgroundColor: '#E6F0F5', padding: 18, alignItems: 'center', borderRadius: 100, justifyContent: 'center', flexDirection: 'row' }}
                                 >
                                     <Text style={{ fontSize: 18, fontWeight: 'bold', opacity: 0.8, fontFamily: 'Roboto', color: '#000000', paddingRight: 25 }}>Continue</Text>
-                                    <Image source={require("../../assets/Icons/r2.png")}
+                                    <Image source={require("../../Assets/icons/r2.png")}
                                         style={{ width: 20, height: 20 }} />
                                 </TouchableOpacity>
                             </View>
@@ -41,12 +41,12 @@ export default class SignIn extends Component {
                         <Text style={{ fontSize: 18, textAlign: 'center', fontWeight: '100', opacity: 0.4, fontFamily: 'Roboto' }}>Or Continue With</Text>
                         <View style={{ justifyContent: 'center', flexDirection: 'row', marginTop: 30 }}>
                             <View style={{ borderWidth: 0.5, borderRadius: 50, width: 45, height: 45, padding: 10 }}>
-                                <Image source={require("../../assets/Icons/gog.png")}
+                                <Image source={require("../../Assets/icons/gog.png")}
                                     style={{ width: null, height: null, flex: 1 }} />
                             </View>
                             <View style={{ flex: 0.1 }} />
                             <View style={{ backgroundColor: '#4267b2', borderRadius: 50, width: 45, height: 45, padding: 10 }}>
-                                <Image source={require("../../assets/Icons/fb.png")}
+                                <Image source={require("../../Assets/icons/fb.png")}
                                     style={{ width: null, height: null, flex: 1 }} />
                             </View>
                         </View>
@@ -62,7 +62,7 @@ export default class SignIn extends Component {
                     >
                         <TouchableOpacity style={{ padding: 10 }}
                             onPress={() => { this.props.navigation.goBack() }} >
-                            <Image source={require('../../assets/Icons/right.png')}
+                            <Image source={require('../../Assets/icons/right.png')}
                                 style={{
                                     width: 20, resizeMode: "contain",
                                     height: 20

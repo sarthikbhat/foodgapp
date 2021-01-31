@@ -148,17 +148,17 @@ const App=()=> {
           }
           }
         >
+          <Drawer.Screen name="Camera">
+          {props => <CameraStack {...props} style={animatedStyle} />}
+          </Drawer.Screen>
           <Drawer.Screen name="Home">
           {props => <HomeStack {...props} style={animatedStyle} />}
-          </Drawer.Screen>
-          <Drawer.Screen name="FoodRecipe">
-          {props => <FoodRecipe {...props} style={animatedStyle} />}
           </Drawer.Screen>
           <Drawer.Screen name="Authentication">
           {props => <Authentication {...props} style={animatedStyle} />}
           </Drawer.Screen>
-          <Drawer.Screen name="Camera">
-          {props => <CameraStack {...props} style={animatedStyle} />}
+          <Drawer.Screen name="FoodRecipe">
+          {props => <FoodRecipe {...props} style={animatedStyle} />}
           </Drawer.Screen>
         </Drawer.Navigator>
       </NavigationContainer>

@@ -35,7 +35,7 @@ const Loader = props => {
               width:70
               //  resizeMode: "contain"
             }}
-            source={require("../../assets/Icons/loaderFinal.gif")}
+            source={require("../../Assets/icons/loaderFinal.gif")}
             resizeMode={FastImage.resizeMode.contain}
           />
         </View> */}

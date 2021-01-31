@@ -100,7 +100,7 @@ export default class GetStarted extends Component {
                         width: Dimensions.get('window').width / 5, height: Dimensions.get('window').width / 5
                         , borderRadius: Dimensions.get('window').width / 10, alignItems: 'center', backgroundColor: 'transparent', justifyContent: 'center'
                     }}>
-                        {/* <Image source={require('../../assets/Icons/right.png')}
+                        {/* <Image source={require('../../Assets/icons/right.png')}
                             style={{
                                 width: 30, resizeMode: "contain",
                                 height: 30
