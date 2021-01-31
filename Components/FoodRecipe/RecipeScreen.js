@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, TouchableOpacity, View, Image, StatusBar, StyleSheet, Dimensions, Animated, ScrollView } from 'react-native'
+import { Text, TouchableOpacity, View, Image, StatusBar, StyleSheet, Dimensions, Animated, ScrollView,ImageBackground } from 'react-native'
 import Header from '../../Reusables/Header'
 import { recipes ,ingredient} from '../../Constants/recipe'
 import * as Animatable from 'react-native-animatable'
@@ -11,11 +11,31 @@ const MinBorder = 80,
     image = Dimensions.get('window').width / 1.8
 
 export class RecipeScreen extends Component {
-    state = {
-        scrollY: new Animated.Value(0),
-        setter:0
+    
+    constructor () {
+        super()
+        this.state = {
+            scrollY: new Animated.Value(0),
+            setter:0
+        }
+        this.spinValue = new Animated.Value(0)
+      }
+
+      poser=()=>{
+        // this.spinValue.setValue(0)
+        Animated.timing(
+          this.state.scrollY,
+          {
+            toValue: 300,
+            duration: 200,
+            
+          useNativeDriver:false
+          },
+        ).start()
     }
+    
     render() {
+        // const scrollY = useRef(new Animated.Value(0)).current
         const set = this.state.setter===0?recipes:ingredient
         var widthSmaller = this.state.scrollY.interpolate({
             inputRange: [0, 300],
@@ -23,14 +43,14 @@ export class RecipeScreen extends Component {
             extrapolate: "clamp",
         })
 
-        var topPositionY = this.state.scrollY.interpolate({
+        var topPositionY = this.spinValue.interpolate({
             inputRange: [0, 300],
             outputRange: [0.01 * MAX_HEIGHT, 0],
             extrapolate: "clamp",
 
         })
 
-        var topPositionX = this.state.scrollY.interpolate({
+        var topPositionX = this.spinValue.interpolate({
             inputRange: [0, 300],
             outputRange: [20, 15],
             extrapolate: "clamp",
@@ -74,23 +94,27 @@ export class RecipeScreen extends Component {
 
         })
 
+
+   
+
         return (
             <View style={styles.full}>
-                <StatusBar barStyle='dark-content' backgroundColor='#E6F0F5' />
-                <Header backgroundColor="#E6F0F5" back={true} navigation={this.props.navigation}/>
+                <StatusBar barStyle='dark-content' backgroundColor='#f6f6f7' translucent={true} />
+                <ImageBackground source={require('../../assets/Images/appbg.png')} style={styles.outerMenu} imageStyle={styles.imageMenu}>
+                <Header backgroundColor="transparent" back={true} navigation={this.props.navigation}/>
                 <Animatable.View 
                 animation="zoomIn"
                 duration={500}
                 style={{ display: 'flex', flexDirection: "row" }}>
                     <Animated.View style={{ padding: 25 
                     }}>
-                        <Animated.Text style={{ fontSize: 30, fontFamily: 'PatrickHand-Regular' }}>American Pizza</Animated.Text>
+                        <Animated.Text  style={{ fontSize: 30, fontFamily: 'PatrickHand-Regular' }}>American Pizza</Animated.Text>
                         <Animated.View style={{ paddingTop: 25 ,transform: [{
                             translateY: sizer
                          }
                         ]}}>
                             <View style={{ display: 'flex', flexDirection: "row" }}>
-                                <Image source={require('../../Assets/icons/clock.png')}
+                                <Image source={require('../../assets/Icons/clock.png')}
                                     style={{
                                         width: 20,
                                         height: 20,
@@ -103,7 +127,7 @@ export class RecipeScreen extends Component {
                          },
                          {translateX:opX}
                         ]}}>
-                                <Image source={require('../../Assets/icons/calories.png')}
+                                <Image source={require('../../assets/Icons/calories.png')}
                                     style={{
                                         width: 20,
                                         height: 20,
@@ -116,7 +140,7 @@ export class RecipeScreen extends Component {
                          },
                         //  {translateX:opX}
                         ]}}>
-                                <Image source={require('../../Assets/icons/veg.png')}
+                                <Image source={require('../../assets/Icons/veg.png')}
                                     style={{
                                         width: 18,
                                         height: 18,
@@ -132,7 +156,7 @@ export class RecipeScreen extends Component {
                         }, { translateY: topPositionY }],
                     }}
                     >
-                        <Image source={require('../../Assets/images/pizza.jpg')}
+                        <Image source={require('../../assets/Images/pizza.jpg')}
                             style={{
                                 width: null,
                                 height: null,
@@ -141,6 +165,7 @@ export class RecipeScreen extends Component {
                         />
                     </Animated.View>
                 </Animatable.View>
+                </ImageBackground>
                 <Animated.View style={{
                     flex: 1,
                     backgroundColor: '#ffffff',
@@ -166,7 +191,7 @@ export class RecipeScreen extends Component {
                     {/* <Animated.View
                         style={{ width: Dimensions.get('window').width / 3, backgroundColor: '#e5e5e5', padding: 3, alignSelf: 'center', borderRadius: 15,marginBottom:5 }}
                     /> */}
-                    <Text style={{ fontSize: 25, fontWeight: '900', padding:10,textAlign:'center',paddingTop:2}}>{this.state.setter===0?'How To Cook':'Ingredients Required'}</Text>
+                    <Text onPress={()=>this.poser()} style={{ fontSize: 25, fontWeight: '900', padding:10,textAlign:'center',paddingTop:2}}>{this.state.setter===0?'How To Cook':'Ingredients Required'}</Text>
                     <Animated.ScrollView showsVerticalScrollIndicator={false} ref={ref => this.myref = ref}
                         onScroll={Animated.event(
                             [
@@ -185,7 +210,7 @@ export class RecipeScreen extends Component {
                                     <View style={{ display: 'flex', flexDirection: 'row', paddingTop: 20 }} key={index}>
                                         <View style={{ justifyContent: 'center', flex: 0.1 }}>
                                             <View
-                                                style={{ width: 30, backgroundColor: '#FFBB55', padding: 8, alignItems: 'center', borderRadius: 15, justifyContent: 'center' }}
+                                                style={{ width: 30, backgroundColor: '#ffd18c', padding: 8, alignItems: 'center', borderRadius: 15, justifyContent: 'center' }}
                                             >
                                                 <Text style={{ fontSize: 10}}>{index+1}</Text>
                                             </View>
@@ -205,7 +230,7 @@ export class RecipeScreen extends Component {
                 duration={300}
                 elevation={5} style={{position:'absolute',bottom:0,left:0,display:'flex',flexDirection:'row',backgroundColor:'#fff',width:Dimensions.get('window').width,padding:10,height:50}}>
                         <TouchableOpacity style={{flex:1,alignItems:'center',borderRightWidth:1,borderColor:'#e5e5e5'}} onPress={()=>{this.myref.scrollTo({ x: 0, y: 0, animated: true });   this.setState({setter:0})}}>
-                        <Image source={require('../../Assets/icons/recipe.png')}
+                        <Image source={require('../../assets/Icons/recipe.png')}
                                     style={{
                                         width: Dimensions.get('window').width/15,
                                         height: Dimensions.get('window').width/15,
@@ -213,7 +238,7 @@ export class RecipeScreen extends Component {
                                 />
                         </TouchableOpacity>
                         <TouchableOpacity style={{flex:1,alignItems:'center'}} onPress={()=>{this.myref.scrollTo({ x: 0, y: 0, animated: true });this.setState({setter:1})}}>
-                        <Image source={require('../../Assets/icons/ingredients.png')}
+                        <Image source={require('../../assets/Icons/ingredients.png')}
                                     style={{
                                         width: Dimensions.get('window').width/15,
                                         height: Dimensions.get('window').width/15,
@@ -232,7 +257,7 @@ const styles = StyleSheet.create({
     full: {
         // display: 'flex',
         flex: 1,
-        backgroundColor: '#E6F0F5'
+        // backgroundColor: '#E6F0F5'
     },
     half: {
         // display: 'flex',
@@ -243,6 +268,17 @@ const styles = StyleSheet.create({
         borderTopRightRadius: 75,
         elevation: 10,
         padding: 25,
+    },
+    outerMenu: {
+        display: 'flex',
+        resizeMode: "cover",
+        marginTop: 30,
+        width: Dimensions.get('window').width,
+        height: Dimensions.get('window').height,
+    },
+    imageMenu: {
+        width: Dimensions.get('window').width,
+        opacity: 0.4,
     }
 });
 

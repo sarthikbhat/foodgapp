@@ -9,12 +9,12 @@ class Header extends React.Component {
                 animation="slideInUp"
                 duration={500}
                 useNativeDriver>
-                <View elevation={this.props.elevation} style={[styles.header, { backgroundColor: this.props.backgroundColor || null }]} >
+                <View elevation={this.props.elevation} style={[styles.header, { backgroundColor: this.props.backgroundColor || null,zIndex: this.props.zIndex || null }]} >
                     {
                         this.props.back ?
                             <TouchableOpacity style={styles.headerIcon}
                                 onPress={() => { this.props.navigation.goBack() }} >
-                                <Image source={require('../Assets/icons/back.png')}
+                                <Image source={require('../assets/Icons/back.png')}
                                     style={{
                                         width: 20, resizeMode: "contain",
                                         height: 20
@@ -23,14 +23,28 @@ class Header extends React.Component {
                             </TouchableOpacity>
                             :
                             <TouchableOpacity style={styles.headerIcon}
-                                onPress={() => { this.props.navigation.openDrawer() }} >
-                                <Image source={require('../Assets/icons/menu.png')}
+                                onPress={() => { this.props.navigation.openDrawer({log:'hello'}) }} >
+                                <Image source={require('../assets/Icons/menu.png')}
                                     style={{
                                         width: 20, resizeMode: "contain",
                                         height: 20
                                     }}
                                 />
                             </TouchableOpacity>
+                    }
+                    <View style={{flex:1}}/>
+                    {
+                         this.props.user ?
+                         <TouchableOpacity style={styles.headerIcon}
+                             onPress={() => { this.props.navigation.goBack() }} >
+                             <Image source={require('../assets/Icons/user.png')}
+                                 style={{
+                                     width: 20, resizeMode: "contain",
+                                     height: 20
+                                 }}
+                             />
+                         </TouchableOpacity>
+                         :null
                     }
                 </View>
             </Animatable.View>
@@ -42,10 +56,11 @@ const styles = StyleSheet.create({
     header: {
         display: "flex",
         paddingTop: 15,
-        paddingLeft: 20,
-        paddingRight: 20,
+        paddingLeft: 15,
+        paddingRight: 15,
         paddingBottom: 10,
-        flexDirection: "row"
+        flexDirection: "row",
+        zIndex:1
     },
     headerIcon: {
         padding: 10
