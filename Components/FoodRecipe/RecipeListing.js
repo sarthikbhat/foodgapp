@@ -5,7 +5,7 @@ import { recipes, ingredient } from '../../Constants/recipe'
 import * as Animatable from 'react-native-animatable'
 import { min } from 'react-native-reanimated'
 import RecipeCard from './RecipeCard'
-
+import { Neomorph ,NeomorphFlex} from 'react-native-neomorph-shadows';
 
 
 const heighter = (Dimensions.get('window').width / 1.3)
@@ -63,7 +63,6 @@ export class RecipeListing extends Component {
             index = 0
         }
         this.setState(prevState => ({ index: index, loop: this.state.loop - 1 }))
-        console.log(this.state.index);
     }
 
     render() {
@@ -82,7 +81,12 @@ export class RecipeListing extends Component {
 
         var fontSize = this.state.anim.interpolate({
             inputRange: [0, 300],
-            outputRange: [25, 20],
+            outputRange: [30, 20],
+            extrapolate: "clamp",
+        })
+        var fontSize2 = this.state.anim.interpolate({
+            inputRange: [0, 300],
+            outputRange: [15, 10],
             extrapolate: "clamp",
         })
 
@@ -103,28 +107,44 @@ export class RecipeListing extends Component {
             outputRange: [0, -Dimensions.get('window').height / 10],
             extrapolate: "clamp",
         })
+        var Topper2 = this.state.anim.interpolate({
+            inputRange: [0, 300],
+            outputRange: [0, -Dimensions.get('window').height / 15],
+            extrapolate: "clamp",
+        })
 
         return (
             <View style={styles.full}>
 
-                <StatusBar barStyle='dark-content' translucent={true} backgroundColor='#f6f6f7' />
+                <StatusBar barStyle='dark-content' translucent={true} backgroundColor='#fcfcfc' />
                 <ImageBackground source={require('../../Assets/images/appbg.png')} style={styles.outerMenu} imageStyle={styles.imageMenu}>
                     <Header backgroundColor="transparent" navigation={this.props.navigation} style={this.props.style} />
                     <Animated.View style={{ height: heightTop }}>
-                        <Animated.View
+                        {/* <Animated.View
                             useNativeDriver elevation={5} style={{ width: Dimensions.get("window").width - 40, backgroundColor: "#f6f6f5", display: 'flex', flexDirection: "row", padding: 14, alignItems: "center", borderRadius: 50, marginTop: 5, alignSelf: 'center', opacity: opacityTop }} >
                             <Image source={require('../../Assets/icons/search.png')} style={{ width: 15, height: 15, marginLeft: 10 }} resizeMode="contain" />
                             <TextInput style={{ flex: 1, padding: 0, marginLeft: 20 }} placeholder="Seach for a dish name" />
-                        </Animated.View>
-                        <Animated.Text style={{ fontFamily: "OpenSans-Bold", fontSize, color: "#222222", padding: 20, margin: 10, marginBottom: 0, transform: [{ translateY: Topper }] }} >Recommendations</Animated.Text>
-                        <Animated.View style={{ transform: [{ translateY: Topper }] }}>
-                            <ScrollView showsHorizontalScrollIndicator={false} horizontal={true} style={{ marginBottom: 0, marginTop: 0, paddingTop: 0 }} contentContainerStyle={{ alignItems: 'center' }}>
+                        </Animated.View> */}
+                        <Animated.Text style={{ fontFamily: "OpenSans-SemiBold", fontSize:30, color: "#222222", padding: 20, margin: 10, marginBottom: 0,fontWeight:'bold',paddingTop:0
+                        ,transform: [{ translateY: Topper }]
+                        ,paddingBottom:2 }} >Recommendations</Animated.Text>
+                        <Animated.Text style={{ fontFamily: "OpenSans-Regular", fontSize:14, color: "#222222", padding: 20,margin: 10,paddingTop:0, marginTop:0, marginBottom: 0,opacity:0.5,paddingBottom:8
+                         ,transform: [{ translateY: Topper }] 
+                         }} >Your favourite cuisine at your fingertips</Animated.Text>
+                        <Animated.Text style={{ fontFamily: "OpenSans-SemiBoldItalic", fontSize:15, color: "#222222", padding: 20,margin: 10,paddingTop:0, marginTop:0, marginBottom: 0,opacity:0.8,
+                         transform: [{ translateY: Topper }] 
+                         }} >"Orange Sandwiches are delicious"</Animated.Text>
+                        <Animated.View 
+                        style={{ marginBottom: 0, marginTop: 0,transform: [{ translateY: Topper }]}}
+                        >
+                            <ScrollView showsHorizontalScrollIndicator={false} horizontal={true} style={{ marginBottom: 0, marginTop: 0, paddingTop: 18, }} contentContainerStyle={{ alignItems: 'center' }}>
                                 {
                                     this.state.count.map((mapper, index) => {
                                         return (
                                             <>
                                                 <View style={{ width: 25 }} />
-                                                <View style={{ backgroundColor: index == 0 ? '#ffd18c' : '#e8cea7', alignSelf: 'flex-start', padding: 8, borderRadius: 15, minWidth: 50, alignItems: 'center', marginBottom: 25, flexDirection: 'row', justifyContent: 'center' }}>
+                                                {/* <NeomorphFlex darkShadowColor="#FF3333"   swapShadows style={{shadowRadius: 2, backgroundColor: index == 0 ? '#fc6474' : '#ebebeb', alignSelf: 'flex-start', padding: 8, borderRadius: 15, minWidth: 50, alignItems: 'center', marginBottom: 5, flexDirection: 'row', justifyContent: 'center', }}> */}
+                                                <View elevation={4} style={{ backgroundColor: index == 0 ? '#fc6474' : '#fcfcfc', borderColor:index == 0 ? 'transparent' : '#fc6474', alignSelf: 'flex-start',borderWidth:0.8, padding: 8, borderRadius: 15, minWidth: 50, alignItems: 'center', marginBottom: 25, flexDirection: 'row', justifyContent: 'center' }}>
                                                     {
                                                         index == 0
                                                             ?
@@ -132,8 +152,9 @@ export class RecipeListing extends Component {
                                                             :
                                                             null
                                                     }
-                                                    <Animated.Text style={{ fontFamily: "OpenSans-Bold", fontSize: fontSize2, color: "#ffffff", textAlign: 'center' }} >{mapper}</Animated.Text>
+                                                    <Animated.Text style={{ fontFamily: "OpenSans-Regular", fontSize: fontSize2, color: index == 0 ? '#ffffff' : '#222222', textAlign: 'center' }} >{mapper}</Animated.Text>
                                                 </View>
+                                                {/* </NeomorphFlex> */}
                                                 <View style={{ width: 0 }} />
                                             </>
                                         )
@@ -143,7 +164,8 @@ export class RecipeListing extends Component {
                         </Animated.View>
                     </Animated.View>
                     <Animated.View style={{ marginBottom: 50 }}>
-                        <Animated.ScrollView style={{ padding: 15, height: heightDown }} scrollEventThrottle={16}
+                        <Animated.ScrollView style={{ padding: 15, height: heightDown }} 
+                        scrollEventThrottle={16}
                             onScroll={Animated.event(
                                 [
                                     {
@@ -160,29 +182,81 @@ export class RecipeListing extends Component {
                                     this.state.array.map((recipe, index) => {
                                         return (
                                             <View style={{ marginBottom: 25 }}>
-                                                <Animated.View useNativeDriver style={{ height: Dimensions.get("window").width / 1.8, width: Dimensions.get("window").width / 2.5, borderRadius: 25, backgroundColor: 'black', alignSelf: 'center', padding: 20, margin: 10, flexDirection: 'row', display: 'flex', justifyContent: "center", alignItems: 'center' }}>
+                                            {/* <NeomorphFlex 
+                                            darkShadowColor="#FF3333" 
+                                            lightShadowColor="#ebebeb"
+                                            // lightShadowColor="#3344FF" 
+                                            swapShadows style={{shadowRadius: 4,width: Dimensions.get("window").width -80, borderRadius: 25, backgroundColor: '#eeeeee', alignSelf: 'center', padding: 20, margin: 10, flexDirection: 'row', display: 'flex'}}> */}
+                                                <Animated.View elevation={2} useNativeDriver style={{  width: Dimensions.get("window").width -80, borderRadius: 25, backgroundColor: '#FCFCFC', alignSelf: 'center', padding: 20, margin: 10, flexDirection: 'row', display: 'flex' }}>
                                                     <View>
-                                                        <Animated.View style={{ borderRadius: 150, overflow: 'hidden', width: 150, height: 120, alignSelf: 'center', justifyContent: 'center' }}>
-                                                            <Image source={require('../../Assets/images/PaneerNoodle.png')} style={{ width: null, height: null, flex: 1 }} />
+                                                        <Animated.View style={{ borderRadius: 150, overflow: 'hidden', width: 100, height: 100, alignContent: 'center' }}>
+                                                            <Image source={require('../../Assets/images/Noodles.png')} style={{ width: null, height: null, flex: 1 }} />
                                                         </Animated.View>
-
-                                                        <View style={{ backgroundColor: '#ffd18c', width: 55, height: 55, justifyContent: 'center', position: 'absolute', bottom: -65, right: -10, borderTopLeftRadius: 20, borderBottomLeftRadius: 20, borderBottomRightRadius: 20, alignItems: 'center', borderColor: '#ffffff', borderWidth: 2, alignSelf: 'flex-end' }}>
-                                                            <Image source={require('../../Assets/icons/right.png')}
-                                                                style={{ width: 20, height: 20, }}
-                                                            />
-                                                        </View>
                                                     </View>
+                                                        <View style={{padding:12}}>
+                                                                <Text style={{ fontFamily: "OpenSans-SemiBold", fontSize: 18, color: "#222222",  }} >Paneer Noodles</Text>
+                                                                <View style={{flexDirection: 'row', display: 'flex',alignItems:'center',paddingTop:3}}>
+                                                                <Animated.View style={{ width: 16, height: 16, borderRadius: 10, }}>
+                                                                <Image source={require('../../Assets/icons/star.png')} style={{ width: null, height: null, flex: 1 }} resizeMode="contain" />
+                                                                </Animated.View>
+                                                                <Text style={{ fontFamily: "OpenSans-Regular", fontSize: 15, color: "#222222", paddingLeft:5,opacity:0.6 }} >4.5</Text>
+                                                                </View>
+                                                                <View style={{flex:3}}/>
+                                                                <View style={{flexDirection: 'row', display: 'flex',alignItems:'center',paddingTop:3}}>
+                                                                <Animated.View style={{ width: 16, height: 16, borderRadius: 10, }}>
+                                                                <Image source={require('../../Assets/icons/clock.png')} style={{ width: null, height: null, flex: 1 }} resizeMode="contain" />
+                                                                </Animated.View>
+                                                                <Text style={{ fontFamily: "OpenSans-Regular", fontSize: 12, color: "#222222", paddingLeft:5,opacity:0.6 }} >25 min</Text>
+                                                                <View style={{flex:3}}/>
+                                                                <Animated.View style={{ width: 16, height: 16, borderRadius: 10, }}>
+                                                                <Image source={require('../../Assets/icons/calories.png')} style={{ width: null, height: null, flex: 1 }} resizeMode="contain" />
+                                                                </Animated.View>
+                                                                <Text style={{ fontFamily: "OpenSans-Regular", fontSize: 12, color: "#222222", paddingLeft:5,opacity:0.6 }} >360 kcal</Text>
+                                                                </View>
+                                                        </View>
+                                                        <View style={{paddingLeft:10,alignItems:'center',marginTop:12,marginLeft:-2}}>
+                                                        {/* <NeomorphFlex
+                                                        
+                                                                style={{
+                                                                    shadowRadius: 3,
+                                                                    borderRadius: 100,
+                                                                    backgroundColor: '#ebebeb',
+                                                                    justifyContent: 'center',
+                                                                    alignItems: 'center',width: 45, height: 45
+                                                                }}
+                                                                >
+                                                                <NeomorphFlex
+                                                                    inner
+                                                                    style={{
+                                                                    shadowRadius: 7,
+                                                                    borderRadius: 90,
+                                                                    backgroundColor: '#fc6474',
+                                                                    justifyContent: 'center',
+                                                                    alignItems: 'center',width: 30, height: 30
+                                                                    }}
+                                                                >
+                                                                    <NeomorphFlex
+                                                                    style={{
+                                                                        shadowRadius: 7,
+                                                                        borderRadius: 50,
+                                                                        backgroundColor: '#ebebeb',
+                                                                        width: 20, height: 20, borderRadius: 10,marginTop:1,justifyContent:'center',alignItems:'center'
+                                                                    }}
+                                                                    > */}
+                                                                    <View></View>
+                                                                    <Animated.View style={{ width: 15, height: 15,alignItems:'center' }}>
+                                                                    <Image source={require('../../Assets/icons/next.png')} style={{ width: null, height: null, flex: 1 }} resizeMode="contain" />
+                                                        </Animated.View>
+                                                                        {/* </NeomorphFlex>
+                                                                </NeomorphFlex>
+                                                                </NeomorphFlex> */}
+                                                                                                                        
+                                                            {/* <NeomorphFlex  swapShadows style={{shadowRadius: 4,backgroundColor:'#ebebeb'}}> */}
+                                                        
+                                                        {/* </NeomorphFlex> */}
+                                                        </View>
                                                 </Animated.View>
-                                                <Animated.View style={{
-                                                    display: 'flex', flexDirection: "row", alignItems: "center", padding: 15, paddingTop: 1,
-                                                }}>
-                                                    <Text style={{ fontFamily: "OpenSans-Bold", fontSize: 20, color: "#222222", fontWeight: '700' }} >Paneer Chilly</Text>
-                                                    <View style={{ flex: 1 }} />
-                                                    <Animated.View style={{ width: 12, height: 12, borderRadius: 10, }}>
-                                                        <Image source={require('../../Assets/icons/veg.png')} style={{ width: null, height: null, flex: 1 }} resizeMode="contain" />
-                                                    </Animated.View>
-                                                </Animated.View>
-
+                                                {/* </NeomorphFlex> */}
                                             </View>
                                         )
                                     })
@@ -203,6 +277,8 @@ const styles = StyleSheet.create({
     full: {
         flex: 1,
         zIndex: 1,
+        // marginTop: 30,
+        backgroundColor:'#fcfcfc',
         padding: 15,
         alignItems: 'center'
     },

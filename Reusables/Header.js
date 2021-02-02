@@ -1,6 +1,7 @@
 import React from 'react';
 import { View, Image, TouchableOpacity, StyleSheet} from 'react-native';
 import * as Animatable from "react-native-animatable";
+import { Neomorph ,NeomorphFlex} from 'react-native-neomorph-shadows';
 
 class Header extends React.Component {
     render() {
@@ -14,22 +15,26 @@ class Header extends React.Component {
                         this.props.back ?
                             <TouchableOpacity style={styles.headerIcon}
                                 onPress={() => { this.props.navigation.goBack() }} >
+                                     {/* <NeomorphFlex  swapShadows style={{shadowRadius: 15, backgroundColor: "#ebebeb", padding:15,borderRadius:25}}> */}
                                 <Image source={require('../Assets/icons/back.png')}
                                     style={{
                                         width: 20, resizeMode: "contain",
                                         height: 20
                                     }}
                                 />
+                                {/* </NeomorphFlex> */}
                             </TouchableOpacity>
                             :
                             <TouchableOpacity style={styles.headerIcon}
                                 onPress={() => { this.props.navigation.openDrawer({log:'hello'}) }} >
+                                    {/* <NeomorphFlex  swapShadows style={{shadowRadius: 15, backgroundColor: "#ebebeb", padding:15,borderRadius:25}}> */}
                                 <Image source={require('../Assets/icons/menu.png')}
                                     style={{
                                         width: 20, resizeMode: "contain",
                                         height: 20
                                     }}
                                 />
+                                {/* </NeomorphFlex> */}
                             </TouchableOpacity>
                     }
                     <View style={{flex:1}}/>
