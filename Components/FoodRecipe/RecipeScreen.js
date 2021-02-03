@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import { Text, TouchableOpacity, View, Image, StatusBar, StyleSheet, Dimensions, Animated, ScrollView,ImageBackground } from 'react-native'
+import { Text, TouchableOpacity, View, Image, StatusBar, StyleSheet, Dimensions, Animated, ScrollView, ImageBackground } from 'react-native'
 import Header from '../../Reusables/Header'
-import { recipes ,ingredient} from '../../Constants/recipe'
+import { recipes, ingredient } from '../../Constants/recipe'
 import * as Animatable from 'react-native-animatable'
 
 const MIN_HEIGHT = 0.8 * Dimensions.get('window').height
@@ -11,32 +11,33 @@ const MinBorder = 80,
     image = Dimensions.get('window').width / 1.8
 
 export class RecipeScreen extends Component {
-    
-    constructor () {
+
+    constructor() {
         super()
         this.state = {
             scrollY: new Animated.Value(0),
-            setter:0
+            setter: 0,
+            imej: [require("../../Assets/images/berger.png"), require("../../Assets/images/dosa.png"), require("../../Assets/images/paratha.png"), require("../../Assets/images/cheesepizza.png"), require("../../Assets/images/Noodles.png")],
         }
         this.spinValue = new Animated.Value(0)
-      }
+    }
 
-      poser=()=>{
+    poser = () => {
         // this.spinValue.setValue(0)
         Animated.timing(
-          this.state.scrollY,
-          {
-            toValue: 300,
-            duration: 200,
-            
-          useNativeDriver:false
-          },
+            this.state.scrollY,
+            {
+                toValue: 300,
+                duration: 200,
+
+                useNativeDriver: false
+            },
         ).start()
     }
-    
+
     render() {
         // const scrollY = useRef(new Animated.Value(0)).current
-        const set = this.state.setter===0?recipes:ingredient
+        const set = this.state.setter === 0 ? recipes : ingredient
         var widthSmaller = this.state.scrollY.interpolate({
             inputRange: [0, 300],
             outputRange: [Dimensions.get('window').width / 1.8, Dimensions.get('window').width / 2.5],
@@ -95,157 +96,62 @@ export class RecipeScreen extends Component {
         })
 
 
-   
+
 
         return (
             <View style={styles.full}>
-                <StatusBar barStyle='dark-content' backgroundColor='#f6f6f7' translucent={true} />
-                <ImageBackground source={require('../../Assets/images/appbg.png')} style={styles.outerMenu} imageStyle={styles.imageMenu}>
-                <Header backgroundColor="transparent" back={true} navigation={this.props.navigation}/>
-                <Animatable.View 
-                animation="zoomIn"
-                duration={500}
-                style={{ display: 'flex', flexDirection: "row" }}>
-                    <Animated.View style={{ padding: 25 
-                    }}>
-                        <Animated.Text  style={{ fontSize: 30, fontFamily: 'PatrickHand-Regular' }}>American Pizza</Animated.Text>
-                        <Animated.View style={{ paddingTop: 25 ,transform: [{
-                            translateY: sizer
-                         }
-                        ]}}>
-                            <View style={{ display: 'flex', flexDirection: "row" }}>
-                                <Image source={require('../../Assets/icons/clock.png')}
-                                    style={{
-                                        width: 20,
-                                        height: 20,
-                                    }}
-                                />
-                                <Animated.Text style={{ fontSize: 15, alignSelf: 'center', paddingLeft: 7 }}>10 minutes</Animated.Text>
+                <StatusBar hidden barStyle='dark-content' backgroundColor="rgba(0,0,0,0)" translucent={true} />
+                <ImageBackground source={require('../../Assets/images/darkfoodgapp.png')} style={styles.outerMenu} imageStyle={styles.imageMenu}>
+                    {/* <Header backgroundColor="transparent" back={true} navigation={this.props.navigation}/> */}
+                    <View style={{ display: "flex", flexDirection: 'row', margin: 30, marginTop: 40 }} >
+                        <View elevation={10} style={styles.iconBorder} ><Image source={require('../../Assets/icons/goback.png')} style={{ width: 15, height: 15, resizeMode: "contain" }} /></View>
+                        <View style={{ flex: 1 }} />
+                        <View elevation={10} style={styles.iconBorder} ><Image source={require('../../Assets/icons/wishlist.png')} style={{ width: 20, height: 20, resizeMode: "contain" }} /></View>
+                    </View>
+                    <View style={{ backgroundColor: "white", width: "100%", flex: 1, marginTop: "27%", borderTopLeftRadius: 50, borderTopRightRadius: 50, backgroundColor: "#fbfaf8" }} >
+                        <View style={{ height: "40%", width: "50%", alignSelf: "center", marginTop: "-28%" }} >
+                            <Image elevation={10} source={require('../../Assets/images/cheesepizza.png')} style={{ width: null, height: null, flex: 1, resizeMode: "contain" }} />
+                        </View>
+                        <View style={{ alignSelf: "center", margin: 10 }} >
+                            <Text style={{ textAlign: 'center', fontFamily: "OpenSans-Bold", fontSize: 22, letterSpacing: -0.5, color: "#222222", lineHeight: 27 }} >Soba Soup With{'\n'}Shrimp and Greens</Text>
+                        </View>
+                        <View style={{ display: 'flex', flexDirection: 'row', justifyContent: "center", marginTop: 10 }}>
+                            <View style={{ display: 'flex', flexDirection: "row", alignItems: "center" }}>
+                                <Image elevation={1} source={require('../../Assets/icons/time.png')} style={{ width: 20, height: 20, resizeMode: "contain" }} />
+                                <Text style={{ fontSize: 15, fontFamily: "OpenSans-SemiBold", opacity: 0.7, marginLeft: 5, letterSpacing: -0.5 }} >50 min</Text>
                             </View>
-                            <Animated.View style={{ display: 'flex', flexDirection: "row", paddingTop: 15 ,transform: [{
-                            translateY: opY
-                         },
-                         {translateX:opX}
-                        ]}}>
-                                <Image source={require('../../Assets/icons/calories.png')}
-                                    style={{
-                                        width: 20,
-                                        height: 20,
-                                    }}
-                                />
-                                <Animated.Text style={{ fontSize: 15, alignSelf: 'center', paddingLeft: 7 }}>250 Cal</Animated.Text>
-                            </Animated.View>
-                            <Animated.View style={{ display: 'flex', flexDirection: "row", paddingTop: 15,transform: [{
-                            translateY: opY
-                         },
-                        //  {translateX:opX}
-                        ]}}>
-                                <Image source={require('../../Assets/icons/veg.png')}
-                                    style={{
-                                        width: 18,
-                                        height: 18,
-                                    }}
-                                />
-                                <Animated.Text style={{ fontSize: 15, alignSelf: 'center', paddingLeft: 7 }}>Vegetarian</Animated.Text>
-                            </Animated.View>
-                        </Animated.View>
-                    </Animated.View>
-                    <Animated.View style={{
-                        borderRadius: 150, overflow: 'hidden', width: widthSmaller, height: widthSmaller, transform: [{
-                            translateX: topPositionX
-                        }, { translateY: topPositionY }],
-                    }}
-                    >
-                        <Image source={require('../../Assets/images/pizza.jpg')}
-                            style={{
-                                width: null,
-                                height: null,
-                                flex: 1
-                            }}
-                        />
-                    </Animated.View>
-                </Animatable.View>
-                </ImageBackground>
-                <Animated.View style={{
-                    flex: 1,
-                    backgroundColor: '#ffffff',
-                    position:'absolute',
-                    bottom:0,
-                    left:0,
-                    height:0.7*MAX_HEIGHT,
-                    width:Dimensions.get('window').width,
-                    marginTop: 45,
-                    borderTopLeftRadius: 75,
-                    borderTopRightRadius: 75,
-                    // elevation: 10,
-                    padding: 25,
-                    transform: [{
-                        translateY: topPosition
-                    }],
-                    paddingBottom:100
-                    
-                }}>
-                    <Animatable.View
-                    animation="zoomIn"
-                    duration={500}>
-                    {/* <Animated.View
-                        style={{ width: Dimensions.get('window').width / 3, backgroundColor: '#e5e5e5', padding: 3, alignSelf: 'center', borderRadius: 15,marginBottom:5 }}
-                    /> */}
-                    <Text onPress={()=>this.poser()} style={{ fontSize: 25, fontWeight: '900', padding:10,textAlign:'center',paddingTop:2}}>{this.state.setter===0?'How To Cook':'Ingredients Required'}</Text>
-                    <Animated.ScrollView showsVerticalScrollIndicator={false} ref={ref => this.myref = ref}
-                        onScroll={Animated.event(
-                            [
-                                {
-                                    nativeEvent: { contentOffset: { y: this.state.scrollY } }
-                                }
-                            ],
-                            {
-                                useNativeDriver: false
-                            }
-                        )}
-                    >
-                        {
-                            set.map((recipe,index) => {
-                                return (
-                                    <View style={{ display: 'flex', flexDirection: 'row', paddingTop: 20 }} key={index}>
-                                        <View style={{ justifyContent: 'center', flex: 0.1 }}>
-                                            <View
-                                                style={{ width: 30, backgroundColor: '#ffd18c', padding: 8, alignItems: 'center', borderRadius: 15, justifyContent: 'center' }}
-                                            >
-                                                <Text style={{ fontSize: 10}}>{index+1}</Text>
+                            <View style={{ display: 'flex', flexDirection: "row", alignItems: "center", marginLeft: 25 }}>
+                                <Image elevation={1} source={require('../../Assets/icons/caloriered.png')} style={{ width: 20, height: 20, resizeMode: "contain" }} />
+                                <Text style={{ fontSize: 15, fontFamily: "OpenSans-SemiBold", opacity: 0.7, marginLeft: 5, letterSpacing: -0.5 }} >325 kcal</Text>
+                            </View>
+                            <View style={{ display: 'flex', flexDirection: "row", alignItems: "center", marginLeft: 25 }}>
+                                <Image elevation={1} source={require('../../Assets/icons/starh.png')} style={{ width: 20, height: 20, resizeMode: "contain" }} />
+                                <Text style={{ fontSize: 15, fontFamily: "OpenSans-SemiBold", opacity: 0.7, marginLeft: 5, letterSpacing: -0.5 }} >4.8</Text>
+                            </View>
+                        </View>
+                        {/* <View style={{ display: 'flex', flexDirection: 'row', alignItems: "center", margin:20, alignSelf:"center", backgroundColor:"#ee545b", padding:10, paddingLeft:20, paddingRight:20, borderRadius:20 }} >
+                            <Image elevation={1} source={require('../../Assets/icons/wishlist.png')} style={{ width: 20, height: 20, resizeMode: "contain" }} />
+                            <Text style={{fontFamily:"OpenSans-SemiBold", fontSize:16,color:"white"}}>Add To WishList</Text>
+                        </View> */}
+                        <View style={{ marginTop: 28 }} >
+                            <Text style={{ fontFamily: "OpenSans-Bold", fontSize: 17.5, color: "#222222", marginBottom: 10, marginLeft: 28 }}>Ingredients</Text>
+                            <ScrollView horizontal showsHorizontalScrollIndicator={false} >
+                                <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                                    <View style={{ width: 25 }} />
+                                    {
+                                        this.state.imej.map((elm, index) => {
+                                            return <View elevation={1} style={{ padding: 15, margin: 5, marginBottom: 15, backgroundColor: 'white', alignItems: "center", minWidth: 75, minHeight: 125, borderRadius: 45, justifyContent: "center" }} >
+                                                <Image elevation={1} source={elm} style={{ width: 35, height: 35, resizeMode: "contain" }} />
+                                                <Text style={{ fontSize: 14, fontFamily: "OpenSans-SemiBold", opacity: 0.7, marginTop: 10, letterSpacing: -0.5 }} >Broccolli</Text>
                                             </View>
-                                        </View>
-                                        <Text style={{ fontSize: 14, padding: 5, flex: 1 }}>{recipe}</Text>
-                                    </View>
-                                )
-
-                            })
-                        }
-                        {/* <View style={{flex:1}}/> */}
-                    </Animated.ScrollView>
-                </Animatable.View>
-                </Animated.View>
-                <Animatable.View 
-                animation="slideInUp"
-                duration={300}
-                elevation={5} style={{position:'absolute',bottom:0,left:0,display:'flex',flexDirection:'row',backgroundColor:'#fff',width:Dimensions.get('window').width,padding:10,height:50}}>
-                        <TouchableOpacity style={{flex:1,alignItems:'center',borderRightWidth:1,borderColor:'#e5e5e5'}} onPress={()=>{this.myref.scrollTo({ x: 0, y: 0, animated: true });   this.setState({setter:0})}}>
-                        <Image source={require('../../Assets/icons/recipe.png')}
-                                    style={{
-                                        width: Dimensions.get('window').width/15,
-                                        height: Dimensions.get('window').width/15,
-                                    }}
-                                />
-                        </TouchableOpacity>
-                        <TouchableOpacity style={{flex:1,alignItems:'center'}} onPress={()=>{this.myref.scrollTo({ x: 0, y: 0, animated: true });this.setState({setter:1})}}>
-                        <Image source={require('../../Assets/icons/ingredients.png')}
-                                    style={{
-                                        width: Dimensions.get('window').width/15,
-                                        height: Dimensions.get('window').width/15,
-                                    }}
-                                />
-                        </TouchableOpacity>
-                </Animatable.View>
+                                        })
+                                    }
+                                    <View style={{ width: 25 }} />
+                                </View>
+                            </ScrollView>
+                        </View>
+                    </View>
+                </ImageBackground>
             </View>
         )
     }
@@ -255,12 +161,9 @@ export class RecipeScreen extends Component {
 
 const styles = StyleSheet.create({
     full: {
-        // display: 'flex',
         flex: 1,
-        // backgroundColor: '#E6F0F5'
     },
     half: {
-        // display: 'flex',
         flex: 1,
         backgroundColor: '#ffffff',
         marginTop: 45,
@@ -272,13 +175,21 @@ const styles = StyleSheet.create({
     outerMenu: {
         display: 'flex',
         resizeMode: "cover",
-        marginTop: 30,
+        // marginTop: 30,
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').height,
     },
     imageMenu: {
         width: Dimensions.get('window').width,
-        opacity: 0.4,
+        opacity: 1,
+    },
+    iconBorder: {
+        // padding:12,
+        justifyContent: "center",
+        alignItems: "center",
+        height: 40, width: 40,
+        backgroundColor: "#fbfaf8",
+        borderRadius: 25
     }
 });
 

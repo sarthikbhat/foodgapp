@@ -42,8 +42,8 @@ class FoodRecipe extends React.Component {
     return (
       <Animated.View style={StyleSheet.flatten([styles.stack, this.props.style])}>
       <Stack.Navigator headerMode={"none"}>
-        <Stack.Screen name="RecipeList" component={RecipeListing} />
         <Stack.Screen name="Recipe" component={RecipeScreen} />
+        <Stack.Screen name="RecipeList" component={RecipeListing} />
       </Stack.Navigator>
        </Animated.View>
     )
