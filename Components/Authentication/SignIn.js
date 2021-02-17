@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Text, View, Image, Dimensions, StyleSheet, Animated, KeyboardAvoidingView, Platform, TouchableOpacity, TextInput } from 'react-native'
 import { Neomorph ,NeomorphFlex} from 'react-native-neomorph-shadows';
+import Header from '../../Reusables/Header'
 // import Animated from 'react-native-reanimated'
 
 export default class SignIn extends Component {
@@ -69,10 +70,12 @@ componentDidMount=()=>{
                     behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
                 >
                     <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+                   
                         {/* This if after button press */}
-                        <Animated.View style={{ ...StyleSheet.absoluteFill,flex: 1, backgroundColor: "#ebebeb", borderTopLeftRadius: 50, borderTopRightRadius: 50, overflow: "hidden", padding: 25,opacity:opaqueOp,transform: [{
+                        <Animated.View style={{ ...StyleSheet.absoluteFill,flex: 1, backgroundColor: "#ebebeb", borderTopLeftRadius: 50, borderTopRightRadius: 50, overflow: "hidden",paddingTop: 35,opacity:opaqueOp,transform: [{
                             translateY: translationOp
                         },],zIndex:indexOp }} >
+                            <Header backgroundColor="transparent" back={true} navigation={this.props.navigation} />
                             <View style={{alignItems:'center'}}>
                                 <Image source={require("../../Assets/images/login.png")} style={{ width: 150, height: 150, }} />
                                 </View>

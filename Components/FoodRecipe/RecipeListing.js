@@ -9,15 +9,6 @@ import { Neomorph, NeomorphFlex } from 'react-native-neomorph-shadows';
 import { ShadowFlex } from 'react-native-neomorph-shadows';
 
 
-
-const heighter = (Dimensions.get('window').width / 1.3)
-
-// var opacity=1
-// var zIndex=1
-
-var minWidth = 180
-var maxWidth = Dimensions.get("window").width - 40
-
 export class RecipeListing extends Component {
     constructor(props) {
         super(props)
@@ -95,7 +86,7 @@ export class RecipeListing extends Component {
         })
 
         var opacityTop = this.state.anim.interpolate({
-            inputRange: [0, 50],
+            inputRange: [0, 200],
             outputRange: [1, 0],
             extrapolate: "clamp",
         })
@@ -107,7 +98,12 @@ export class RecipeListing extends Component {
         })
         var Topper2 = this.state.anim.interpolate({
             inputRange: [0, 300],
-            outputRange: [0, -Dimensions.get('window').height / 15],
+            outputRange: [0, -Dimensions.get('window').height / 8],
+            extrapolate: "clamp",
+        })
+        var translateX = this.state.anim.interpolate({
+            inputRange: [0, 300],
+            outputRange: [0, Dimensions.get('window').width/8],
             extrapolate: "clamp",
         })
 
@@ -116,7 +112,7 @@ export class RecipeListing extends Component {
 
                 <StatusBar barStyle='dark-content' translucent={true} backgroundColor='#fcfcfc' />
                 <ImageBackground source={require('../../Assets/images/appbg.png')} style={styles.outerMenu} imageStyle={styles.imageMenu}>
-                    <Header backgroundColor="transparent" navigation={this.props.navigation} style={this.props.style} />
+                    <Header backgroundColor="transparent" navigation={this.props.navigation} style={[this.props.style,{}]} />
                     <Animated.View style={{ height: heightTop }}>
                         {/* <Animated.View
                             useNativeDriver elevation={5} style={{ width: Dimensions.get("window").width - 40, backgroundColor: "#f6f6f5", display: 'flex', flexDirection: "row", padding: 14, alignItems: "center", borderRadius: 50, marginTop: 5, alignSelf: 'center', opacity: opacityTop }} >
@@ -125,19 +121,19 @@ export class RecipeListing extends Component {
                         </Animated.View> */}
                         <Animated.Text style={{
                             fontFamily: "OpenSans-SemiBold", fontSize: 30, color: "#222222", padding: 20, margin: 10, marginBottom: 0, fontWeight: 'bold', paddingTop: 0
-                            , transform: [{ translateY: Topper }]
-                            , paddingBottom: 2
+                            , transform: [{ translateY: Topper },{translateX}]
+                            , paddingBottom: 2,
                         }} >Recommendations</Animated.Text>
                         <Animated.Text style={{
                             fontFamily: "OpenSans-Regular", fontSize: 14, color: "#222222", padding: 20, margin: 10, paddingTop: 0, marginTop: 0, marginBottom: 0, opacity: 0.5, paddingBottom: 8
-                            , transform: [{ translateY: Topper }]
+                            , transform: [{ translateY: Topper },{translateX}]
                         }} >Your favourite cuisine at your fingertips</Animated.Text>
                         <Animated.Text style={{
                             fontFamily: "OpenSans-SemiBoldItalic", fontSize: 15, color: "#222222", padding: 20, margin: 10, paddingTop: 0, marginTop: 0, marginBottom: 0, opacity: 0.8,
-                            transform: [{ translateY: Topper }]
+                            transform: [{ translateY: Topper },{translateX}]
                         }} >"Orange Sandwiches are delicious"</Animated.Text>
                         <Animated.View
-                            style={{ marginBottom: 0, marginTop: 0, transform: [{ translateY: Topper }] }}
+                            style={{ marginBottom: 0, marginTop: 0, transform: [{ translateY: Topper2 }] }}
                         >
                             <ScrollView showsHorizontalScrollIndicator={false} horizontal={true} style={{ marginBottom: 0, marginTop: 0, paddingTop: 18, }} contentContainerStyle={{ alignItems: 'center' }}>
                                 {
@@ -258,7 +254,9 @@ export class RecipeListing extends Component {
                                                         backgroundColor: 'white',
                                                         // ...include most of View/Layout styles
                                                     width: 35, height: 35, backgroundColor: "#ee545b", padding: 5, marginTop: 5, borderRadius: 10, justifyContent: "center", alignItems: "center" }}>
+                                                        <TouchableOpacity onPress={()=>this.props.navigation.navigate('Recipe')}>
                                                                     <Image source={require('../../Assets/icons/next.png')} style={{ width: 13, height: 13, }} resizeMode="contain" />
+                                                                    </TouchableOpacity>
                                                                 </ShadowFlex>
                                                             </View>
                                                         </View>

@@ -3,6 +3,7 @@ import { View, Image, TouchableOpacity, StyleSheet} from 'react-native';
 import * as Animatable from "react-native-animatable";
 import { Neomorph ,NeomorphFlex} from 'react-native-neomorph-shadows';
 
+
 class Header extends React.Component {
     render() {
         return (
@@ -41,7 +42,7 @@ class Header extends React.Component {
                     {
                          this.props.user ?
                          <TouchableOpacity style={styles.headerIcon}
-                             onPress={() => { this.props.navigation.goBack() }} >
+                             onPress={() => { this.props.navigation.navigate('Authentication') }} >
                              <Image source={require('../Assets/icons/user.png')}
                                  style={{
                                      width: 20, resizeMode: "contain",

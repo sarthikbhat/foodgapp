@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
-import { Text, TouchableOpacity, View, Image, StatusBar, StyleSheet, Dimensions, Animated, ScrollView, ImageBackground } from 'react-native'
+import { Text, TouchableOpacity, View, Image, StatusBar, StyleSheet, Dimensions, Animated, ScrollView, ImageBackground,Alert ,ToastAndroid} from 'react-native'
 import Header from '../../Reusables/Header'
 import { recipes, ingredient } from '../../Constants/recipe'
 import * as Animatable from 'react-native-animatable'
+import { Neomorph, NeomorphFlex } from 'react-native-neomorph-shadows';
+import Slider from 'react-native-slide-to-unlock';
 
 const MIN_HEIGHT = 0.8 * Dimensions.get('window').height
 const MAX_HEIGHT = Dimensions.get('window').height
@@ -104,9 +106,9 @@ export class RecipeScreen extends Component {
                 <ImageBackground source={require('../../Assets/images/darkfoodgapp.png')} style={styles.outerMenu} imageStyle={styles.imageMenu}>
                     {/* <Header backgroundColor="transparent" back={true} navigation={this.props.navigation}/> */}
                     <View style={{ display: "flex", flexDirection: 'row', margin: 30, marginTop: 40 }} >
-                        <View elevation={10} style={styles.iconBorder} ><Image source={require('../../Assets/icons/goback.png')} style={{ width: 15, height: 15, resizeMode: "contain" }} /></View>
-                        <View style={{ flex: 1 }} />
-                        <View elevation={10} style={styles.iconBorder} ><Image source={require('../../Assets/icons/wishlist.png')} style={{ width: 20, height: 20, resizeMode: "contain" }} /></View>
+                    <TouchableOpacity onPress={()=>this.props.navigation.goBack()} elevation={10} style={[styles.iconBorder,{}]}><Image source={require('../../Assets/icons/goback.png')} style={{ width: 15, height: 15, resizeMode: "contain" }} /></TouchableOpacity>
+                        <Animated.View style={{ flex: 1 }} />
+                        <TouchableOpacity onPress={()=>ToastAndroid.show('Wishlisted',ToastAndroid.SHORT)} elevation={10} style={[styles.iconBorder,{}]} ><Image source={require('../../Assets/icons/wishlist.png')} style={{ width: 20, height: 20, resizeMode: "contain" }} /></TouchableOpacity>
                     </View>
                     <View style={{ backgroundColor: "white", width: "100%", flex: 1, marginTop: "27%", borderTopLeftRadius: 50, borderTopRightRadius: 50, backgroundColor: "#fbfaf8" }} >
                         <View style={{ height: "40%", width: "50%", alignSelf: "center", marginTop: "-28%" }} >
@@ -129,11 +131,13 @@ export class RecipeScreen extends Component {
                                 <Text style={{ fontSize: 15, fontFamily: "OpenSans-SemiBold", opacity: 0.7, marginLeft: 5, letterSpacing: -0.5 }} >4.8</Text>
                             </View>
                         </View>
-                        {/* <View style={{ display: 'flex', flexDirection: 'row', alignItems: "center", margin:20, alignSelf:"center", backgroundColor:"#ee545b", padding:10, paddingLeft:20, paddingRight:20, borderRadius:20 }} >
-                            <Image elevation={1} source={require('../../Assets/icons/wishlist.png')} style={{ width: 20, height: 20, resizeMode: "contain" }} />
+                        <TouchableOpacity onPress={()=>ToastAndroid.show('Wishlisted',ToastAndroid.SHORT)}>
+                        <View style={{ display: 'flex', flexDirection: 'row', alignItems: "center", margin:20, alignSelf:"center", backgroundColor:"#ee545b", padding:15, paddingLeft:20, paddingRight:20, borderRadius:25 }} >
+                            <Image elevation={1} source={require('../../Assets/icons/heart.png')} style={{ width: 20, height: 20, resizeMode: "contain" ,marginRight:15}} />
                             <Text style={{fontFamily:"OpenSans-SemiBold", fontSize:16,color:"white"}}>Add To WishList</Text>
-                        </View> */}
-                        <View style={{ marginTop: 28 }} >
+                        </View>
+                        </TouchableOpacity>
+                        <View style={{ marginTop: 5 }} >
                             <Text style={{ fontFamily: "OpenSans-Bold", fontSize: 17.5, color: "#222222", marginBottom: 10, marginLeft: 28 }}>Ingredients</Text>
                             <ScrollView horizontal showsHorizontalScrollIndicator={false} >
                                 <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
@@ -150,6 +154,38 @@ export class RecipeScreen extends Component {
                                 </View>
                             </ScrollView>
                         </View>
+                        {/* <NeomorphFlex inner style={{shadowRadius: 3,borderRadius: 100,backgroundColor: '#ebebeb',justifyContent: 'center',alignSelf: 'center',  padding:5,
+                                backgroundColor: '#eee',
+                                borderRadius: 50,
+                                overflow: 'hidden',
+                                width: '90%',}}> */}
+                                <View style={{width: Dimensions.get('window').width-40,alignSelf:'center', backgroundColor: '#eee',borderRadius: 60,padding:10,margin:8,paddingBottom:5,paddingTop:5}}>
+                        
+                        <Slider childrenContainer={{  }}  onEndReached={() => { this.props.navigation.navigate('ActualRecipe')}}
+                            containerStyle={{justifyContent: 'center',alignItems: 'center',marginLeft:10,
+                                backgroundColor: '#eee',
+                                borderRadius: 50,
+                                overflow: 'hidden',
+                                width: Dimensions.get('window').width-50, paddingLeft:0, paddingRight:0,alignSelf:'center',
+                                // opacity: 0.9
+                                // elevation:4
+                            }}
+                            sliderElement={
+                                <View elevation={10} style={{
+                                    justifyContent: "center",alignItems: "center",height: 60, width: 60,backgroundColor: "transparent",borderRadius: 30,overflow:'visible',marginLeft:'-2.5%',marginBottom:0
+                                }} >
+                                    <View style={{position:'absolute',right:2,width:Dimensions.get('window').width-50,backgroundColor:'#ee545b',height: 60,justifyContent:'center',borderRadius: 30}}>
+                                    <Text style={{ fontSize: 15, fontFamily: "OpenSans-SemiBold", letterSpacing: -0.5 ,textAlign:'center',marginLeft:15,color:'#fff',alignSelf:'center'}}>Voila!! You have unlocked the recipe</Text>
+                                    </View>
+                                    <Image source={require('../../Assets/icons/next.png')} style={{ width: 20, height: 20, resizeMode: "contain" }} />
+                                </View>
+                                // <Image style={{ width: 50,margin: 4, borderRadius: 5, height: 50, backgroundColor: 'red',}}
+                                // source={{uri:'https://facebook.github.io/react-native/docs/assets/favicon.png', }} /> 
+                            }>
+                            <Text style={{ fontSize: 18, fontFamily: "OpenSans-SemiBold", opacity: 0.5, letterSpacing: -0.5 ,textAlign:'center',marginLeft:15}}>Slide to know the full recipe</Text>
+                        </Slider>
+                        </View>
+                        {/* </NeomorphFlex> */}
                     </View>
                 </ImageBackground>
             </View>
@@ -175,6 +211,7 @@ const styles = StyleSheet.create({
     outerMenu: {
         display: 'flex',
         resizeMode: "cover",
+        flex:1,
         // marginTop: 30,
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').height,

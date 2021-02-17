@@ -21,6 +21,7 @@ export default class AfterCamera extends Component {
             anim: new Animated.Value(0),
             index: 0,
             loop: false,
+            imej: [require("../../Assets/images/berger.png"), require("../../Assets/images/dosa.png"), require("../../Assets/images/paratha.png"), require("../../Assets/images/cheesepizza.png"), require("../../Assets/images/Noodles.png")],
             show: true,
         }
         if (
@@ -103,21 +104,21 @@ export default class AfterCamera extends Component {
                 '#ebebeb',
                 '#ebebeb',
                 '#ebebeb',
-                '#444',
-                '#444',
+                '#fc6474',
+                '#fc6474',
                 '#ebebeb',
             ],
         });
         const dotbgColor = this.state.anim.interpolate({
             inputRange: [0, 0.001, 0.5, 0.501, 0.9, 1, 2.1],
             outputRange: [
-                '#444',
-                '#444',
-                '#444',
+                '#fc6474',
+                '#fc6474',
+                '#fc6474',
                 '#f6f6f7',
                 '#f6f6f7',
                 '#f6f6f7',
-                '#444'
+                '#fc6474'
             ],
         });
         return (
@@ -128,13 +129,37 @@ export default class AfterCamera extends Component {
                     zIndex, position: 'absolute', top: 0, left: 0, width: Dimensions.get('window').width
                 }}>
                 </Animated.View>
-                <StatusBar barStyle="dark-content"  backgroundColor="#ebebeb" />
-                {/* <ImageBackground source={require('../../Assets/images/appbg.png')} style={styles.outerMenu} imageStyle={styles.imageMenu}> */}
+                <StatusBar hidden barStyle='dark-content' backgroundColor="rgba(0,0,0,0)" translucent={true} />
+                <ImageBackground source={require('../../Assets/images/appbg.png')} style={styles.outerMenu} imageStyle={styles.imageMenu}>
                     <Header backgroundColor="transparent" user={true} navigation={this.props.navigation} />
                     <Text style={{ fontFamily: "OpenSans-SemiBold", fontSize: 25, color: "#010101", textAlign: 'left',opacity:0.7,paddingLeft:25   }} >Garnish</Text>
-                    <Text style={{ fontFamily: "OpenSans-Regular", fontSize: 15, color: "#010101", textAlign: 'left',opacity:0.5,paddingLeft:25   }} >Your delectable platter</Text>
+                    <Text style={{ fontFamily: "OpenSans-Regular", fontSize: 15, color: "#010101", textAlign: 'left',opacity:0.5,paddingLeft:25   }} >Your delectable platter with</Text>
                     <View>
-                        <View style={{ padding: 20 }}>
+                    <View style={{ marginTop: 25 }} >
+                            <Text style={{ fontFamily: "OpenSans-SemiBold", fontSize: 17.5, color: "#222222", marginBottom: 10, marginLeft: 28 }}>Matched Ingredients</Text>
+                            <ScrollView horizontal showsHorizontalScrollIndicator={false} >
+                                <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                                    <View style={{ width: 25 }} />
+                                    {
+                                        this.state.imej.map((elm, index) => {
+                                            return <View elevation={2} style={{ padding: 15, margin: 5, marginBottom: 15, backgroundColor: 'white', alignItems: "center", minWidth: 75, minHeight: 125, borderRadius: 45, justifyContent: "center" }} >
+                                                <Image elevation={5} source={elm} style={{ width: 35, height: 35, resizeMode: "contain" }} />
+                                                <Text style={{ fontSize: 14, fontFamily: "OpenSans-SemiBold", opacity: 0.7, marginTop: 10, letterSpacing: -0.5 }} >Broccolli</Text>
+                                            </View>
+                                        })
+                                    }
+                                    <View style={{ width: 25 }} />
+                                </View>
+                            </ScrollView>
+                        </View>
+                        {/* <View style={{ flex: 1, display: "flex", flexDirection: "row", flexWrap: "wrap", }}> */}
+                        {/* <View style={{
+                                        // backgroundColor:'#000',
+                                        marginTop: 10, padding: 15
+                                    }}> */}
+                         <View style={{ marginTop: 25 }} >
+                            <Text style={{ fontFamily: "OpenSans-SemiBold", fontSize: 17.5, color: "#222222", marginBottom: 10, marginLeft: 28 }}>And Some Mix Of Your Taste</Text>
+                            <View style={{ padding: 20,paddingTop:5 }}>
 
                             <Animatable.View
                                 animation="zoomIn"
@@ -146,84 +171,101 @@ export default class AfterCamera extends Component {
                                 <TextInput style={{ flex: 1, padding: 0, marginLeft: 20 }} placeholder="Seach for an ingredient" />
                             </Animatable.View>
                         </View>
-                        <Text style={{ fontFamily: "OpenSans-SemiBold", fontSize: 25, color: "#010101", textAlign: 'center',opacity:0.7,   }} >Matched Ingredients</Text>
-                        <ScrollView horizontal={true} style={{}}>
-                            {
-                                recipes.map((recipe, index) => {
-                                    return (
-                                        <>
-                                            <View style={{ width: 15 }} />
-                                            <Animatable.View style={{ height: 120, width: 120, borderRadius: 25, backgroundColor: '#f6f6f7', alignItems: 'center', padding: 15, marginRight: 25, elevation: 10, marginBottom: 15, marginTop: 15 }} >
-                                            <View style={{ height: 65, width: 65, borderRadius: 35, backgroundColor: '#ebebeb', alignItems: 'center',  justifyContent:'center'}} >
-                                                <Image source={require('../../Assets/images/l5.jpg')} style={{ width: 50, height: 50, borderRadius: 25 }} />
-                                                </View>
-                                                <Text style={{ fontFamily: "OpenSans-SemiBold", fontSize: 15, color: "#010101", marginTop: 10, textAlign: 'center' }} >Potato</Text>
-                                            </Animatable.View>
-                                        </>
-                                    )
-                                })
-                            }
-                        </ScrollView>
-                        {/* <View style={{ flex: 1, display: "flex", flexDirection: "row", flexWrap: "wrap", }}> */}
-                        {/* <View style={{
-                                        // backgroundColor:'#000',
-                                        marginTop: 10, padding: 15
-                                    }}> */}
-                        <Text style={{ fontFamily: "OpenSans-SemiBold", fontSize: 25, color: "#010101", textAlign: 'center', margin: 15,marginBottom:5 }} >Add Some Mix of Your Taste</Text>
-                        <ScrollView style={{ padding: 15, marginBottom: 20, height: Dimensions.get('window').height / 2 }}>
-                            <Animated.View style={{ flex: 1, display: "flex", flexDirection: "row", flexWrap: "wrap", marginBottom: 20, justifyContent: 'center' }}>
-                                {
-                                    [1,2,3,4,5,6].map((recipe, index) => {
-                                        return (
-                                            // <View style={{
-                                            //     // backgroundColor:'#000',
-                                            //     marginTop: 10, padding: 15
-                                            // }}>
-                                            <NeomorphFlex swapShadows style={{shadowRadius: 4,backgroundColor: "#ebebeb", display: 'flex', flexDirection: "row", padding: 14, alignItems: "center", borderRadius: 50, margin: 10, width: Dimensions.get('window').width / 2.3 - 20, justifyContent: 'center' }}>
-                                            {/* <Animatable.View
-                                                animation="zoomIn"
-                                                delay={50}
-                                                duration={500}
-                                                useNativeDriver elevation={1} style={{ backgroundColor: "#f6f6f5", display: 'flex', flexDirection: "row", padding: 14, alignItems: "center", borderRadius: 50, margin: 10, width: Dimensions.get('window').width / 2.3 - 20, justifyContent: 'center' }} > */}
-                                                <Image source={require('../../Assets/images/l5.jpg')} style={{ width: 30, height: 30, borderRadius: 30 }} />
-                                                <Text style={{ fontFamily: "OpenSans-Regular", fontSize: 15, color: "#624e30", textAlign: 'center', flex: 1 }} >Some Ingredient</Text>
-                                                <Image source={require('../../Assets/icons/plus.png')} style={{ width: 15, height: 15, borderRadius: 30 }} />
-                                            {/* </Animatable.View> */}
-                                            </NeomorphFlex>
-                                        )
-                                    })
-
-                                }
-                            </Animated.View>
-                        </ScrollView>
+                            <ScrollView horizontal showsHorizontalScrollIndicator={false} >
+                                <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                                    <View style={{ width: 25 }} />
+                                    {
+                                        this.state.imej.map((elm, index) => {
+                                            return <View elevation={2} style={{ padding: 15, margin: 5, marginBottom: 15, backgroundColor: 'white', alignItems: "center", minWidth: 75, minHeight: 125, borderRadius: 45, justifyContent: "center" }} >
+                                                <Image elevation={5} source={elm} style={{ width: 35, height: 35, resizeMode: "contain" }} />
+                                                <Text style={{ fontSize: 14, fontFamily: "OpenSans-SemiBold", opacity: 0.7, marginTop: 10, letterSpacing: -0.5 }} >Broccolli</Text>
+                                            </View>
+                                        })
+                                    }
+                                    <View style={{ width: 25 }} />
+                                </View>
+                            </ScrollView>
+                        </View>
+                        {/* <View style={{ marginTop: 5 }} >
+                            <Text style={{ fontFamily: "OpenSans-SemiBold", fontSize: 17.5, color: "#222222", marginBottom: 10, marginLeft: 28 }}>Some commonly used ingredients</Text>
+                            <ScrollView horizontal showsHorizontalScrollIndicator={false} >
+                                <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
+                                    <View style={{ width: 25 }} />
+                                    {
+                                        this.state.imej.map((elm, index) => {
+                                            return <View elevation={5} style={{ padding: 15, margin: 5, marginBottom: 15, backgroundColor: 'white', alignItems: "center", minWidth: 75, minHeight: 125, borderRadius: 45, justifyContent: "center" }} >
+                                                <Image elevation={5} source={elm} style={{ width: 35, height: 35, resizeMode: "contain" }} />
+                                                <Text style={{ fontSize: 14, fontFamily: "OpenSans-SemiBold", opacity: 0.7, marginTop: 10, letterSpacing: -0.5 }} >Broccolli</Text>
+                                            </View>
+                                        })
+                                    }
+                                    <View style={{ width: 25 }} />
+                                </View>
+                            </ScrollView>
+                        </View> */}
                         {/* </View> */}
                         {/* </View> */}
                     </View>
-
-                    {/* </ImageBackground> */}
-                    <View style={{
-                        backgroundColor: 'transparent', width: Dimensions.get('window').width, height: Dimensions.get('window').width / 8,
-                        borderRadius: Dimensions.get('window').width / 10, position: 'absolute', bottom: 0, justifyContent: 'center', alignItems: 'center', zIndex: 100
-                    }}>
-
-                        <Animated.View style={{
-                            backgroundColor: dotbgColor, width: Dimensions.get('window').width / 8, height: Dimensions.get('window').width / 8,
-                            borderRadius: Dimensions.get('window').width / 10,
-                            transform: [{ perspective: 200 }, { rotateY }, { scale }, { translateX }]
+                    <Animated.View style={{
+                            backgroundColor: dotbgColor,padding:10,borderRadius: Dimensions.get('window').width / 10,width:(Dimensions.get('window').width )-50
+                            ,justifyContent: 'space-between',alignSelf:'center',margin:10
                         }}>
-                            <TouchableOpacity onPress={() => this.animater()} style={{
-                                width: Dimensions.get('window').width / 8, height: Dimensions.get('window').width / 8
-                                , borderRadius: Dimensions.get('window').width / 10, alignItems: 'center', backgroundColor: 'transparent', justifyContent: 'center'
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('FoodRecipe')} style={{
+                                // width: Dimensions.get('window').width / 8, height: Dimensions.get('window').width / 8,
+                                //  alignSelf:'flex-end',
+                                  alignItems: 'center',  justifyContent: 'center',flexDirection:'row'
                             }}>
-                                <Image source={require('../../Assets/icons/right.png')}
+                                <View style={{width:50,height:50,borderRadius:25,backgroundColor:'white',justifyContent:'center',alignItems:'center'}}>
+                                <Image source={require('../../Assets/icons/cart.png')}
                                     style={{
-                                        width: 20, resizeMode: "contain",
-                                        height: 20
+                                        width: 30, resizeMode: "contain",
+                                        height: 30,
+                                    }}
+                                />
+                                </View>
+                                <Text style={{ fontSize: 17, fontFamily: "OpenSans-SemiBold",  letterSpacing: -0.5,color:'white',marginLeft:15 }} >10 Items in total</Text>
+                                <View style={{flex:1}}/>
+                                <Text style={{ fontSize: 20, fontFamily: "OpenSans-SemiBold",  letterSpacing: -0.5,color:'white',marginLeft:35 }} >Proceed</Text>
+                                <Image source={require('../../Assets/icons/next.png')}
+                                    style={{
+                                        width: 22, resizeMode: "contain",
+                                        height: 22,marginLeft:15,marginTop:1
                                     }}
                                 />
                             </TouchableOpacity>
                         </Animated.View>
-                    </View>
+                    <Animated.View style={{
+                            backgroundColor: '#fdc12d',padding:10,borderRadius: Dimensions.get('window').width / 10,width:(Dimensions.get('window').width )-50
+                            ,justifyContent: 'space-between',alignSelf:'center',margin:10
+                        }}>
+                            <TouchableOpacity onPress={() => this.props.navigation.goBack()} style={{
+                                // width: Dimensions.get('window').width / 8, height: Dimensions.get('window').width / 8,
+                                //  alignSelf:'flex-end',
+                                  alignItems: 'center',  justifyContent: 'center',flexDirection:'row'
+                            }}>
+                                <Image source={require('../../Assets/icons/prev.png')}
+                                    style={{
+                                        width: 22, resizeMode: "contain",
+                                        height: 22,marginLeft:15,marginTop:1
+                                    }}
+                                />
+                                <Text style={{ fontSize: 20, fontFamily: "OpenSans-SemiBold",  letterSpacing: -0.5,color:'white',marginLeft:35 }} >Re-Take picture</Text>
+                                    <View style={{flex:1}}/>
+                                <View style={{width:50,height:50,borderRadius:25,backgroundColor:'transparent',justifyContent:'center',alignItems:'center'}}>
+                                <Image source={require('../../Assets/icons/camera_white.png')}
+                                    style={{
+                                        width: 30, resizeMode: "contain",
+                                        height: 30,
+                                    }}
+                                />
+                                </View>
+                                {/* <Text style={{ fontSize: 17, fontFamily: "OpenSans-SemiBold",  letterSpacing: -0.5,color:'white',marginLeft:15 }} >10 Items in total</Text> */}
+                                
+                            </TouchableOpacity>
+                        </Animated.View>
+                        
+                    </ImageBackground>
+                        
             </View>
         )
     }
@@ -233,7 +275,7 @@ const styles = StyleSheet.create({
     outerMenu: {
         display: 'flex',
         resizeMode: "cover",
-        marginTop: 30,
+        // marginTop: 30,
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').height,
     },
