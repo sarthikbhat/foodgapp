@@ -93,7 +93,7 @@ export class ActualRecipe extends Component {
                         scale
                     }],
                     }}>
-                        <Image source={require('../../Assets/images/l2.jpg')} style={{width: null, height:null, resizeMode:'cover',flex:1}} resizeMode="contain" />
+                        <Image source={require('../../Assets/images/l2.jpg')} style={{width: null, height:null, resizeMode:'cover',flex:1}} resizeMode="cover" />
                         </Animated.View>
                         <Animated.View style={{position:'absolute', marginTop: 0,alignItems:'center',width:'100%',zIndex:25,backgroundColor:bg,padding:40,opacity:rev
                 }}>

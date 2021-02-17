@@ -74,7 +74,7 @@ import {
       });
       return (
         <>
-          <View {...{ height, width }} style={{elevation:10,marginBottom:-10}} >
+          <View {...{ height, width }} style={{elevation:10,marginBottom:5}} >
             <AnimatedSvg width={width * 2} {...{ height }} style={{ transform: [{ translateX }] }}>
               <Path fill={backgroundColor} {...{ d }} />
             </AnimatedSvg>

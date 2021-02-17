@@ -3,7 +3,7 @@ import { Text, View, Image, TextInput, StatusBar, ScrollView, Dimensions, Toucha
 import Header from '../../Reusables/Header'
 import * as Animatable from 'react-native-animatable'
 import { recipes } from '../../Constants/recipe'
-import { Neomorph ,NeomorphFlex} from 'react-native-neomorph-shadows';
+import { Neomorph, NeomorphFlex } from 'react-native-neomorph-shadows';
 
 
 const bgcolor = [
@@ -122,20 +122,23 @@ export default class AfterCamera extends Component {
             ],
         });
         return (
-            <View style={{  flex: 1, zIndex: 1 }}>
+            <View style={{ flex: 1, zIndex: 1 }}>
                 <Animated.View style={{
                     ...StyleSheet.absoluteFillObject,
                     backgroundColor: backgroundColor,
                     zIndex, position: 'absolute', top: 0, left: 0, width: Dimensions.get('window').width
                 }}>
                 </Animated.View>
-                <StatusBar hidden barStyle='dark-content' backgroundColor="rgba(0,0,0,0)" translucent={true} />
+                <StatusBar barStyle='dark-content' backgroundColor="rgba(0,0,0,0)" translucent={true} />
+
+                {/* <StatusBar translucent={false} barStyle="dark-content" backgroundColor="#ebebeb" /> */}
                 <ImageBackground source={require('../../Assets/images/appbg.png')} style={styles.outerMenu} imageStyle={styles.imageMenu}>
                     <Header backgroundColor="transparent" user={true} navigation={this.props.navigation} />
-                    <Text style={{ fontFamily: "OpenSans-SemiBold", fontSize: 25, color: "#010101", textAlign: 'left',opacity:0.7,paddingLeft:25   }} >Garnish</Text>
-                    <Text style={{ fontFamily: "OpenSans-Regular", fontSize: 15, color: "#010101", textAlign: 'left',opacity:0.5,paddingLeft:25   }} >Your delectable platter with</Text>
+                    <Text style={{ fontFamily: "OpenSans-SemiBold", fontSize: 25, color: "#010101", textAlign: 'left', opacity: 0.7, paddingLeft: 25 }} >Garnish</Text>
+                    <Text style={{ fontFamily: "OpenSans-Regular", fontSize: 15, color: "#010101", textAlign: 'left', opacity: 0.5, paddingLeft: 25 }} >Your delectable platter with</Text>
+                    <ScrollView>
                     <View>
-                    <View style={{ marginTop: 25 }} >
+                        <View style={{ marginTop: 25 }} >
                             <Text style={{ fontFamily: "OpenSans-SemiBold", fontSize: 17.5, color: "#222222", marginBottom: 10, marginLeft: 28 }}>Matched Ingredients</Text>
                             <ScrollView horizontal showsHorizontalScrollIndicator={false} >
                                 <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
@@ -157,20 +160,20 @@ export default class AfterCamera extends Component {
                                         // backgroundColor:'#000',
                                         marginTop: 10, padding: 15
                                     }}> */}
-                         <View style={{ marginTop: 25 }} >
+                        <View style={{ marginTop: 25 }} >
                             <Text style={{ fontFamily: "OpenSans-SemiBold", fontSize: 17.5, color: "#222222", marginBottom: 10, marginLeft: 28 }}>And Some Mix Of Your Taste</Text>
-                            <View style={{ padding: 20,paddingTop:5 }}>
+                            <View style={{ padding: 20, paddingTop: 5 }}>
 
-                            <Animatable.View
-                                animation="zoomIn"
-                                delay={50}
-                                duration={500}
-                                elevation={10}
-                                useNativeDriver style={{  display: 'flex', flexDirection: "row", padding: 12, alignItems: "center", borderRadius: 50, marginTop: 5,backgroundColor:'#f6f6f7' }} >
-                                <Image source={require('../../Assets/icons/search.png')} style={{ width: 15, height: 15, marginLeft: 10 }} resizeMode="contain" />
-                                <TextInput style={{ flex: 1, padding: 0, marginLeft: 20 }} placeholder="Seach for an ingredient" />
-                            </Animatable.View>
-                        </View>
+                                <Animatable.View
+                                    animation="zoomIn"
+                                    delay={50}
+                                    duration={500}
+                                    elevation={10}
+                                    useNativeDriver style={{ display: 'flex', flexDirection: "row", padding: 12, alignItems: "center", borderRadius: 50, marginTop: 5, backgroundColor: '#f6f6f7' }} >
+                                    <Image source={require('../../Assets/icons/search.png')} style={{ width: 15, height: 15, marginLeft: 10 }} resizeMode="contain" />
+                                    <TextInput style={{ flex: 1, padding: 0, marginLeft: 20 }} placeholder="Seach for an ingredient" />
+                                </Animatable.View>
+                            </View>
                             <ScrollView horizontal showsHorizontalScrollIndicator={false} >
                                 <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                                     <View style={{ width: 25 }} />
@@ -207,65 +210,68 @@ export default class AfterCamera extends Component {
                         {/* </View> */}
                     </View>
                     <Animated.View style={{
-                            backgroundColor: dotbgColor,padding:10,borderRadius: Dimensions.get('window').width / 10,width:(Dimensions.get('window').width )-50
-                            ,justifyContent: 'space-between',alignSelf:'center',margin:10
+                        backgroundColor: dotbgColor, padding: 10,paddingTop:8,paddingBottom:8, borderRadius: Dimensions.get('window').width / 10, width: (Dimensions.get('window').width) - 50
+                        , justifyContent: 'space-between', alignSelf: 'center', margin: 10
+                    }}>
+                        <TouchableOpacity onPress={() => this.props.navigation.navigate('FoodRecipe')} style={{
+                            // width: Dimensions.get('window').width / 8, height: Dimensions.get('window').width / 8,
+                            //  alignSelf:'flex-end',
+                            display:"flex",alignItems: 'center', justifyContent: 'center', flexDirection: 'row'
                         }}>
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate('FoodRecipe')} style={{
-                                // width: Dimensions.get('window').width / 8, height: Dimensions.get('window').width / 8,
-                                //  alignSelf:'flex-end',
-                                  alignItems: 'center',  justifyContent: 'center',flexDirection:'row'
-                            }}>
-                                <View style={{width:50,height:50,borderRadius:25,backgroundColor:'white',justifyContent:'center',alignItems:'center'}}>
+                            <View style={{ width: 50, height: 50, borderRadius: 25, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center' }}>
                                 <Image source={require('../../Assets/icons/cart.png')}
                                     style={{
                                         width: 30, resizeMode: "contain",
                                         height: 30,
                                     }}
                                 />
-                                </View>
-                                <Text style={{ fontSize: 17, fontFamily: "OpenSans-SemiBold",  letterSpacing: -0.5,color:'white',marginLeft:15 }} >10 Items in total</Text>
-                                <View style={{flex:1}}/>
-                                <Text style={{ fontSize: 20, fontFamily: "OpenSans-SemiBold",  letterSpacing: -0.5,color:'white',marginLeft:35 }} >Proceed</Text>
-                                <Image source={require('../../Assets/icons/next.png')}
-                                    style={{
-                                        width: 22, resizeMode: "contain",
-                                        height: 22,marginLeft:15,marginTop:1
-                                    }}
-                                />
-                            </TouchableOpacity>
-                        </Animated.View>
+                            </View>
+                            <View style={{ flex: 2 }} />
+                            <Text style={{ fontSize: 17, fontFamily: "OpenSans-SemiBold", letterSpacing: -0.5, color: 'white'}} >10 Items in total</Text>
+                            <View style={{ flex: 2 }} />
+                            {/* <Text style={{ fontSize: 20, fontFamily: "OpenSans-SemiBold", letterSpacing: -0.5, color: 'white'}} >Proceed</Text> */}
+                            <View style={{ flex: 1 }} />
+                            <Image source={require('../../Assets/icons/next.png')}
+                                style={{
+                                    width: 22, resizeMode: "contain",
+                                    height: 22, marginTop: 1, marginRight:10
+                                }}
+                            />
+                        </TouchableOpacity>
+                    </Animated.View>
                     <Animated.View style={{
-                            backgroundColor: '#fdc12d',padding:10,borderRadius: Dimensions.get('window').width / 10,width:(Dimensions.get('window').width )-50
-                            ,justifyContent: 'space-between',alignSelf:'center',margin:10
+                        backgroundColor: '#fdc12d', padding: 10,paddingTop:8,paddingBottom:8, borderRadius: Dimensions.get('window').width / 10, width: (Dimensions.get('window').width) - 50
+                        , justifyContent: 'space-between', alignSelf: 'center', margin: 10,marginBottom:40
+                    }}>
+                        <TouchableOpacity onPress={() => this.props.navigation.goBack()} style={{
+                            // width: Dimensions.get('window').width / 8, height: Dimensions.get('window').width / 8,
+                            //  alignSelf:'flex-end',
+                            alignItems: 'center', justifyContent: 'center', flexDirection: 'row', 
                         }}>
-                            <TouchableOpacity onPress={() => this.props.navigation.goBack()} style={{
-                                // width: Dimensions.get('window').width / 8, height: Dimensions.get('window').width / 8,
-                                //  alignSelf:'flex-end',
-                                  alignItems: 'center',  justifyContent: 'center',flexDirection:'row'
-                            }}>
-                                <Image source={require('../../Assets/icons/prev.png')}
-                                    style={{
-                                        width: 22, resizeMode: "contain",
-                                        height: 22,marginLeft:15,marginTop:1
-                                    }}
-                                />
-                                <Text style={{ fontSize: 20, fontFamily: "OpenSans-SemiBold",  letterSpacing: -0.5,color:'white',marginLeft:35 }} >Re-Take picture</Text>
-                                    <View style={{flex:1}}/>
-                                <View style={{width:50,height:50,borderRadius:25,backgroundColor:'transparent',justifyContent:'center',alignItems:'center'}}>
+                            <Image source={require('../../Assets/icons/prev.png')}
+                                style={{
+                                    width: 22, resizeMode: "contain",
+                                    height: 22, marginLeft: 15, marginTop: 1
+                                }}
+                            />
+                            <View style={{ flex: 1 }} />
+                            <Text style={{ fontSize: 17, fontFamily: "OpenSans-SemiBold", letterSpacing: -0.5, color: 'white' }} >Re-Take picture</Text>
+                            <View style={{ flex: 1 }} />
+                            <View style={{ width: 50, height: 50, borderRadius: 25, backgroundColor: 'transparent', justifyContent: 'center', alignItems: 'center' }}>
                                 <Image source={require('../../Assets/icons/camera_white.png')}
                                     style={{
                                         width: 30, resizeMode: "contain",
                                         height: 30,
                                     }}
                                 />
-                                </View>
-                                {/* <Text style={{ fontSize: 17, fontFamily: "OpenSans-SemiBold",  letterSpacing: -0.5,color:'white',marginLeft:15 }} >10 Items in total</Text> */}
-                                
-                            </TouchableOpacity>
-                        </Animated.View>
-                        
-                    </ImageBackground>
-                        
+                            </View>
+                            {/* <Text style={{ fontSize: 17, fontFamily: "OpenSans-SemiBold",  letterSpacing: -0.5,color:'white',marginLeft:15 }} >10 Items in total</Text> */}
+
+                        </TouchableOpacity>
+                    </Animated.View>
+                    </ScrollView>
+                </ImageBackground>
+
             </View>
         )
     }
@@ -275,7 +281,7 @@ const styles = StyleSheet.create({
     outerMenu: {
         display: 'flex',
         resizeMode: "cover",
-        // marginTop: 30,
+        marginTop: 30,
         width: Dimensions.get('window').width,
         height: Dimensions.get('window').height,
     },

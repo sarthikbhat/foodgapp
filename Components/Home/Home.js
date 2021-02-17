@@ -11,7 +11,9 @@ export class Home extends Component {
         //e8d9db ffcc7e
         return (
             <View style={{ paddingTop: 5, flex: 1,backgroundColor:'#ebebeb'}}>
-                <StatusBar translucent={true} barStyle="dark-content" backgroundColor="#ebebeb" />
+                                <StatusBar barStyle='dark-content' backgroundColor="rgba(0,0,0,0)" translucent={true} />
+
+                {/* <StatusBar translucent={false} barStyle="dark-content" backgroundColor="#ebebeb" /> */}
                 <ImageBackground source={require('../../Assets/images/appbg.png')} style={styles.outerMenu} imageStyle={styles.imageMenu}>
                     <Header backgroundColor="transparent" user={true} navigation={this.props.navigation} />
                     <View style={{ flex: 1 }}>
