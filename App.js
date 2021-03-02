@@ -228,7 +228,21 @@ const App = () => {
         <Drawer.Screen name="Home" component={HomeStack} />
         <Drawer.Screen name="FoodRecipe" component={FoodRecipe} />
         <Drawer.Screen name="Camera" component={CameraStack} />
-        <Drawer.Screen name="Authentication" component={Authentication} />
+        {/* <Drawer.Screen name="Authentication" component={Authentication} />*/} 
+        <Stack.Screen
+            options={{
+              animationEnabled: false,
+            }}
+            name="Signin"
+            component={SignIn}
+          />
+          <Stack.Screen
+            options={{
+              animationEnabled: false,
+            }}
+            name="Signup"
+            component={SignUp}
+          /> 
       </Drawer.Navigator>
     </NavigationContainer>
   );
