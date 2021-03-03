@@ -1,15 +1,14 @@
 
 import React from 'react';
 import {
-    StyleSheet, Text, View, TouchableOpacity, TouchableWithoutFeedback, Image, Dimensions, Modal, ToastAndroid, StatusBar
+    StyleSheet, Text, View, TouchableOpacity, BackHandler, Image, Dimensions, Modal, ToastAndroid, StatusBar
 } from 'react-native';
-// eslint-disable-next-line import/no-unresolved
 import { RNCamera } from 'react-native-camera';
-import Tflite from 'tflite-react-native';
-
+import RNFetchBlob from 'rn-fetch-blob';
+import { url } from '../../Reusables/constants'
 import Marker from '../Reusables/Marker'
 
-let tflite = new Tflite();
+// let tflite = new Tflite();
 
 
 const flashModeOrder = {
@@ -61,62 +60,24 @@ export default class CameraScreen extends React.Component {
         faces: [],
         textBlocks: [],
         barcodes: [],
+        clicked: false,
+        uri: ''
     };
 
     componentDidMount() {
-        tflite.loadModel({
-            model: 'models/detect.tflite',// required
-            labels: 'models/labelmap.txt',  // required
-            numThreads: 1,                              // defaults to 1  
-        },
-            (err, res) => {
-                this.setState({
-                    loading: false
-                })
-                if (err) {
-                    ToastAndroid.show("Error loading the model", ToastAndroid.SHORT);
-                    this.props.togglePitcher(false)
-                } else
-                    ToastAndroid.show("Model loaded successfully", ToastAndroid.SHORT);
-            });
-        this.timerHandle = setInterval(async () => {    // ***
-            console.log('iiii')
-            if (this.camera) {
-                const data = await this.camera.takePictureAsync();
-                console.log('takePicture ', data);
-                try {
-                    tflite.detectObjectOnImage({
-                        path: data.uri,
-                        model: 'SSDMobileNet',
-                        // imageMean: 127.5,
-                        // imageStd: 127.5,
-                        threshold: 0.3,       // defaults to 0.1
-                        numResultsPerClass: 2,// defaults to 5
-                    },
-                        (err, res) => {
-                            if (err)
-                                console.log(err);
-                            else {
-                                console.log(res);
-                                this.setState({
-                                    pictureData: data,
-                                    values: res
-                                })
-                            }
-                        });
-                } catch (e) {
-                    console.warn(e)
-                }
-            }                  // ***
-        }, 2000);                                // ***
+        BackHandler.addEventListener('hardwareBackPress', () => {
+            console.log(this.state.clicked)
+            if (this.state.clicked == false) {
+                this.props.navigation.goBack();
+                return true;
+            }
+            this.setState({ clicked: false })
+            return true;
+        });
     };                                         // ***
 
-    componentWillUnmount = () => {             // ***
-        if (this.timerHandle) {                  // ***
-            clearTimeout(this.timerHandle);      // ***
-            this.timerHandle = 0;                // ***
-        }
-        tflite.close();                                     // ***
+    componentWillUnmount = () => {         
+        BackHandler.removeEventListener('hardwareBackPress')
     };
 
     toggleFacing() {
@@ -183,319 +144,189 @@ export default class CameraScreen extends React.Component {
         });
     }
 
-    takePicture = async function () {
-        if (this.timerHandle) {                  // ***
-            clearTimeout(this.timerHandle);      // ***
-            this.timerHandle = 0;                // ***
-        }
-        this.props.navigation.replace("CheckBoxer", { values: this.state.values })
-        // if (this.camera) {
-        //     const data = await this.camera.takePictureAsync();
-        //     console.log('takePicture ', data);
-        //     try {
-        //         tflite.detectObjectOnImage({
-        //             path: data.uri,
-        //             model: 'SSDMobileNet',
-        //             // imageMean: 127.5,
-        //             // imageStd: 127.5,
-        //             threshold: 0.3,       // defaults to 0.1
-        //             numResultsPerClass: 2,// defaults to 5
-        //         },
-        //             (err, res) => {
-        //                 if (err)
-        //                     console.log(err);
-        //                 else {
-        //                     console.log(res);
-        //                     this.setState({
-        //                         values: res
-        //                     })
-        //                 }
-        //             });
-        //     } catch (e) {
-        //         console.warn(e)
-        //     }
-        // }
-    };
-
-    takeVideo = async () => {
-        const { isRecording } = this.state;
-        if (this.camera && !isRecording) {
+    submit = () => {
+        var date = new Date()
+        RNFetchBlob.fetch('POST', `${url}/upload`, {
+            'Content-Type': 'multipart/form-data',
+        }, [
+            {
+                name: 'file',
+                filename:'aaa.jpg',
+                data: RNFetchBlob.wrap(this.state.uri)
+            },
+            { name: 'name', data: JSON.stringify(date.getMilliseconds()) },
+        ]).then(async (resp) => {
+            var res;
             try {
-                const promise = this.camera.recordAsync(this.state.recordOptions);
-
-                if (promise) {
-                    this.setState({ isRecording: true });
-                    const data = await promise;
-                    console.warn('takeVideo', data);
+                res = await JSON.parse(resp.data)
+                if (res!=false) {
+                    this.setState({
+                        loading: false,
+                    })
+                    ToastAndroid.show('Processing', ToastAndroid.LONG)
+                    this.props.navigation.replace('After',{ingredients:res})
+                }
+                else {
+                    this.setState({
+                        loading: false,
+                    })
+                    ToastAndroid.show('There was some error processing ur image\nPLease try again', ToastAndroid.LONG)
                 }
             } catch (e) {
-                console.error(e);
+                this.setState({
+                    loading: false,
+                })
+                ToastAndroid.show("Bad gateway", ToastAndroid.SHORT)
             }
-        }
-    };
+        }).catch((e) => {
+            var errorMsg = "An error Occured! Please try after sometime"
+            if (e.message === "Timeout" || e.message === 'Network request failed') {
+                errorMsg = "Looks like there is no Internet connection available"
+            }
+            this.setState({
+                loading: false,
+            })
 
+            ToastAndroid.show("Network error", ToastAndroid.LONG)
+        })
+    }
+
+
+    takePicture = async function () {
+        // if (this.timerHandle) {                  // ***
+        //     clearTimeout(this.timerHandle);      // ***
+        //     this.timerHandle = 0;                // ***
+        // }
+        const data = await this.camera.takePictureAsync();
+        this.setState({ clicked: true, uri: data.uri })
+    };
+    
     toggle = value => () => this.setState(prevState => ({ [value]: !prevState[value] }));
 
-    facesDetected = ({ faces }) => this.setState({ faces });
 
-    renderFace = ({ bounds, faceID, rollAngle, yawAngle }) => (
-        <View
-            key={faceID}
-            transform={[
-                { perspective: 600 },
-                { rotateZ: `${rollAngle.toFixed(0)}deg` },
-                { rotateY: `${yawAngle.toFixed(0)}deg` },
-            ]}
-            style={[
-                styles.face,
-                {
-                    ...bounds.size,
-                    left: bounds.origin.x,
-                    top: bounds.origin.y,
-                },
-            ]}
-        >
-            <Text style={styles.faceText}>ID: {faceID}</Text>
-            <Text style={styles.faceText}>rollAngle: {rollAngle.toFixed(0)}</Text>
-            <Text style={styles.faceText}>yawAngle: {yawAngle.toFixed(0)}</Text>
-        </View>
-    );
 
-    renderLandmarksOfFace(face) {
-        const renderLandmark = position =>
-            position && (
-                <View
-                    style={[
-                        styles.landmark,
-                        {
-                            left: position.x - landmarkSize / 2,
-                            top: position.y - landmarkSize / 2,
-                        },
-                    ]}
-                />
-            );
-        return (
-            <View key={`landmarks-${face.faceID}`}>
-                {renderLandmark(face.leftEyePosition)}
-                {renderLandmark(face.rightEyePosition)}
-                {renderLandmark(face.leftEarPosition)}
-                {renderLandmark(face.rightEarPosition)}
-                {renderLandmark(face.leftCheekPosition)}
-                {renderLandmark(face.rightCheekPosition)}
-                {renderLandmark(face.leftMouthPosition)}
-                {renderLandmark(face.mouthPosition)}
-                {renderLandmark(face.rightMouthPosition)}
-                {renderLandmark(face.noseBasePosition)}
-                {renderLandmark(face.bottomMouthPosition)}
-            </View>
-        );
-    }
-
-    renderFaces = () => (
-        <View style={styles.facesContainer} pointerEvents="none">
-            {this.state.faces.map(this.renderFace)}
-        </View>
-    );
-
-    renderLandmarks = () => (
-        <View style={styles.facesContainer} pointerEvents="none">
-            {this.state.faces.map(this.renderLandmarksOfFace)}
-        </View>
-    );
-
-    renderTextBlocks = () => (
-        <View style={styles.facesContainer} pointerEvents="none">
-            {this.state.textBlocks.map(this.renderTextBlock)}
-        </View>
-    );
-
-    renderTextBlock = ({ bounds, value }) => (
-        <React.Fragment key={value + bounds.origin.x}>
-            <Text style={[styles.textBlock, { left: bounds.origin.x, top: bounds.origin.y }]}>
-                {value}
-            </Text>
-            <View
-                style={[
-                    styles.text,
-                    {
-                        ...bounds.size,
-                        left: bounds.origin.x,
-                        top: bounds.origin.y,
-                    },
-                ]}
-            />
-        </React.Fragment>
-    );
-
-    textRecognized = object => {
-        const { textBlocks } = object;
-        this.setState({ textBlocks });
-    };
-
-    barcodeRecognized = ({ barcodes }) => this.setState({ barcodes });
-
-    renderBarcodes = () => (
-        <View style={styles.facesContainer} pointerEvents="none">
-            {this.state.barcodes.map(this.renderBarcode)}
-        </View>
-    );
-
-    renderBarcode = ({ bounds, data, type }) => (
-        <React.Fragment key={data + bounds.origin.x}>
-            <View
-                style={[
-                    styles.text,
-                    {
-                        ...bounds.size,
-                        left: bounds.origin.x,
-                        top: bounds.origin.y,
-                    },
-                ]}
-            >
-                <Text style={[styles.textBlock]}>{`${data} ${type}`}</Text>
-            </View>
-        </React.Fragment>
-    );
-
-    renderRecording = () => {
-        const { isRecording } = this.state;
-        const backgroundColor = isRecording ? 'white' : 'darkred';
-        const action = isRecording ? this.stopVideo : this.takeVideo;
-        const button = isRecording ? this.renderStopRecBtn() : this.renderRecBtn();
-        return (
-            <TouchableOpacity
-                style={[
-                    styles.flipButton,
-                    {
-                        flex: 0.3,
-                        alignSelf: 'flex-end',
-                        backgroundColor,
-                    },
-                ]}
-                onPress={() => action()}
-            >
-                {button}
-            </TouchableOpacity>
-        );
-    };
-
-    stopVideo = async () => {
-        await this.camera.stopRecording();
-        this.setState({ isRecording: false });
-    };
-
-    renderRecBtn() {
-        return <Text style={styles.flipText}> REC </Text>;
-    }
-
-    renderStopRecBtn() {
-        return <Text style={styles.flipText}> ☕ </Text>;
-    }
 
     renderCamera() {
-        const { canDetectFaces, canDetectText, canDetectBarcode } = this.state;
 
-        const drawFocusRingPosition = {
-            top: this.state.autoFocusPoint.drawRectPosition.y - 32,
-            left: this.state.autoFocusPoint.drawRectPosition.x - 32,
-        };
         return (
             <>
                 <StatusBar barStyle="light-content" backgroundColor="rgb(0,0,0)" />
-                <RNCamera
-                    useNativeZoom={true}
-                    ref={ref => {
-                        this.camera = ref;
-                    }}
-                    style={{
-                        flex: 1,
-                        justifyContent: 'space-between',
-                    }}
-                    type={this.state.type}
-                    flashMode={this.state.flash}
-                    autoFocus={this.state.autoFocus}
-                    autoFocusPointOfInterest={this.state.autoFocusPoint.normalized}
-                    zoom={this.state.zoom}
-                    whiteBalance={this.state.whiteBalance}
-                    ratio={this.state.ratio}
-                    focusDepth={this.state.depth}
-                    androidCameraPermissionOptions={{
-                        title: 'Permission to use camera',
-                        message: 'We need your permission to use your camera',
-                        buttonPositive: 'Ok',
-                        buttonNegative: 'Cancel',
-                    }}
-                    faceDetectionLandmarks={
-                        RNCamera.Constants.FaceDetection.Landmarks
-                            ? RNCamera.Constants.FaceDetection.Landmarks.all
-                            : undefined
-                    }
-                    onFacesDetected={canDetectFaces ? this.facesDetected : null}
-                    onTextRecognized={canDetectText ? this.textRecognized : null}
-                    onGoogleVisionBarcodesDetected={canDetectBarcode ? this.barcodeRecognized : null}
-                >
-                    {/* <View style={StyleSheet.absoluteFill}>
+                {
+                    this.state.clicked ? <>
+                        <Image source={{ uri: this.state.uri }} style={{ width: "100%", height: "100%", resizeMode: "contain" }} />
+                        <View style={{ zIndex: 99, position: 'absolute', height: 110, left: 0, bottom: 10, width: "100%", backgroundColor: "black", alignItems: "center", justifyContent: "center" }}>
+
+                            <View
+                                style={{
+                                    backgroundColor: 'transparent',
+                                    flexDirection: 'row',
+                                    alignSelf: 'center',
+                                    alignItems: "center",
+                                    marginBottom: 5
+                                }}
+                            >
+                                <View style={{ flex: 1 }} />
+                                <TouchableOpacity style={{ marginTop: 3 }} onPress={()=>{this.setState({ clicked: false })}}>
+                                    <Text style={{ color: "white", fontSize: 15 }} >Cancel</Text>
+                                </TouchableOpacity>
+                                <View style={{ flex: 2 }} />
+                                <TouchableOpacity onPress={()=>{this.submit()}}>
+                                    <Text style={{ color: "white", fontSize: 15 }} >OK</Text>
+                                </TouchableOpacity>
+                                <View style={{ flex: 1 }} />
+                            </View>
+                        </View>
+                    </>
+                        :
+                        <>
+                            <RNCamera
+                                useNativeZoom={true}
+                                ref={ref => {
+                                    this.camera = ref;
+                                }}
+                                style={{
+                                    flex: 1,
+                                    justifyContent: 'space-between',
+                                }}
+                                type={this.state.type}
+                                flashMode={this.state.flash}
+                                autoFocus={this.state.autoFocus}
+                                autoFocusPointOfInterest={this.state.autoFocusPoint.normalized}
+                                zoom={this.state.zoom}
+                                whiteBalance={this.state.whiteBalance}
+                                ratio={this.state.ratio}
+                                focusDepth={this.state.depth}
+                                androidCameraPermissionOptions={{
+                                    title: 'Permission to use camera',
+                                    message: 'We need your permission to use your camera',
+                                    buttonPositive: 'Ok',
+                                    buttonNegative: 'Cancel',
+                                }}
+                            >
+                                {/* <View style={StyleSheet.absoluteFill}>
                         <View style={[styles.autoFocusBox, drawFocusRingPosition]} />
                         <TouchableWithoutFeedback onPress={this.touchToFocus.bind(this)}>
                             <View style={{ flex: 1 }} />
                         </TouchableWithoutFeedback>
                     </View> */}
-                    {
-                        this.state.values.slice(0, 3).map(elm => {
-                            return <Marker elm={elm} data={this.state.pictureData} />
-                            // return <Text>{elm.detectedClass},</Text>
-                        })
-                    }
-                    <View
-                        style={{
-                            flex: 0.5,
-                            height: 72,
-                            backgroundColor: 'transparent',
-                            flexDirection: 'row',
-                            justifyContent: 'space-around',
-                        }}
-                    >
-                        <View
-                            style={{
-                                backgroundColor: 'transparent',
-                                flexDirection: 'row',
-                                justifyContent: 'space-around',
-                            }}
-                        >
+                                {
+                                    this.state.values.slice(0, 3).map(elm => {
+                                        return <Marker elm={elm} data={this.state.pictureData} />
+                                        // return <Text>{elm.detectedClass},</Text>
+                                    })
+                                }
+                                <View
+                                    style={{
+                                        flex: 0.5,
+                                        height: 72,
+                                        backgroundColor: 'transparent',
+                                        flexDirection: 'row',
+                                        justifyContent: 'space-around',
+                                    }}
+                                >
+                                    <View
+                                        style={{
+                                            backgroundColor: 'transparent',
+                                            flexDirection: 'row',
+                                            justifyContent: 'space-around',
+                                        }}
+                                    >
 
-                        </View>
-                    </View>
-                    {!!canDetectFaces && this.renderLandmarks()}
-                </RNCamera>
-                {/* <ModalButtons takePicture={this.takePicture} toggleFacing={this.toggleFacing} toggleFlash={this.toggleFlash} visible={true} navigation={this.props.navigation} /> */}
-                <View style={{ height: 110, backgroundColor: "black", alignItems: "center", justifyContent: "center" }}>
+                                    </View>
+                                </View>
+                            </RNCamera>
+                            {/* <ModalButtons takePicture={this.takePicture} toggleFacing={this.toggleFacing} toggleFlash={this.toggleFlash} visible={true} navigation={this.props.navigation} /> */}
+                            <View style={{ height: 110, backgroundColor: "black", alignItems: "center", justifyContent: "center" }}>
 
-                    <View
-                        style={{
-                            backgroundColor: 'transparent',
-                            flexDirection: 'row',
-                            alignSelf: 'center',
-                            alignItems: "center",
-                            marginBottom: 5
-                        }}
-                    >
-                        <View style={{ flex: 1 }} />
-                        <TouchableOpacity style={{ marginTop: 3 }} onPress={this.toggleFacing.bind(this)}>
-                            <Image source={require('../../Assets/icons/flip.png')} style={{ width: 35, height: 30, resizeMode: "contain" }} />
-                        </TouchableOpacity>
-                        <View style={{ flex: 1 }} />
-                        <TouchableOpacity
-                            style={{ width: 100, height: 100, borderRadius: 50, borderWidth: 5, borderColor: "white" }}
-                            onPress={this.takePicture.bind(this)}
-                        >
-                        </TouchableOpacity>
-                        <View style={{ flex: 1 }} />
-                        <TouchableOpacity onPress={this.toggleFlash.bind(this)}>
-                            <Image source={require('../../Assets/icons/flash.png')} style={{ width: 25, height: 25, resizeMode: "contain" }} />
-                        </TouchableOpacity>
-                        <View style={{ flex: 1 }} />
-                    </View>
-                </View>
+                                <View
+                                    style={{
+                                        backgroundColor: 'transparent',
+                                        flexDirection: 'row',
+                                        alignSelf: 'center',
+                                        alignItems: "center",
+                                        marginBottom: 5
+                                    }}
+                                >
+                                    <View style={{ flex: 1 }} />
+                                    <TouchableOpacity style={{ marginTop: 3 }} onPress={this.toggleFacing.bind(this)}>
+                                        <Image source={require('../../Assets/icons/flip.png')} style={{ width: 35, height: 30, resizeMode: "contain" }} />
+                                    </TouchableOpacity>
+                                    <View style={{ flex: 1 }} />
+                                    <TouchableOpacity
+                                        style={{ width: 100, height: 100, borderRadius: 50, borderWidth: 5, borderColor: "white" }}
+                                        onPress={this.takePicture.bind(this)}
+                                    >
+                                    </TouchableOpacity>
+                                    <View style={{ flex: 1 }} />
+                                    <TouchableOpacity onPress={this.toggleFlash.bind(this)}>
+                                        <Image source={require('../../Assets/icons/flash.png')} style={{ width: 25, height: 25, resizeMode: "contain" }} />
+                                    </TouchableOpacity>
+                                    <View style={{ flex: 1 }} />
+                                </View>
+                            </View>
+                        </>
+                }
+
             </>
         );
     }
