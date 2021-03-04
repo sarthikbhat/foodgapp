@@ -70,8 +70,8 @@ class CameraStack extends React.Component {
       <Animated.View
         style={StyleSheet.flatten([styles.stack, this.props.style])}>
         <Stack.Navigator headerMode={'none'}>
-          <Stack.Screen name="Camera" component={Camera} />
           <Stack.Screen name="After" component={AfterCamera} />
+          <Stack.Screen name="Camera" component={Camera} />
         </Stack.Navigator>
       </Animated.View>
     );
