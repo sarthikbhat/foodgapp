@@ -10,6 +10,7 @@
     "lint": "eslint ."
   },
   "dependencies": {
+    "@react-native-async-storage/async-storage": "^1.14.1",
     "@react-native-community/art": "^1.2.0",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-navigation/drawer": "^5.9.2",
@@ -29,6 +30,7 @@
     "react-native-slide-to-unlock": "^0.1.6",
     "react-native-svg": "^12.1.0",
     "react-native-swipe-verify": "^0.1.6",
+    "rn-fetch-blob": "^0.12.0",
     "tflite-react-native": "^0.0.5"
   },
   "devDependencies": {

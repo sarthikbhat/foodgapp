@@ -2,11 +2,12 @@ import React, { Component } from 'react'
 import { Text, TouchableOpacity, View, ImageBackground, StatusBar, StyleSheet, Dimensions, Animated, ScrollView, Image, Platform, TextInput, UIManager, TouchableWithoutFeedback } from 'react-native'
 import Header from '../../Reusables/Header'
 import { recipes, ingredient } from '../../Constants/recipe'
+import { url } from '../../Reusables/constants'
 import * as Animatable from 'react-native-animatable'
 import { min } from 'react-native-reanimated'
-import RecipeCard from './RecipeCard'
 import { Neomorph, NeomorphFlex } from 'react-native-neomorph-shadows';
 import { ShadowFlex } from 'react-native-neomorph-shadows';
+import Loader from '../Reusables/Loader'
 
 
 export class RecipeListing extends Component {
@@ -20,6 +21,8 @@ export class RecipeListing extends Component {
             array: [],
             count: ['All Cuisines', 'South Indian', 'North Indian', 'Italian', 'Chinese'],
             imej: [require("../../Assets/images/berger.png"), require("../../Assets/images/dosa.png"), require("../../Assets/images/paratha.png"), require("../../Assets/images/cheesepizza.png"), require("../../Assets/images/Noodles.png")],
+            loading:true,
+            data:{}
         }
         if (
             Platform.OS === "android" &&
@@ -31,22 +34,15 @@ export class RecipeListing extends Component {
     }
 
     componentDidMount = () => {
-        this.setState({ array: ingredient })
+        fetch(`${url}/rank?objects=Tomato,Potato`).then(res=>{
+            res.json().then(res=>{
+                this.setState({data:res,loading:false})
+            })
+        })
     }
 
 
-    // passer=(i)=>{
-    //     if((i+1)%2==0){
-    //         var array =this.state.array
-    //         console.log(i);
-    //         array.splice(i-1,1)
-    //         console.log(array.length);
-    //         var temp = this.state.array[i-1]
-    //         array.splice(i+1,0,temp)
-    //         console.log(array.length);
-    //         this.setState({array})
-    //     }
-    // }
+
 
     animater = () => {
         var index
@@ -113,6 +109,7 @@ export class RecipeListing extends Component {
                 <StatusBar barStyle='dark-content' translucent={true} backgroundColor='#fcfcfc' />
                 <ImageBackground source={require('../../Assets/images/appbg.png')} style={styles.outerMenu} imageStyle={styles.imageMenu}>
                     <Header backgroundColor="transparent" navigation={this.props.navigation} style={[this.props.style, {}]} />
+                    <Loader loading={this.state.loading} />
                     <Animated.View style={{ height: heightTop }}>
                         {/* <Animated.View
                             useNativeDriver elevation={5} style={{ width: Dimensions.get("window").width - 40, backgroundColor: "#f6f6f5", display: 'flex', flexDirection: "row", padding: 14, alignItems: "center", borderRadius: 50, marginTop: 5, alignSelf: 'center', opacity: opacityTop }} >
@@ -180,7 +177,7 @@ export class RecipeListing extends Component {
                         >
                             <View style={{ flex: 1, display: "flex", justifyContent: 'center', flexWrap: 'wrap', flexDirection: 'row', marginBottom: 100 }}>
                                 {
-                                    this.state.array.map((recipe, index) => {
+                                 Object.keys(this.state.data).map((key, value) => {
                                         return (
                                             <View style={{ marginBottom: 10 }}>
                                                 <ShadowFlex
@@ -197,41 +194,29 @@ export class RecipeListing extends Component {
                                                     }}
                                                 >
                                                     {/* <Animated.View elevation={6} useNativeDriver style={{ width: Dimensions.get("window").width - 60, borderRadius: 25, backgroundColor: '#FCFCFC', alignSelf: 'center', padding: 20, margin: 10, flexDirection: 'row', display: 'flex' }}> */}
-                                                    <View style={{ justifyContent: 'center', width:"36%", maxHeight:130, minHeight:100 }} >
+                                                    <View elevation={5} style={{ justifyContent: 'center', width:"40%", maxHeight:130, minHeight:100,overflow:'hidden',borderRadius:80,}} >
                                                         {/* <Animated.View style={{ borderRadius: 150, overflow: 'hidden', width:"100%", alignContent: 'center' }}> */}
-                                                            <Image source={require('../../Assets/images/cheesepizza.png')} style={{ width: null,resizeMode:'contain'}} />
+                                                            <Image source={{uri:this.state.data[key].images}} style={{ width: '100%',height:'100%',resizeMode:'cover',}} />
                                                         {/* </Animated.View> */}
                                                     </View>
-                                                    <View style={{ padding: 12, paddingTop: 0, paddingBottom: 0, paddingLeft: 20, width: "64%", }}>
+                                                    <View style={{ padding: 12, paddingTop: 0, paddingBottom: 0, paddingLeft: 15, width: "60%", }}>
                                                         <View style={{ flexDirection: 'row', display: 'flex', alignItems: 'center', marginBottom: 5, alignItems: "center", marginTop: -2 }}>
                                                             <Text style={{ fontFamily: "OpenSans-Light", fontSize: 16, color: "#222222", paddingLeft: 5, opacity: 0.8 }} >4.5</Text>
                                                             <Animated.View style={{ width: 13.5, height: 13.5, borderRadius: 10, marginLeft: 5 }}>
                                                                 <Image source={require('../../Assets/icons/star.png')} style={{ width: null, height: null, flex: 1 }} resizeMode="contain" />
                                                             </Animated.View>
                                                             <View style={{ flex: 1 }} />
-                                                            {/* <Animated.View style={{ width: 16, height: 16, borderRadius: 10, }}>
-                                                                <Image source={require('../../Assets/icons/star.png')} style={{ width: null, height: null, flex: 1 }} resizeMode="contain" />
-                                                                </Animated.View>
-                                                                <Animated.View style={{ width: 16, height: 16, borderRadius: 10, }}>
-                                                                <Image source={require('../../Assets/icons/star.png')} style={{ width: null, height: null, flex: 1 }} resizeMode="contain" />
-                                                                </Animated.View>
-                                                                <Animated.View style={{ width: 16, height: 16, borderRadius: 10, }}>
-                                                                <Image source={require('../../Assets/icons/star.png')} style={{ width: null, height: null, flex: 1 }} resizeMode="contain" />
-                                                                </Animated.View>
-                                                                <Animated.View style={{ width: 16, height: 16, borderRadius: 10, }}>
-                                                                <Image source={require('../../Assets/icons/rating.png')} style={{ width: null, height: null, flex: 1 }} resizeMode="contain" />
-                                                            </Animated.View> */}
                                                             <Animated.View style={{ width: 14, height: 14, borderRadius: 10, marginLeft: 5 }}>
                                                                 <Image source={require('../../Assets/icons/veg.png')} style={{ width: null, height: null, flex: 1 }} resizeMode="contain" />
                                                             </Animated.View>
                                                         </View>
                                                         <View style={{ display: "flex", flexDirection: "row", alignItems: "center", marginTop: 5 }} >
-                                                            <Text style={{ fontFamily: "OpenSans-Bold", fontSize: 18, color: "#222222", letterSpacing: -0.5 }} >Paneer Noodles</Text>
+                                                            <Text style={{ fontFamily: "OpenSans-Bold", fontSize: 18, color: "#222222", letterSpacing: -0.5 }} >{key}</Text>
                                                             {/* <Animated.View style={{ width: 16, height: 16, borderRadius: 10,marginLeft:10 }}>
                                                                 <Image source={require('../../Assets/icons/veg.png')} style={{ width: null, height: null, flex: 1 }} resizeMode="contain" />
                                                             </Animated.View> */}
                                                         </View>
-                                                        <Text style={{ fontFamily: "OpenSans-SemiBold", fontSize: 16.5, color: "#222222", opacity: 0.6, marginTop: 4, letterSpacing: -0.5 }} >North Indian</Text>
+                                                        <Text style={{ fontFamily: "OpenSans-SemiBold", fontSize: 16.5, color: "#222222", opacity: 0.6, marginTop: 4, letterSpacing: -0.5 }} >Indian</Text>
                                                         {/* <View style={{ flex: 4 }} /> */}
                                                         <View style={{ flexDirection: 'row', display: 'flex', alignItems: 'center', paddingTop: 4 }}>
                                                             {/* <Animated.View style={{ width: 16, height: 16, borderRadius: 10, }}>
@@ -256,7 +241,7 @@ export class RecipeListing extends Component {
                                                                     // ...include most of View/Layout styles
                                                                     width: 35, height: 35, backgroundColor: "#ee545b", padding: 5, marginTop: 5, borderRadius: 10, justifyContent: "center", alignItems: "center"
                                                                 }}>
-                                                                <TouchableOpacity onPress={() => this.props.navigation.navigate('Recipe')}>
+                                                                <TouchableOpacity onPress={() => this.props.navigation.navigate('Recipe',{ingredientName:key,baakiData:this.state.data[key]})}>
                                                                     <Image source={require('../../Assets/icons/next.png')} style={{ width: 13, height: 13, }} resizeMode="contain" />
                                                                 </TouchableOpacity>
                                                             </ShadowFlex>

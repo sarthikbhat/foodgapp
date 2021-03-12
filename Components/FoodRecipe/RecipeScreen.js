@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Text, TouchableOpacity, View, Image, StatusBar, StyleSheet, Dimensions, Animated, ScrollView, ImageBackground, Alert, ToastAndroid } from 'react-native'
+import { Text, TouchableOpacity, View, Image, StatusBar, StyleSheet, Dimensions, Animated, ScrollView, ImageBackground, Alert, ToastAndroid, Linking } from 'react-native'
 import Header from '../../Reusables/Header'
 import { recipes, ingredient } from '../../Constants/recipe'
 import * as Animatable from 'react-native-animatable'
@@ -111,11 +111,11 @@ export class RecipeScreen extends Component {
                         <TouchableOpacity onPress={() => ToastAndroid.show('Wishlisted', ToastAndroid.SHORT)} elevation={10} style={[styles.iconBorder, {}]} ><Image source={require('../../Assets/icons/wishlist.png')} style={{ width: 20, height: 20, resizeMode: "contain" }} /></TouchableOpacity>
                     </View>
                     <View style={{ backgroundColor: "white", width: "100%", flex: 1, marginTop: "27%", borderTopLeftRadius: 50, borderTopRightRadius: 50, backgroundColor: "#fbfaf8" }} >
-                        <View style={{ height: "40%", width: "50%", alignSelf: "center", marginTop: "-28%" }} >
-                            <Image elevation={10} source={require('../../Assets/images/cheesepizza.png')} style={{ width: null, height: null, flex: 1, resizeMode: "contain" }} />
+                        <View elevation={5} style={{ height: "40%", width: "70%", alignSelf: "center", marginTop: "-28%" ,overflow:'hidden'}} >
+                            <Image elevation={10} source={{uri:this.props.route.params.baakiData.images}} style={{ width: '100%', height: '100%', flex: 1, resizeMode: "contain" }} />
                         </View>
                         <View style={{ alignSelf: "center", margin: 10 }} >
-                            <Text style={{ textAlign: 'center', fontFamily: "OpenSans-Bold", fontSize: 22, letterSpacing: -0.5, color: "#222222", lineHeight: 27 }} >Soba Soup With{'\n'}Shrimp and Greens</Text>
+                            <Text style={{ textAlign: 'center', fontFamily: "OpenSans-Bold", fontSize: 22, letterSpacing: -0.5, color: "#222222", lineHeight: 27 }} >{this.props.route.params.ingredientName}</Text>
                         </View>
                         <View style={{ display: 'flex', flexDirection: 'row', justifyContent: "center", marginTop: 10 }}>
                             <View style={{ display: 'flex', flexDirection: "row", alignItems: "center" }}>
@@ -144,10 +144,10 @@ export class RecipeScreen extends Component {
                                     <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                                         <View style={{ width: 25 }} />
                                         {
-                                            this.state.imej.map((elm, index) => {
+                                            this.props.route.params.baakiData.ingredients.map((elm, index) => {
                                                 return <View elevation={1} style={{ padding: 15, margin: 5, marginBottom: 15, backgroundColor: 'white', alignItems: "center", minWidth: 75, minHeight: 125, borderRadius: 45, justifyContent: "center" }} >
                                                     <Image elevation={1} source={elm} style={{ width: 35, height: 35, resizeMode: "contain" }} />
-                                                    <Text style={{ fontSize: 14, fontFamily: "OpenSans-SemiBold", opacity: 0.7, marginTop: 10, letterSpacing: -0.5 }} >Broccolli</Text>
+                                                    <Text style={{ fontSize: 14, fontFamily: "OpenSans-SemiBold", opacity: 0.7, marginTop: 10, letterSpacing: -0.5 }} >{elm}</Text>
                                                 </View>
                                             })
                                         }
@@ -162,7 +162,9 @@ export class RecipeScreen extends Component {
                                 width: '90%',}}> */}
                             <View style={{ width: Dimensions.get('window').width - 40, alignSelf: 'center', backgroundColor: '#eee', borderRadius: 60, padding: 10, margin: 8, paddingBottom: 5, paddingTop: 5 }}>
 
-                                <Slider childrenContainer={{}} onEndReached={() => { this.props.navigation.navigate('ActualRecipe') }}
+                                <Slider childrenContainer={{}} 
+                                // onEndReached={() => { this.props.navigation.navigate('ActualRecipe') }}
+                                onEndReached={() => {Linking.openURL(this.props.route.params.baakiData.links)}}
                                     containerStyle={{
                                         justifyContent: 'center', alignItems: 'center', marginLeft: 10,
                                         backgroundColor: '#eee',

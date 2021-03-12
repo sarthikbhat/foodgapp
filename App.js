@@ -225,8 +225,8 @@ const App = () => {
   return (
     <NavigationContainer>
       <Drawer.Navigator elevation={2} drawerStyle={styles.drawerStyles} drawerContent={(props) => <DrawerContent {...props} />}>
-        <Drawer.Screen name="Home" component={HomeStack} />
         <Drawer.Screen name="FoodRecipe" component={FoodRecipe} />
+        <Drawer.Screen name="Home" component={HomeStack} />
         <Drawer.Screen name="Camera" component={CameraStack} />
         {/* <Drawer.Screen name="Authentication" component={Authentication} />*/} 
         <Stack.Screen
