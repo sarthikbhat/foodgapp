@@ -1,5 +1,9 @@
-export const url = 'http://192.168.0.104:5000'
+// export const url = 'http://192.168.0.104:5000'
 // export const url = 'http://192.168.1.15:5000'
+
+// export const url = 'http://192.168.0.104:5000'
+export const url = 'http://192.168.1.68:5000'
+
 
 export const ingredients={
     'Jalapeno':'https://www.spsidahoinc.com/wordpress/wp-content/uploads/2019/02/Jalapeno.png',

@@ -7,12 +7,18 @@ import { Neomorph, NeomorphFlex } from 'react-native-neomorph-shadows';
 import { url } from '../../Reusables/constants'
 import Profile from './Profile'
 import Ingredients from './Ingredients'
+import { Text, Image, View, ScrollView, StatusBar, TextInput, TouchableNativeFeedback, StyleSheet,ImageBackground ,Dimensions,Button} from 'react-native'
+import Tabbar from '../Tabbar/Tabbar'
+import Header from '../../Reusables/Header'
+import * as Animatable from 'react-native-animatable'
+import { Neomorph ,NeomorphFlex} from 'react-native-neomorph-shadows';
+import NotifService from '../../NotifService';
+import RNCalendarEvents from "react-native-calendar-events";
+
 
 const color = ["#ffd18c", "#e8d9db"]
 
 export class Home extends Component {
-
-
     constructor(props) {
         super(props)
         this.state = {
@@ -20,6 +26,10 @@ export class Home extends Component {
             trending: [],
             loading: true
         }
+        this.notif = new NotifService(
+        //   this.onRegister.bind(this),
+        //   this.onNotif.bind(this),
+        );
         if (
             Platform.OS === "android" &&
             UIManager.setLayoutAnimationEnabledExperimental
@@ -38,6 +48,9 @@ export class Home extends Component {
     }
 
     componentDidMount() {
+      RNCalendarEvents.checkPermissions();
+        // RNCalendarReminders.authorizationStatus()
+        // RNCalendarReminders.authorizeEventStore()
         fetch(`${url}/trending`).then(res => {
             res.json().then(res => {
                 this.setState({ trending: res, loading: false })
@@ -45,6 +58,24 @@ export class Home extends Component {
         })
     }
 
+
+      set=async()=>{
+        var d = new Date();
+        var title="Test Event"
+        // const find = await RNCalendarEvents.saveCalendar({
+        //     title:'Test Event',
+        //     color:'#1967D2',
+        //     entityType:'reminder',
+        //     name:'Test2',
+        //     accessLevel:'root',
+        //     ownerAccount:'bhatsarthik28@gmail.com',
+        //     source:{
+        //         name:'bhatsarthik28@gmail.com',
+        //         type:'com.google'
+        //     }
+        // });
+        console.log(await RNCalendarEvents.fetchAllEvents(d,d));
+      }
 
     render() {
         //e8d9db ffcc7e
@@ -57,6 +88,7 @@ export class Home extends Component {
                 <ImageBackground source={require('../../Assets/images/appbg.png')} style={styles.outerMenu} imageStyle={styles.imageMenu}>
                     <Header backgroundColor="transparent" user={true} navigation={this.props.navigation} />
                     <View style={{ flex: 1 }}>
+
                         {
                             this.state.index == 0 ?
                                 <ScrollView style={{ paddingTop: 5 }} >
@@ -70,6 +102,20 @@ export class Home extends Component {
                                             elevation={5} style={{ backgroundColor: "#fc6474", display: 'flex', flexDirection: "row", padding: 16, alignItems: "center", justifyContent: "center", borderRadius: 50, marginTop: 20, marginBottom: 5 }}
                                         >
                                             {/* <Animatable.View
+
+                        <ScrollView style={{ paddingTop: 5 }} >
+                            <Animatable.View
+                                animation="slideInUp"
+                                duration={500}
+                                useNativeDriver style={{ marginLeft: 22, marginRight: 22 }}>
+                                <Text onPress={()=>this.notification.localNotification()} style={{ fontFamily: "OpenSans-Bold", fontSize: 25, color: "#222222" }} >Poozle</Text>
+                                <Text style={{ fontFamily: "OpenSans-Regular", fontSize: 23, color: "#222222" }} >your cravings</Text>
+                                <Button title={"Local Notification"} onPress={() => {  this.set(); }} />
+                  {/* <Button title={"Scheduled (30s) Notification"} onPress={() => { this.notification.scheduleNotification() }} /> */}
+                                <TouchableNativeFeedback onPress={() => this.props.navigation.navigate('Camera')}
+                                    elevation={5} style={{ backgroundColor: "#fc6474", display: 'flex', flexDirection: "row", padding: 16, alignItems: "center", justifyContent: "center", borderRadius: 50, marginTop: 20, marginBottom: 5 }}
+                                >
+                                    {/* <Animatable.View
                                         animation="zoomIn"
                                         duration={500}
                                         useNativeDriver elevation={8} style={{ backgroundColor: "#fc6474", display: 'flex', flexDirection: "row", padding: 16, alignItems: "center", justifyContent: "center", borderRadius: 50, marginTop: 20, marginBottom: 5 }} >
