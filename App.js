@@ -32,9 +32,19 @@ import SignUp from './Components/Authentication/SignUp';
 import CheckBoxer from './Components/CheckBoxer/Checker';
 import AfterCamera from './Components/AfterCamera/AfterCamera';
 import ActualRecipe from './Components/FoodRecipe/ActualRecipe';
+import {
+  GoogleSignin,
+} from '@react-native-google-signin/google-signin';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+// import { LoginManager } from 'react-native-fbsdk';
+import RNCalendarEvents from "react-native-calendar-events";
+
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
+
+var status = false
+
 
 class HomeStack extends React.Component {
   render() {
@@ -103,7 +113,33 @@ class Authentication extends React.Component {
   }
 }
 
+signOut = async () => {
+  var log = await AsyncStorage.getItem('type')
+  log = log != undefined && log != null ? JSON.parse(log) : undefined
+  if (log === 'google') {
+    await GoogleSignin.revokeAccess();
+      await GoogleSignin.signOut();
+      await AsyncStorage.setItem('status', JSON.stringify(false))
+      await AsyncStorage.removeItem('user')
+      await AsyncStorage.removeItem('type')
+  }
+  else if (log === 'facebook') {
+      // LoginManager.logOut()
+      await AsyncStorage.setItem('status', JSON.stringify(false))
+      await AsyncStorage.removeItem('user')
+      await AsyncStorage.removeItem('type')
+  }
+  else {
+      await AsyncStorage.setItem('status', JSON.stringify(false))
+      await AsyncStorage.removeItem('user')
+      await AsyncStorage.removeItem('type')
+  }
+  status=true
+  // props.navigation.closeDrawer();
+}
+
 const DrawerContent = (props) => {
+
   return (
     <View style={{flex: 1}}>
       <DrawerContentScrollView {...props}>
@@ -196,9 +232,11 @@ const DrawerContent = (props) => {
               )}
               label="Sign Out"
               onPress={() => {
+                signOut()
                 ToastAndroid.show('Signed Out 😃',ToastAndroid.SHORT);
               }}
             />
+            
           </View>
           
         </View>
@@ -222,27 +260,18 @@ const DrawerContent = (props) => {
 };
 
 const App = () => {
+
+ React.useEffect(() => {
+  RNCalendarEvents.requestPermissions();
+ }, []);
+
   return (
     <NavigationContainer>
       <Drawer.Navigator elevation={2} drawerStyle={styles.drawerStyles} drawerContent={(props) => <DrawerContent {...props} />}>
-        <Drawer.Screen name="FoodRecipe" component={FoodRecipe} />
         <Drawer.Screen name="Home" component={HomeStack} />
+        <Drawer.Screen name="FoodRecipe" component={FoodRecipe} />
+        <Drawer.Screen name="Authentication" component={Authentication} /> 
         <Drawer.Screen name="Camera" component={CameraStack} />
-        {/* <Drawer.Screen name="Authentication" component={Authentication} />*/} 
-        <Stack.Screen
-            options={{
-              animationEnabled: false,
-            }}
-            name="Signin"
-            component={SignIn}
-          />
-          <Stack.Screen
-            options={{
-              animationEnabled: false,
-            }}
-            name="Signup"
-            component={SignUp}
-          /> 
       </Drawer.Navigator>
     </NavigationContainer>
   );

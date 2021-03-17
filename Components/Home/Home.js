@@ -1,12 +1,48 @@
 import React, { Component } from 'react'
-import { Text, Image, View, ScrollView, StatusBar, TextInput, TouchableNativeFeedback, StyleSheet,ImageBackground ,Dimensions} from 'react-native'
+import { Text, Image, View, ScrollView, StatusBar, TextInput, TouchableNativeFeedback, StyleSheet,ImageBackground ,Dimensions,Button} from 'react-native'
 import Tabbar from '../Tabbar/Tabbar'
 import Header from '../../Reusables/Header'
 import * as Animatable from 'react-native-animatable'
 import { Neomorph ,NeomorphFlex} from 'react-native-neomorph-shadows';
+import NotifService from '../../NotifService';
+import RNCalendarEvents from "react-native-calendar-events";
 
 
 export class Home extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {};
+    
+        this.notif = new NotifService(
+        //   this.onRegister.bind(this),
+        //   this.onNotif.bind(this),
+        );
+      }
+
+      componentDidMount=()=>{
+        RNCalendarEvents.checkPermissions();
+        // RNCalendarReminders.authorizationStatus()
+        // RNCalendarReminders.authorizeEventStore()
+      }
+
+      set=async()=>{
+        var d = new Date();
+        var title="Test Event"
+        // const find = await RNCalendarEvents.saveCalendar({
+        //     title:'Test Event',
+        //     color:'#1967D2',
+        //     entityType:'reminder',
+        //     name:'Test2',
+        //     accessLevel:'root',
+        //     ownerAccount:'bhatsarthik28@gmail.com',
+        //     source:{
+        //         name:'bhatsarthik28@gmail.com',
+        //         type:'com.google'
+        //     }
+        // });
+        console.log(await RNCalendarEvents.fetchAllEvents(d,d));
+      }
+
     render() {
         //e8d9db ffcc7e
         return (
@@ -22,8 +58,10 @@ export class Home extends Component {
                                 animation="slideInUp"
                                 duration={500}
                                 useNativeDriver style={{ marginLeft: 22, marginRight: 22 }}>
-                                <Text style={{ fontFamily: "OpenSans-Bold", fontSize: 25, color: "#222222" }} >Poozle</Text>
+                                <Text onPress={()=>this.notification.localNotification()} style={{ fontFamily: "OpenSans-Bold", fontSize: 25, color: "#222222" }} >Poozle</Text>
                                 <Text style={{ fontFamily: "OpenSans-Regular", fontSize: 23, color: "#222222" }} >your cravings</Text>
+                                <Button title={"Local Notification"} onPress={() => {  this.set(); }} />
+                  {/* <Button title={"Scheduled (30s) Notification"} onPress={() => { this.notification.scheduleNotification() }} /> */}
                                 <TouchableNativeFeedback onPress={() => this.props.navigation.navigate('Camera')}
                                     elevation={5} style={{ backgroundColor: "#fc6474", display: 'flex', flexDirection: "row", padding: 16, alignItems: "center", justifyContent: "center", borderRadius: 50, marginTop: 20, marginBottom: 5 }}
                                 >
