@@ -79,7 +79,7 @@ export default class AfterCamera extends Component {
     }
 
     searchIngr = (text) => {
-
+        LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
         this.setState({ text })
 
     }
@@ -97,8 +97,8 @@ export default class AfterCamera extends Component {
 
         const unmatched = answer.map((elm, index) => {
             if (this.state.ingr.indexOf(elm) == -1)
-                return <TouchableOpacity onPress={() => { LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);this.setState({ ingr: [elm, ...this.state.ingr], text: '' }) }} ><View elevation={2} style={{ padding: 15, margin: 5, marginBottom: 15, backgroundColor: 'white', alignItems: "center", minWidth: 75, minHeight: 125, borderRadius: 45, justifyContent: "center" }} >
-                    <View style={{ position: 'absolute', top: 0, right: 0, backgroundColor: 'green', padding: 8, borderRadius: 50, paddingBottom: 1, paddingTop: 0 }}>
+                return <TouchableOpacity onPress={() => { LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);this.setState({ ingr: [elm, ...this.state.ingr], text: '' }) }} ><View elevation={2} style={{ padding: 15, margin: 5, marginBottom: 15, backgroundColor: 'white', alignItems: "center", minWidth: 85, minHeight: 125, borderRadius: 45, justifyContent: "center" }} >
+                    <View style={{ position: 'absolute', top: 0, right: 0, backgroundColor: '#337f33', padding: 8, borderRadius: 50, paddingBottom: 1, paddingTop: 0 }}>
                         <Text style={{ fontSize: 20, color: "#fff" }}>+</Text>
                     </View>
                     <Image elevation={5} source={{ uri: ingredients[elm] }} style={{ width: 35, height: 35, resizeMode: "contain" }} />
@@ -175,9 +175,10 @@ export default class AfterCamera extends Component {
                                         <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                                             <View style={{ width: 25 }} />
                                             {
+                                                matched.length==0?<Text>Empty List</Text>:
                                                 matched.map((elm, index) => {
-                                                    return <TouchableOpacity onPress={() => { var ingr = this.state.ingr; ingr.splice(index, 1);LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);this.setState({ ingr }) }} ><View elevation={2} style={{ padding: 15, margin: 5, marginBottom: 15, backgroundColor: 'white', alignItems: "center", minWidth: 75, minHeight: 125, borderRadius: 45, justifyContent: "center" }} >
-                                                        <View style={{ position: 'absolute', top: 0, right: 0, backgroundColor: 'red', padding: 10, borderRadius: 50, paddingBottom: 1, paddingTop: 0 }}>
+                                                    return <TouchableOpacity onPress={() => { var ingr = this.state.ingr; ingr.splice(index, 1);LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);this.setState({ ingr }) }} ><View elevation={2} style={{ padding: 15, margin: 5, marginBottom: 15, backgroundColor: 'white', alignItems: "center", minWidth: 85, minHeight: 125, borderRadius: 45, justifyContent: "center" }} >
+                                                        <View style={{ position: 'absolute', top: 0, right: 0, backgroundColor: '#fc6474', padding: 10, borderRadius: 50, paddingBottom: 1, paddingTop: 0 }}>
                                                             <Text style={{ fontSize: 22,lineHeight:25, color: "#fff" }}>-</Text>
                                                         </View>
                                                         <Image elevation={5} source={{ uri: ingredients[elm] }} style={{ width: 35, height: 35, resizeMode: "contain" }} />

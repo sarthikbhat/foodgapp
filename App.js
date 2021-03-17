@@ -70,8 +70,8 @@ class CameraStack extends React.Component {
       <Animated.View
         style={StyleSheet.flatten([styles.stack, this.props.style])}>
         <Stack.Navigator headerMode={'none'}>
-          <Stack.Screen name="After" component={AfterCamera} />
           <Stack.Screen name="Camera" component={Camera} />
+          <Stack.Screen name="After" component={AfterCamera} />
         </Stack.Navigator>
       </Animated.View>
     );
@@ -225,9 +225,9 @@ const App = () => {
   return (
     <NavigationContainer>
       <Drawer.Navigator elevation={2} drawerStyle={styles.drawerStyles} drawerContent={(props) => <DrawerContent {...props} />}>
-        <Drawer.Screen name="FoodRecipe" component={FoodRecipe} />
         <Drawer.Screen name="Home" component={HomeStack} />
         <Drawer.Screen name="Camera" component={CameraStack} />
+        <Drawer.Screen name="FoodRecipe" component={FoodRecipe} />
         {/* <Drawer.Screen name="Authentication" component={Authentication} />*/} 
         <Stack.Screen
             options={{
