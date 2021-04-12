@@ -34,7 +34,8 @@ export class RecipeListing extends Component {
     }
 
     componentDidMount = () => {
-        fetch(`${url}/rank?objects=Tomato,Potato`).then(res=>{
+        var ingr=this.props.route.params.ingr.toString()
+        fetch(`${url}/rank?objects=${ingr}`).then(res=>{
             res.json().then(res=>{
                 this.setState({data:res,loading:false})
             })

@@ -24,7 +24,7 @@ export default class AfterCamera extends Component {
             loop: false,
             imej: [require("../../Assets/images/berger.png"), require("../../Assets/images/dosa.png"), require("../../Assets/images/paratha.png"), require("../../Assets/images/cheesepizza.png"), require("../../Assets/images/Noodles.png")],
             show: true,
-            ingr: ['Potato', 'Tomato', 'Chilli'],
+            ingr: [],
             text: ""
         }
         if (
@@ -37,6 +37,9 @@ export default class AfterCamera extends Component {
 
 
     componentDidMount = () => {
+        this.setState({
+            ingr: this.props.route.params.ingredients
+        })
         this._unsubscribe = this.props.navigation.addListener('focus', async () => {
             console.log('focus');
             this.setState({
@@ -97,7 +100,7 @@ export default class AfterCamera extends Component {
 
         const unmatched = answer.map((elm, index) => {
             if (this.state.ingr.indexOf(elm) == -1)
-                return <TouchableOpacity onPress={() => { LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);this.setState({ ingr: [elm, ...this.state.ingr], text: '' }) }} ><View elevation={2} style={{ padding: 15, margin: 5, marginBottom: 15, backgroundColor: 'white', alignItems: "center", minWidth: 85, minHeight: 125, borderRadius: 45, justifyContent: "center" }} >
+                return <TouchableOpacity onPress={() => { LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut); this.setState({ ingr: [elm, ...this.state.ingr], text: '' }) }} ><View elevation={2} style={{ padding: 15, margin: 5, marginBottom: 15, backgroundColor: 'white', alignItems: "center", minWidth: 85, minHeight: 125, borderRadius: 45, justifyContent: "center" }} >
                     <View style={{ position: 'absolute', top: 0, right: 0, backgroundColor: '#337f33', padding: 8, borderRadius: 50, paddingBottom: 1, paddingTop: 0 }}>
                         <Text style={{ fontSize: 20, color: "#fff" }}>+</Text>
                     </View>
@@ -175,16 +178,16 @@ export default class AfterCamera extends Component {
                                         <View style={{ display: 'flex', flexDirection: 'row', alignItems: 'center' }}>
                                             <View style={{ width: 25 }} />
                                             {
-                                                matched.length==0?<Text>Empty List</Text>:
-                                                matched.map((elm, index) => {
-                                                    return <TouchableOpacity onPress={() => { var ingr = this.state.ingr; ingr.splice(index, 1);LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);this.setState({ ingr }) }} ><View elevation={2} style={{ padding: 15, margin: 5, marginBottom: 15, backgroundColor: 'white', alignItems: "center", minWidth: 85, minHeight: 125, borderRadius: 45, justifyContent: "center" }} >
-                                                        <View style={{ position: 'absolute', top: 0, right: 0, backgroundColor: '#fc6474', padding: 10, borderRadius: 50, paddingBottom: 1, paddingTop: 0 }}>
-                                                            <Text style={{ fontSize: 22,lineHeight:25, color: "#fff" }}>-</Text>
-                                                        </View>
-                                                        <Image elevation={5} source={{ uri: ingredients[elm] }} style={{ width: 35, height: 35, resizeMode: "contain" }} />
-                                                        <Text style={{ fontSize: 14, fontFamily: "OpenSans-SemiBold", opacity: 0.7, marginTop: 10, letterSpacing: -0.5 }} >{elm}</Text>
-                                                    </View></TouchableOpacity>
-                                                })
+                                                matched.length == 0 ? <Text>Empty List</Text> :
+                                                    matched.map((elm, index) => {
+                                                        return <TouchableOpacity onPress={() => { var ingr = this.state.ingr; ingr.splice(index, 1); LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut); this.setState({ ingr }) }} ><View elevation={2} style={{ padding: 15, margin: 5, marginBottom: 15, backgroundColor: 'white', alignItems: "center", minWidth: 85, minHeight: 125, borderRadius: 45, justifyContent: "center" }} >
+                                                            <View style={{ position: 'absolute', top: 0, right: 0, backgroundColor: '#fc6474', padding: 10, borderRadius: 50, paddingBottom: 1, paddingTop: 0 }}>
+                                                                <Text style={{ fontSize: 22, lineHeight: 25, color: "#fff" }}>-</Text>
+                                                            </View>
+                                                            <Image elevation={5} source={{ uri: ingredients[elm] }} style={{ width: 35, height: 35, resizeMode: "contain" }} />
+                                                            <Text style={{ fontSize: 14, fontFamily: "OpenSans-SemiBold", opacity: 0.7, marginTop: 10, letterSpacing: -0.5 }} >{elm}</Text>
+                                                        </View></TouchableOpacity>
+                                                    })
                                             }
                                             <View style={{ width: 25 }} />
                                         </View>
@@ -246,11 +249,14 @@ export default class AfterCamera extends Component {
                             backgroundColor: dotbgColor, padding: 10, paddingTop: 8, paddingBottom: 8, borderRadius: Dimensions.get('window').width / 10, width: (Dimensions.get('window').width) - 50
                             , justifyContent: 'space-between', alignSelf: 'center', margin: 10
                         }}>
-                            <TouchableOpacity onPress={() => this.props.navigation.navigate('FoodRecipe')} style={{
-                                // width: Dimensions.get('window').width / 8, height: Dimensions.get('window').width / 8,
-                                //  alignSelf:'flex-end',
-                                display: "flex", alignItems: 'center', justifyContent: 'center', flexDirection: 'row'
-                            }}>
+                            <TouchableOpacity onPress={() => this.props.navigation.navigate('FoodRecipe', {
+  screen: 'RecipeList',
+  params: {ingr:this.state.ingr},
+})} style={{
+                                    // width: Dimensions.get('window').width / 8, height: Dimensions.get('window').width / 8,
+                                    //  alignSelf:'flex-end',
+                                    display: "flex", alignItems: 'center', justifyContent: 'center', flexDirection: 'row'
+                                }}>
                                 <View style={{ width: 50, height: 50, borderRadius: 25, backgroundColor: 'white', justifyContent: 'center', alignItems: 'center' }}>
                                     <Image source={require('../../Assets/icons/cart.png')}
                                         style={{
