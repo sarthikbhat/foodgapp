@@ -2,20 +2,39 @@ import React, { Component } from 'react'
 import { Text, View, Image, Dimensions, StyleSheet, Animated, KeyboardAvoidingView, Platform, TouchableOpacity, TextInput, ToastAndroid } from 'react-native'
 import { Neomorph, NeomorphFlex } from 'react-native-neomorph-shadows';
 import Header from '../../Reusables/Header'
+import {url} from '../../Reusables/constants'
+import Loader from '../../Reusables/Loader'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import {
+    GoogleSignin,
+    GoogleSigninButton,
+    statusCodes,
+  } from '@react-native-google-signin/google-signin';
 // import Animated from 'react-native-reanimated'
 
 export default class SignIn extends Component {
 
     state = {
-        anim: new Animated.Value(0)
+        anim: new Animated.Value(0),
+        loading:false
     }
 
     componentDidMount = () => {
+        GoogleSignin.configure({
+            webClientId: "572482294326-dlm387qn0206bara9vlkkkuqst78f1vb.apps.googleusercontent.com", // client ID of type WEB for your server(needed to verify user ID and offline access)
+            offlineAccess: true, // if you want to access Google API on behalf of the user FROM YOUR SERVER
+            forceCodeForRefreshToken: false, // [Android] related to `serverAuthCode`, read the docs link below *.
+            accountName: '', // [Android] specifies an account name on the device that should be used
+        });
+        console.log('dkdkd');
+      
         this.poser()
     }
 
-    poser = () => {
+    poser = async() => {
         // this.spinValue.setValue(0)
+        var val = await AsyncStorage.getItem('user')
+        console.log(JSON.parse(val));
         Animated.timing(
             this.state.anim,
             {
@@ -26,25 +45,111 @@ export default class SignIn extends Component {
             },
         ).start()
     }
+    
+    googleSignIn = async () => {
+        this.setState({ loading: true })
+        try {
+            await GoogleSignin.hasPlayServices();
+            const userInfo = await GoogleSignin.signInSilently();
+            var  name = userInfo.user.name;
+            var  email= userInfo.user.email;
+            console.log(silent);
+            console.warn(name);
+            console.warn(email);
+            fetch(`${url}/social?email=${email}&name=${(name)}`)
+                .then(res => {
+                    res.json()
+                        .then(res => {
+                            this.setState({ loading: false })
+                                AsyncStorage.setItem('status', JSON.stringify(true))
+                                AsyncStorage.setItem('type', JSON.stringify("google"))
+                                AsyncStorage.setItem('user', JSON.stringify(res))
+                                ToastAndroid.show("Login Successful", ToastAndroid.LONG)
+                                this.props.navigation.goBack();
+                        })
+                })
+        } catch (error) {
+            if (error.code === statusCodes.SIGN_IN_REQUIRED) {
+                try {
+                    const info = await GoogleSignin.signIn();
+                    var  name = userInfo.user.name;
+                    var  email= userInfo.user.email;
+                    console.log(signed);
+                    fetch(`${url}/social?email=${email}&name=${encodeURIComponent(name)}`)
+                        .then(res => {
+                            res.json()
+                                .then(res => {
+                                    this.setState({ loading: false })
+                                    if (res.body.auth) {
+                                        AsyncStorage.setItem('status', JSON.stringify(true))
+                                        AsyncStorage.setItem('type', JSON.stringify("google"))
+                                        AsyncStorage.setItem('user', JSON.stringify(res))
+                                        ToastAndroid.show("Login Successful", ToastAndroid.LONG)
+                                        this.props.navigation.goBack();
+                                    }
+                                    else {
+                                        ToastAndroid.show('Unsuccessful!! Please try again', ToastAndroid.LONG)
+                                    }
+                                })
+                        })
+                    console.warn(JSON.stringify(name));
+                    console.warn(email);
+
+                } catch (error) {
+                    this.setState({ loading: false })
+                    if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+                        ToastAndroid.show("Sign In unsuccessful", ToastAndroid.SHORT)
+                    } else if (error.code === statusCodes.IN_PROGRESS) {
+                        ToastAndroid.show("SignIn in progress", ToastAndroid.SHORT)
+                    } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+                        ToastAndroid.show("Sign In unsuccessful", ToastAndroid.SHORT)
+                    } else {
+                        ToastAndroid.show("Sign In unsuccessful", ToastAndroid.SHORT)
+
+                    }
+                }
+            } else {
+                this.setState({ loading: false })
+                ToastAndroid.show(error, ToastAndroid.LONG)
+            }
+        }
+
+    };
 
     signIn = () => {
         const { email, password } = this.state
         if (email != undefined && password != undefined && email.trim().length != 0 && password.trim().length != 0) {
-            fetch(`http://192.168.0.104:5000/signIn?email=${email}&password=${password}`).then(res => {
+            this.setState({loading:true})
+            fetch(`${url}/signIn?email=${email}&password=${password}`).then(res => {
                 res.json().then(res => {
+                    console.log(res);
                     if (res != false) {
+                        console.log('res');
                         // asyncstorage baaki chhe
+                        this.setState({loading:false})
+                             var value=JSON.stringify(res)
+                             AsyncStorage.setItem('user', value)
+                             AsyncStorage.setItem('status', JSON.stringify(true))
+                          
+
                         ToastAndroid.show('Login Successful', ToastAndroid.SHORT)
                         this.props.navigation.goBack()
                     }else{
+                        this.setState({loading:false})
                         ToastAndroid.show('Invalid Credentials', ToastAndroid.SHORT)
                     }
                 })
-            })
+            }).catch(e=>{
+                this.setState({loading:false})
+                ToastAndroid.show('Error , PLease try again!!', ToastAndroid.SHORT)
+
+            }) 
 
         }
         else {
+            this.setState({loading:false})
             ToastAndroid.show('Please fill all the fields', ToastAndroid.SHORT)
+
         }
     }
 
@@ -91,7 +196,7 @@ export default class SignIn extends Component {
                 <KeyboardAvoidingView
                     style={{ flex: 1 }}
                     behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-                >
+                ><Loader loading={this.state.loading} />
                     <View style={{ flex: 1, justifyContent: 'flex-end' }}>
 
                         {/* This if after button press */}
@@ -141,17 +246,21 @@ export default class SignIn extends Component {
                                 <Text style={{ fontSize: 18, textAlign: 'center', fontWeight: '100', opacity: 0.4, fontFamily: 'OpenSans-Regular' }}>Or Continue With</Text>
                                 <View style={{ justifyContent: 'center', flexDirection: 'row', marginTop: 30 }}>
                                     {/* <View style={{  }}> */}
+                                    <TouchableOpacity onPress={()=>this.googleSignIn()}>
                                     <NeomorphFlex swapShadows style={{ shadowRadius: 10, borderRadius: 50, backgroundColor: '#ebebeb', width: 45, height: 45, padding: 10 }}>
                                         <Image source={require("../../Assets/icons/google.png")}
                                             style={{ width: null, height: null, flex: 1 }} />
                                     </NeomorphFlex>
+                                    </TouchableOpacity>
                                     {/* </View> */}
                                     <View style={{ flex: 0.1 }} />
                                     {/* <View style={{ backgroundColor: '#4267b2', borderRadius: 50, width: 45, height: 45, padding: 10 }}> */}
+                                    <TouchableOpacity>
                                     <NeomorphFlex swapShadows style={{ shadowRadius: 10, borderRadius: 50, backgroundColor: '#3b5998', width: 45, height: 45, padding: 10 }}>
                                         <Image source={require("../../Assets/icons/fb.png")}
                                             style={{ width: null, height: null, flex: 1 }} />
                                     </NeomorphFlex>
+                                    </TouchableOpacity>
                                     {/* </View> */}
                                 </View>
                             </View>

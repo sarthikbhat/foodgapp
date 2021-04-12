@@ -1,7 +1,12 @@
 import React from 'react';
-import { View, Text, TouchableOpacity, Image, KeyboardAvoidingView, ScrollView, TextInput, LayoutAnimation,UIManager } from 'react-native';
+import { View, Text, TouchableOpacity, Image, KeyboardAvoidingView, ScrollView, TextInput, LayoutAnimation,UIManager,TouchableNativeFeedback,Dimensions, Alert } from 'react-native';
 import { url, ingredients } from '../../Reusables/constants'
 import * as Animatable from 'react-native-animatable'
+import {Neomorph, NeomorphFlex} from 'react-native-neomorph-shadows';
+import NotifService from '../../NotifService';
+import RNCalendarEvents from 'react-native-calendar-events';
+import Header from '../../Reusables/Header';
+
 
 
 export default class Ingredients extends React.Component {
@@ -9,8 +14,10 @@ export default class Ingredients extends React.Component {
         super(props);
         this.state={
             ingr:['Potato','Tomato','Chilli'],
-            text:''
+            text:'',
+            set :false
         }
+        this.notif = new NotifService();
         if (
             Platform.OS === "android" &&
             UIManager.setLayoutAnimationEnabledExperimental
@@ -23,6 +30,61 @@ export default class Ingredients extends React.Component {
         this.setState({ text })
 
     }
+
+    componentDidMount=()=>{
+        this.notif.getScheduledLocalNotifications(va=>{
+            if(va.length==0){
+                this.setState({set:false})
+            }
+            else{
+                this.setState({set:true})
+            }
+        })
+    }
+
+
+
+    setReminder=async ()=>{
+        console.log('abhi hoega dekh andhe')
+        Alert.alert(
+            "Confirm setting reminder",
+            "Do you wish to set reminder for you to buy the selected ingredients?\nThe reminder will be set for every 1 hour for 3 consecutive times.",
+            [
+              {
+                text: "Cancel",
+                onPress: () => {},
+                style: "cancel"
+              },
+              { text: "OK", onPress: () =>{
+                this.notif.localNotif()
+                for(var i=0 ; i<3;i++){
+                    this.notif.scheduleNotif(i)
+                }
+                this.setState({set:true})
+              } }
+            ]
+          );
+     
+    }
+
+    cancelReminder=()=>{
+        Alert.alert(
+            "Confirm setting reminder",
+            "Do you wish to cancel the reminder which was set to remind you buy the selected ingredients?",
+            [
+              {
+                text: "Cancel",
+                onPress: () => {},
+                style: "cancel"
+              },
+              { text: "OK", onPress: () =>{
+                this.notif.cancelAll()
+                this.setState({set:false})
+              } }
+            ]
+          );
+    }
+
     render() {
         const matched = this.state.ingr // asyncstorage
 
@@ -43,6 +105,9 @@ export default class Ingredients extends React.Component {
                 </View></TouchableOpacity>
         })
         return (
+            <>
+            <Header backgroundColor="transparent" user={true} navigation={this.props.navigation} />
+
             <ScrollView>
                 <View>
                     <KeyboardAvoidingView behavior='position' keyboardVerticalOffset='100' >
@@ -119,7 +184,31 @@ export default class Ingredients extends React.Component {
                     {/* </View> */}
                     {/* </View> */}
                 </View>
+
+                {
+                    this.state.set?
+                    <TouchableNativeFeedback onPress={() => this.cancelReminder()}
+                    elevation={5} style={{ backgroundColor: "#fc6474", display: 'flex', flexDirection: "row", padding: 16, alignItems: "center", justifyContent: "center", borderRadius: 50, marginTop: 20, marginBottom: 5 }}
+                >
+                            <NeomorphFlex swapShadows style={{ shadowRadius: 5, borderRadius: 15, backgroundColor: '#fc6474', padding: 18, display: 'flex', flexDirection: "row", padding: 16, alignItems: "center", justifyContent: "center", borderRadius: 50, marginTop: 20, marginBottom: 5,width: Dimensions.get('window').width - 80,alignSelf:'center' }}>
+                                <Image source={require('../../Assets/icons/cancel.png')} style={{ width: 18, height: 18, marginLeft: 10 }} resizeMode="contain" />
+                                <Text onPress={() => this.setReminder()} style={{ fontFamily: "OpenSans-Regular", color: "white", fontSize: 15, marginLeft: 15 }} >Cancel Reminder</Text>
+                            </NeomorphFlex>
+                        </TouchableNativeFeedback>
+                        :
+                <TouchableNativeFeedback onPress={() => this.setReminder()}
+                elevation={5} style={{ backgroundColor: "#fc6474", display: 'flex', flexDirection: "row", padding: 16, alignItems: "center", justifyContent: "center", borderRadius: 50, marginTop: 20, marginBottom: 5 }}
+                >
+                                    <NeomorphFlex swapShadows style={{ shadowRadius: 5, borderRadius: 15, backgroundColor: '#fc6474', padding: 18,  display: 'flex', flexDirection: "row", padding: 16, alignItems: "center", justifyContent: "center", borderRadius: 50, marginTop: 20, marginBottom: 5,width: Dimensions.get('window').width - 80,alignSelf:'center' }}>
+                                        <Image source={require('../../Assets/icons/set-alarm.png')} style={{ width: 20, height: 20, marginLeft: 10 }} resizeMode="contain" />
+                                        <Text style={{ fontFamily: "OpenSans-Regular", color: "white", fontSize: 15, marginLeft: 15 }} >Set Reminder</Text>
+                                    </NeomorphFlex>
+                                </TouchableNativeFeedback>
+                        }
+               
             </ScrollView>
+            </>
+
         )
     }
 }

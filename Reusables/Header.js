@@ -42,7 +42,7 @@ class Header extends React.Component {
                     {
                          this.props.user ?
                          <TouchableOpacity style={styles.headerIcon}
-                             onPress={() => { this.props.navigation.navigate('Signin') }} >
+                             onPress={() => { this.props.navigation.navigate('Authentication') }} >
                              <Image source={require('../Assets/icons/user.png')}
                                  style={{
                                      width: 20, resizeMode: "contain",

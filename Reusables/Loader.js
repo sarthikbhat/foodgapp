@@ -1,12 +1,10 @@
-import React, { Component,useEffect } from 'react';
-import CustomStatusBar from '../../assets/Constants/CustomStatusBar'
+import React from 'react';
 import {
   StyleSheet,
   View,
   Modal,
   ActivityIndicator,
-  Dimensions,
-  Image
+  Dimensions
 } from 'react-native';
 
 const Loader = props => {
@@ -22,7 +20,6 @@ const Loader = props => {
       animationType={'none'}
       visible={loading}
       onRequestClose={() => {}}>
-      <CustomStatusBar backgroundColor="#00000040" barStyle="light-content" />
       <View style={styles.modalBackground}>
         <View style={styles.activityIndicatorWrapper}>
           <ActivityIndicator
@@ -31,6 +28,17 @@ const Loader = props => {
             size="large"
             />
         </View>
+        {/* <View style={styles.activityIndicatorWrapper}>
+          <FastImage
+            style={{
+              height: 50,
+              width:70
+              //  resizeMode: "contain"
+            }}
+            source={require("../../Assets/icons/loaderFinal.gif")}
+            resizeMode={FastImage.resizeMode.contain}
+          />
+        </View> */}
       </View>
     </Modal>
   )

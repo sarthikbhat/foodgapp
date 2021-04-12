@@ -13,6 +13,7 @@ export default class StaticTabbar extends React.PureComponent {
     this.values = tabs.map((tab, index) => new Animated.Value(index === 0 ? 1 : 0));
   }
 
+
   onPress = (index) => {
     this.props.staticPress(index);
     const { value, tabs } = this.props;
@@ -103,6 +104,7 @@ export default class StaticTabbar extends React.PureComponent {
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
+    zIndex:150
   },
   tab: {
     flex: 1,
