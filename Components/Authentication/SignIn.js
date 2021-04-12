@@ -122,26 +122,34 @@ export default class SignIn extends Component {
             this.setState({loading:true})
             fetch(`${url}/signIn?email=${email}&password=${password}`).then(res => {
                 res.json().then(res => {
+                    console.log(res);
                     if (res != false) {
+                        console.log('res');
                         // asyncstorage baaki chhe
                         this.setState({loading:false})
                              var value=JSON.stringify(res)
                              AsyncStorage.setItem('user', value)
                              AsyncStorage.setItem('status', JSON.stringify(true))
                           
-                        ToastAndroidAndroid.show('Login Successful', ToastAndroidAndroid.SHORT)
+
+                        ToastAndroid.show('Login Successful', ToastAndroid.SHORT)
                         this.props.navigation.goBack()
                     }else{
-                        ToastAndroidAndroid.show('Invalid Credentials', ToastAndroidAndroid.SHORT)
+                        this.setState({loading:false})
+                        ToastAndroid.show('Invalid Credentials', ToastAndroid.SHORT)
                     }
                 })
             }).catch(e=>{
-                ToastAndroidAndroid.show('Error , PLease try again!!', ToastAndroidAndroid.SHORT)
+                this.setState({loading:false})
+                ToastAndroid.show('Error , PLease try again!!', ToastAndroid.SHORT)
+
             }) 
 
         }
         else {
-            ToastAndroidAndroid.show('Please fill all the fields', ToastAndroidAndroid.SHORT)
+            this.setState({loading:false})
+            ToastAndroid.show('Please fill all the fields', ToastAndroid.SHORT)
+
         }
     }
 
