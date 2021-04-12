@@ -28,13 +28,22 @@ import * as Animatable from 'react-native-animatable';
 import {useIsDrawerOpen} from '@react-navigation/drawer';
 import SignIn from './Components/Authentication/SignIn';
 import SignUp from './Components/Authentication/SignUp';
-
 import CheckBoxer from './Components/CheckBoxer/Checker';
 import AfterCamera from './Components/AfterCamera/AfterCamera';
 import ActualRecipe from './Components/FoodRecipe/ActualRecipe';
+import RNCalendarEvents from "react-native-calendar-events";
+import AsyncStorage from '@react-native-async-storage/async-storage'
+import {
+  GoogleSignin,
+} from '@react-native-google-signin/google-signin';
+
+
 
 const Drawer = createDrawerNavigator();
 const Stack = createStackNavigator();
+
+var status = false
+
 
 class HomeStack extends React.Component {
   render() {
@@ -70,8 +79,8 @@ class CameraStack extends React.Component {
       <Animated.View
         style={StyleSheet.flatten([styles.stack, this.props.style])}>
         <Stack.Navigator headerMode={'none'}>
-          <Stack.Screen name="After" component={AfterCamera} />
           <Stack.Screen name="Camera" component={Camera} />
+          <Stack.Screen name="After" component={AfterCamera} />
         </Stack.Navigator>
       </Animated.View>
     );
@@ -103,102 +112,189 @@ class Authentication extends React.Component {
   }
 }
 
-const DrawerContent = (props) => {
+
+ class DrawerContent extends React.Component {
+
+  state={
+    login:false,
+    name:'Guest',
+    what:'home'
+  }
+
+  getAsynced=async()=>{
+    var login = await AsyncStorage.getItem('status');
+    var name = "Guest"
+    login = login != undefined && login != null ? JSON.parse(login) : false
+    if (login) {
+        user = await AsyncStorage.getItem('user')
+        user = JSON.parse(user)
+        name= user.name 
+    }
+    this.setState({
+        login,  name
+    })
+}
+
+componentDidMount =  () => {
+        console.log('mount')
+        this.getAsynced()
+}
+
+  componentWillReceiveProps(){
+    // console.log('suir')
+    console.log('props')
+    this.syncer()
+}
+
+signOut = async () => {
+  var status
+  var log = await AsyncStorage.getItem('type')
+  log = log != undefined && log != null ? JSON.parse(log) : undefined
+  if (log === 'google') {
+    await GoogleSignin.revokeAccess();
+      await GoogleSignin.signOut();
+      await AsyncStorage.setItem('status', JSON.stringify(false))
+      await AsyncStorage.removeItem('user')
+      await AsyncStorage.removeItem('type')
+  }
+  else if (log === 'facebook') {
+      // LoginManager.logOut()
+      await AsyncStorage.setItem('status', JSON.stringify(false))
+      await AsyncStorage.removeItem('user')
+      await AsyncStorage.removeItem('type')
+  }
+  else {
+      await AsyncStorage.setItem('status', JSON.stringify(false))
+      await AsyncStorage.removeItem('user')
+      await AsyncStorage.removeItem('type')
+  }
+  status=true
+  this.setState({log:false})
+  // props.navigation.closeDrawer();
+}
+
+
+
+syncer = async () => {
+  var login = await AsyncStorage.getItem('status');
+  var name="Guest"
+  login = login != undefined && login != null ? JSON.parse(login) : false
+  if (login) {
+      user = await AsyncStorage.getItem('user')
+      user = JSON.parse(user)
+      name = user.name 
+  }
+  this.setState({
+      login,  name
+  })
+
+}
+render(){
   return (
     <View style={{flex: 1}}>
-      <DrawerContentScrollView {...props}>
+      {/* <ImageBackground source={require('./Assets/images/appbg.png')} style={styles.outerMenu} imageStyle={styles.imageMenu}> */}
+      <DrawerContentScrollView {...this.props}>
         <View style={styles.drawerContent}>
           <View style={styles.userInfoSection}>
-            <View style={{flexDirection: 'row', marginTop: 15}}>
-              <Image
-                source={{
-                  uri: 'https://icons.iconarchive.com/icons/diversity-avatars/avatars/1024/batman-icon.png',
-                }}
-                style={{width:50,height:50}}
-              />
+            <View style={{flexDirection: 'row', marginTop: 15,alignItems:'center'}}>
+            <View onPress={() => { }} elevation={1} style={{ padding: 10, backgroundColor: "#f9f9f9", borderColor: "#f6f6f6", borderRadius: 50}}>
+                    <Image source={require('./Assets/icons/my_account_user.png')}
+                        style={{ width: Dimensions.get('window').width / 8, resizeMode: "contain", height: Dimensions.get('window').width / 8 }} />
+                </View>
               <View style={{marginLeft: 15, flexDirection: 'column',backgroundColor:'#fff'}}>
-                <Text style={styles.title}>Fit Batman</Text>
-                <Text style={styles.caption}>@night_watchman</Text>
+                <Text style={styles.title}>{this.state.name}</Text>
+                <Text style={styles.caption}>{'@'+this.state.name.toLowerCase()+'_foodgapp'}</Text>
               </View>
             </View>
 
-            <View style={styles.row}>
+            {/* <View style={styles.row}>
               <View style={styles.section}>
                 <Text style={[styles.paragraph, styles.caption]}>
                   80
                 </Text>
                 <Text style={styles.caption}>Calorie Intake</Text>
               </View>
-              <View style={styles.section}>
+              <View style={styles.section}> 
                 <Text style={[styles.paragraph, styles.caption]}>
-                  100
+                  8
                 </Text>
-                <Text style={styles.caption}>Ingredient Starred</Text>
+                <Text style={styles.caption}>Ingredients Starred</Text>
               </View>
-            </View>
+            </View> */}
           </View>
 
           <View style={styles.drawerSection}>
-            <DrawerItem 
+            <DrawerItem style={[this.state.what==='home'?{backgroundColor:'#fc6474'}:{},{padding:5}]}
               icon={()=>(
                 <Image
-                source={require('./Assets/icons/home-menu.png')}
-                style={{width:25,height:25}}
+                source={this.state.what!='home'?require('./Assets/icons/home-menu.png'):require('./Assets/icons/homew.png')}
+                style={{width:25,height:25,marginLeft:15,marginRight:0}}
                 />
               )}
               label="Home"
+              labelStyle={[this.state.what==='home'?{color:'#ffffff'}:{},{fontSize:16,fontFamily:'OpenSans-Regular'}]}
               onPress={() => {
-                props.navigation.navigate('Home');
+                this.setState({what:'home'})
+                this.props.navigation.navigate('Home');
               }}
             />
-            <DrawerItem
+            <DrawerItem style={[this.state.what==='profile'?{backgroundColor:'#fc6474'}:{},{padding:5}]}
               icon={()=>(
                 <Image
-                source={require('./Assets/icons/user-menu.png')}
-                style={{width:25,height:25}}
+                source={this.state.what!='profile'?require('./Assets/icons/user-menu.png'):require('./Assets/icons/userw.png')}
+                style={{width:25,height:25,marginLeft:15,marginRight:0}}
                 />
               )}
               label="Profile"
-              onPress={() => {
+              labelStyle={[this.state.what==='profile'?{color:'#ffffff'}:{},{fontSize:16,fontFamily:'OpenSans-Regular'}]}
+              onPress={() => {this.setState({what:'profile'})
                 ToastAndroid.show('Coming Soon 😃',ToastAndroid.SHORT)
               }}
             />
-            <DrawerItem
+            <DrawerItem style={[this.state.what==='bookmarks'?{backgroundColor:'#fc6474'}:{},{padding:5}]}
               icon={()=>(
                 <Image
-                source={require('./Assets/icons/bookmark-menu.png')}
-                style={{width:25,height:25}}
+                source={this.state.what!='bookmarks'?require('./Assets/icons/bookmark-menu.png'):require('./Assets/icons/bookmark.png')}
+                style={{width:25,height:25,marginLeft:15,marginRight:0}}
                 />
               )}
               label="Bookmarks"
+              labelStyle={[this.state.what==='bookmarks'?{color:'#ffffff'}:{},{fontSize:16,fontFamily:'OpenSans-Regular'}]}
               onPress={() => {
+                this.setState({what:'bookmarks'})
                 ToastAndroid.show('Coming Soon 😃',ToastAndroid.SHORT)
               }}
             />
-            <DrawerItem
+            <DrawerItem style={[this.state.what==='settings'?{backgroundColor:'#fc6474'}:{},{padding:5}]}
              icon={()=>(
               <Image
-              source={require('./Assets/icons/settings-menu.png')}
-              style={{width:25,height:25}}
+              source={this.state.what!='settings'?require('./Assets/icons/settings-menu.png'):require('./Assets/icons/settings.png')}
+              style={{width:25,height:25,marginLeft:15,marginRight:0}}
               />
             )}
               label="Settings"
+              labelStyle={[this.state.what==='settings'?{color:'#ffffff'}:{},{fontSize:16,fontFamily:'OpenSans-Regular'}]}
               onPress={() => {
+                this.setState({what:'settings'})
                 ToastAndroid.show('Coming Soon 😃',ToastAndroid.SHORT);
               }}
             />
-            <DrawerItem
-              icon={()=>(
-                <Image
-                source={require('./Assets/icons/logout-menu.png')}
-                style={{width:25,height:25,marginLeft:5}}
-                />
-              )}
-              label="Sign Out"
+            <DrawerItem style={[this.state.what==='settings'?{backgroundColor:'#fc6474'}:{},{padding:5}]}
+             icon={()=>(
+              <Image
+              source={this.state.what!='settings'?require('./Assets/icons/settings-menu.png'):require('./Assets/icons/settings.png')}
+              style={{width:25,height:25,marginLeft:15,marginRight:0}}
+              />
+            )}
+              label={this.state.login?'Log out':'Log In'}
+              labelStyle={[this.state.what==='logout'?{color:'#ffffff'}:{},{fontSize:16,fontFamily:'OpenSans-Regular'}]}
               onPress={() => {
-                ToastAndroid.show('Signed Out 😃',ToastAndroid.SHORT);
+                this.setState({what:'logout'})
+                this.state.login?this.signOut():this.props.navigation.navigate("Authentication")
               }}
             />
+            
+            
           </View>
           
         </View>
@@ -217,32 +313,25 @@ const DrawerContent = (props) => {
           }}
         />
       </View>
+      {/* </ImageBackground> */}
     </View>
   );
 };
+ }
 
 const App = () => {
+
+ React.useEffect(() => {
+  RNCalendarEvents.requestPermissions();
+ }, []);
+
   return (
     <NavigationContainer>
       <Drawer.Navigator elevation={2} drawerStyle={styles.drawerStyles} drawerContent={(props) => <DrawerContent {...props} />}>
-        <Drawer.Screen name="FoodRecipe" component={FoodRecipe} />
         <Drawer.Screen name="Home" component={HomeStack} />
+        <Drawer.Screen name="FoodRecipe" component={FoodRecipe} />
+        <Drawer.Screen name="Authentication" component={Authentication} /> 
         <Drawer.Screen name="Camera" component={CameraStack} />
-        {/* <Drawer.Screen name="Authentication" component={Authentication} />*/} 
-        <Stack.Screen
-            options={{
-              animationEnabled: false,
-            }}
-            name="Signin"
-            component={SignIn}
-          />
-          <Stack.Screen
-            options={{
-              animationEnabled: false,
-            }}
-            name="Signup"
-            component={SignUp}
-          /> 
       </Drawer.Navigator>
     </NavigationContainer>
   );
@@ -260,7 +349,7 @@ const styles = StyleSheet.create({
     shadowRadius: 15.32,
     elevation: 3,
   },
-  drawerStyles: { flex: 1, width: '70%', },
+  drawerStyles: { flex: 1, width: '80%', },
   drawerItem: {alignItems: 'flex-start', marginVertical: 0, color: '#E6F0F5'},
   drawerLabel: {color: 'white', marginLeft: -16},
 
@@ -283,13 +372,15 @@ const styles = StyleSheet.create({
     paddingLeft: 20,
   },
   title: {
-    fontSize: 16,
+    fontSize: 20,
     marginTop: 3,
     fontWeight: 'bold',
+    marginBottom:5,
+    fontFamily:'OpenSans-Regular'
   },
   caption: {
     fontSize: 14,
-    lineHeight: 14,
+    fontFamily:'OpenSans-Regular'
   },
   row: {
     marginTop: 20,
@@ -305,9 +396,10 @@ const styles = StyleSheet.create({
   paragraph: {
     fontWeight: 'bold',
     marginRight: 3,
+    fontFamily:'OpenSans-Regular'
   },
   drawerSection: {
-    marginTop: 15,
+    marginTop: 25,
   },
   bottomDrawerSection: {
       marginBottom: 15,
@@ -320,5 +412,16 @@ const styles = StyleSheet.create({
     paddingVertical: 12,
     paddingHorizontal: 16,
   },
+  outerMenu: {
+    display: 'flex',
+    resizeMode: "cover",
+    width: Dimensions.get('window').width*0.8,
+    height: Dimensions.get('window').height,
+    },
+    imageMenu: {
+    width:Dimensions.get('window').width*0.8,
+    opacity: 0.4,
+    }
+    
 });
 export default App;

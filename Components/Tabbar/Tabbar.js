@@ -61,11 +61,16 @@ import {
     return `${left} ${tab} ${right}`;
   };
   const d = getPath();
+
   
   // eslint-disable-next-line react/prefer-stateless-function
   export default class Tabbar extends React.PureComponent {
     value = new Animated.Value(0);
   
+    staticPress=(elm)=>{
+      this.props.tabPress(elm)
+    }
+
     render() {
       const { value } = this;
       const translateX = value.interpolate({
@@ -79,7 +84,7 @@ import {
               <Path fill={backgroundColor} {...{ d }} />
             </AnimatedSvg>
             <View style={StyleSheet.absoluteFill}>
-              <StaticTabbar {...{ tabs, value }} />
+              <StaticTabbar {...{ tabs, value }} staticPress={this.staticPress} />
             </View>
           </View>
           {/* <SafeAreaView style={styles.container} /> */}
@@ -91,5 +96,6 @@ import {
   const styles = StyleSheet.create({
     container: {
       backgroundColor,
+      zIndex:150
     },
   });
