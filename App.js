@@ -169,7 +169,6 @@ signOut = async () => {
       await AsyncStorage.removeItem('type')
   }
   status=true
-
   this.setState({log:false})
   // props.navigation.closeDrawer();
 }
@@ -191,12 +190,6 @@ syncer = async () => {
 
 }
 render(){
-  // props.navigation.closeDrawer();
-}
-
-const DrawerContent = (props) => {
-
-
   return (
     <View style={{flex: 1}}>
       {/* <ImageBackground source={require('./Assets/images/appbg.png')} style={styles.outerMenu} imageStyle={styles.imageMenu}> */}
@@ -296,7 +289,6 @@ const DrawerContent = (props) => {
               label={this.state.login?'Log out':'Log In'}
               labelStyle={[this.state.what==='logout'?{color:'#ffffff'}:{},{fontSize:16,fontFamily:'OpenSans-Regular'}]}
               onPress={() => {
-
                 this.setState({what:'logout'})
                 this.state.login?this.signOut():this.props.navigation.navigate("Authentication")
               }}
