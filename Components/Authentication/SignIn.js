@@ -131,6 +131,7 @@ export default class SignIn extends Component {
                              AsyncStorage.setItem('user', value)
                              AsyncStorage.setItem('status', JSON.stringify(true))
                           
+
                         ToastAndroid.show('Login Successful', ToastAndroid.SHORT)
                         this.props.navigation.goBack()
                     }else{
@@ -141,12 +142,14 @@ export default class SignIn extends Component {
             }).catch(e=>{
                 this.setState({loading:false})
                 ToastAndroid.show('Error , PLease try again!!', ToastAndroid.SHORT)
+
             }) 
 
         }
         else {
             this.setState({loading:false})
             ToastAndroid.show('Please fill all the fields', ToastAndroid.SHORT)
+
         }
     }
 

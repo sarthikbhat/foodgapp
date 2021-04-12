@@ -66,6 +66,8 @@ export default class Profile extends React.Component {
              <Header backgroundColor="transparent" user={true} navigation={this.props.navigation} />
             <ScrollView>
                <TouchableOpacity onPress={() => { }} elevation={1} style={{ padding: 20, backgroundColor: "#f9f9f9", borderColor: "#f6f6f6", borderRadius: 50, alignSelf: 'center', marginTop: 10 }}>
+
+
                     <Image source={require('../../Assets/icons/my_account_user.png')}
                         style={{ width: Dimensions.get('window').width / 10, resizeMode: "contain", height: Dimensions.get('window').width / 10 }} />
                 </TouchableOpacity>
@@ -80,7 +82,10 @@ export default class Profile extends React.Component {
                 />
                 <Text style={{ fontFamily: "OpenSans-Regular", color: "#2b2b2b", fontSize: 15, padding: 25, paddingBottom: 25 }} >Wishlisted Dishes</Text>
 
+
                 <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+
+
                     <View style={{ width: 25 }} />
                     <Animatable.View
                         animation="zoomIn"
@@ -109,6 +114,7 @@ export default class Profile extends React.Component {
                         </View>
                     </Animatable.View>
                 </ScrollView>
+
                 <TouchableNativeFeedback onPress={() => this.signOut()}
                             elevation={5} style={{ backgroundColor: "#fc6474", display: 'flex', flexDirection: "row", padding: 16, alignItems: "center", justifyContent: "center", borderRadius: 50, marginTop: 20, marginBottom: 5 }}
                         >

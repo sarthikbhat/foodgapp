@@ -8,6 +8,7 @@ import RNCalendarEvents from 'react-native-calendar-events';
 import Header from '../../Reusables/Header';
 
 
+
 export default class Ingredients extends React.Component {
     constructor(props){
         super(props);
@@ -106,6 +107,7 @@ export default class Ingredients extends React.Component {
         return (
             <>
             <Header backgroundColor="transparent" user={true} navigation={this.props.navigation} />
+
             <ScrollView>
                 <View>
                     <KeyboardAvoidingView behavior='position' keyboardVerticalOffset='100' >
@@ -182,6 +184,7 @@ export default class Ingredients extends React.Component {
                     {/* </View> */}
                     {/* </View> */}
                 </View>
+
                 {
                     this.state.set?
                     <TouchableNativeFeedback onPress={() => this.cancelReminder()}
@@ -205,6 +208,7 @@ export default class Ingredients extends React.Component {
                
             </ScrollView>
             </>
+
         )
     }
 }

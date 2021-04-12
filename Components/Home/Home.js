@@ -1,3 +1,4 @@
+
 import React, {Component} from 'react';
 import {
   Text,
@@ -79,6 +80,7 @@ export class Home extends Component {
                     this.state.index == 0 ?
                     <>
                        <Header backgroundColor="transparent" user={true} navigation={this.props.navigation} />
+
                         <ScrollView style={{ paddingTop: 5 }} >
                             <Animatable.View
                                 animation="slideInUp"
@@ -87,6 +89,7 @@ export class Home extends Component {
                                 <Text  style={{ fontFamily: "OpenSans-Bold", fontSize: 25, color: "#222222" }} >Poozle</Text>
                                 <Text style={{ fontFamily: "OpenSans-Regular", fontSize: 23, color: "#222222" }} >your cravings</Text>
                                 {/* <TouchableNativeFeedback onPress={() => this.props.navigation.navigate('Camera')}
+
                                     elevation={5} style={{ backgroundColor: "#fc6474", display: 'flex', flexDirection: "row", padding: 16, alignItems: "center", justifyContent: "center", borderRadius: 50, marginTop: 20, marginBottom: 5 }}
                                 > */}
                         <TouchableNativeFeedback onPress={() => this.props.navigation.navigate('Camera')}
@@ -95,6 +98,7 @@ export class Home extends Component {
                                     <NeomorphFlex swapShadows style={{ shadowRadius: 5, borderRadius: 15, backgroundColor: '#fc6474', padding: 18, backgroundColor: "#fc6474", display: 'flex', flexDirection: "row", padding: 16, alignItems: "center", justifyContent: "center", borderRadius: 50, marginTop: 20, marginBottom: 5 }}>
                                         <Image source={require('../../Assets/icons/camera_white.png')} style={{ width: 20, height: 20, marginLeft: 10 }} resizeMode="contain" />
                                         <Text style={{ fontFamily: "OpenSans-Regular", color: "white", fontSize: 15, marginLeft: 15 }} >Scan for ingredients</Text>
+
                                     </NeomorphFlex>
                                 </TouchableNativeFeedback>
                                 <View style={{ display: "flex", flexDirection: "row", alignItems: "center", padding: 10 }}>
@@ -151,6 +155,7 @@ export class Home extends Component {
                     useNativeDriver>
                     <Tabbar tabPress={this.tabPress} />
                 </Animatable.View>
+
             </View>
         </ImageBackground>
     </View>
